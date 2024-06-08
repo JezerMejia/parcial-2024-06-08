@@ -16,6 +16,9 @@ public class AppointmentMedicSpecialty {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Appointment appointment;
 
+    /**
+     * Una especialidad por cita médica por cada médico
+     */
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Specialty specialty;
 }
