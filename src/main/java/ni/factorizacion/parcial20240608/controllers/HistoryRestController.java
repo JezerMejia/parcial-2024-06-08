@@ -37,4 +37,12 @@ public class HistoryRestController {
         service.saveHistory(historyDto);
         return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Residence saved", null);
     }
+
+    @DeleteMapping(path = "/{uuid}")
+    public ResponseEntity<GeneralResponse<History>> removeResidence(@PathVariable("uuid") String uuid) throws Exception {
+        service.removeHistory(uuid);
+        return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Residence Deleted", null);
+    }
+
+
 }

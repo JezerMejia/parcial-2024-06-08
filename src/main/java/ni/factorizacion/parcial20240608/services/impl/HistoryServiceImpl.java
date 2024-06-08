@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
@@ -39,6 +40,16 @@ public class HistoryServiceImpl implements HistoryService {
         history.setDate(dto.getDateTime());
         history.setReason(dto.getReason());
         repository.save(history);
+    }
+
+    @Override
+    public void removeHistory(String uuid) throws ControlException{
+        boolean exist = repository.existsById(UUID.fromString(uuid));
+        if(!exist){
+            throw new IllegalStateException(
+                    "History with the id +" + uuid +" does not exist");
+        }
+        repository.deleteById(UUID.fromString(uuid));
     }
 
 }
