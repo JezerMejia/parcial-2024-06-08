@@ -1,14 +1,8 @@
 package ni.factorizacion.parcial20240608.controllers;
 
 import jakarta.validation.Valid;
-import ni.factorizacion.parcial20240608.domain.dtos.AppointmentDto;
-import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveAppointmentDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SimpleMedicDto;
-import ni.factorizacion.parcial20240608.domain.entities.Appointment;
-import ni.factorizacion.parcial20240608.domain.entities.AppointmentMedicSpecialty;
-import ni.factorizacion.parcial20240608.domain.entities.AppointmentState;
-import ni.factorizacion.parcial20240608.domain.entities.User;
+import ni.factorizacion.parcial20240608.domain.dtos.*;
+import ni.factorizacion.parcial20240608.domain.entities.*;
 import ni.factorizacion.parcial20240608.services.AppointmentService;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/appointment/")
@@ -28,6 +23,9 @@ public class AppointmentRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SpecialtyService specialtyService;
 
     @PostMapping(value = "/request", consumes = "application/json")
     public ResponseEntity<GeneralResponse<String>> requestAppointment(@RequestBody @Valid SaveAppointmentDto dto) {
@@ -40,7 +38,29 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/approve", consumes = "application/json")
     @PreAuthorize("hasAuthority('RECP')")
-    public ResponseEntity<GeneralResponse<String>> approveAppointment() {
+    public ResponseEntity<GeneralResponse<String>> approveAppointment(@RequestBody @Valid ApproveAppointmentDto dto) {
+        Optional<Appointment> appointment = appointmentService.findById(dto.getAppointmentId());
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+
+        List<AppointmentMedicSpecialty> amsList = new ArrayList<>();
+        for (MedicAppointmentDto medicDto : dto.getMedics()) {
+            AppointmentMedicSpecialty ams = new AppointmentMedicSpecialty();
+            ams.setAppointment(appointment.get());
+
+            User medic = userService.findByEmail(medicDto.getEmail());
+            ams.setMedic(medic);
+
+            Optional<Specialty> specialty = specialtyService.findById(medicDto.getSpecialtyCode());
+            if (specialty.isEmpty()) {
+                return GeneralResponse.error404("No specialty found for: " + medicDto.getSpecialtyCode());
+            }
+            ams.setSpecialty(specialty.get());
+            amsList.add(ams);
+        }
+
+        appointmentService.approve(dto, appointment.get(), amsList);
         return GeneralResponse.ok("Ola", "");
     }
 
