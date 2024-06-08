@@ -47,13 +47,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void toggleActive(User user) {
-        userRepository.save(user);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
-    public User findByEmail(String username) {
-        return userRepository.findByEmail(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override

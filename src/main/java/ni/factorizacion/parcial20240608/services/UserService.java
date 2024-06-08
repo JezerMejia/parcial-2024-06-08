@@ -11,11 +11,10 @@ public interface UserService {
 
     long getCount();
 
-    User findByEmail(String username);
+    User findByEmail(String email);
+    User findByUsername(String username);
 
     void saveUser(SaveUserDto userDto);
-
-    void toggleActive(User user);
 
     Boolean validAuthentication(User user, String password);
 
