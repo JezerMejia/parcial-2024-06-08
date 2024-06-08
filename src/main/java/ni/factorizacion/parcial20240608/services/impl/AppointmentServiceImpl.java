@@ -75,4 +75,16 @@ public class AppointmentServiceImpl implements AppointmentService {
         patient.addRole(roleRepository.findById("PTNT").get());
         userRepository.save(patient);
     }
+
+    @Override
+    public void reject(Appointment appointment) {
+        appointment.setStatus(AppointmentState.REJECTED);
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void cancel(Appointment appointment) {
+        appointment.setStatus(AppointmentState.CANCELED);
+        appointmentRepository.save(appointment);
+    }
 }

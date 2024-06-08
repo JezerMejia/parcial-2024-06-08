@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import ni.factorizacion.parcial20240608.domain.dtos.*;
 import ni.factorizacion.parcial20240608.domain.entities.*;
 import ni.factorizacion.parcial20240608.services.AppointmentService;
+import ni.factorizacion.parcial20240608.services.SpecialtyService;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/appointment/")
@@ -61,7 +63,29 @@ public class AppointmentRestController {
         }
 
         appointmentService.approve(dto, appointment.get(), amsList);
-        return GeneralResponse.ok("Ola", "");
+        return GeneralResponse.ok("Appointment approved", "");
+    }
+
+    @PostMapping(value = "/reject")
+    @PreAuthorize("hasAuthority('RECP')")
+    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody UUID appointmentId) {
+        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+        appointmentService.reject(appointment.get());
+        return GeneralResponse.ok("Appointment rejected", "");
+    }
+
+    @PostMapping(value = "/cancel")
+    @PreAuthorize("hasAuthority('PTNT')")
+    public ResponseEntity<GeneralResponse<String>> cancelAppointment(@RequestBody UUID appointmentId) {
+        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+        appointmentService.cancel(appointment.get());
+        return GeneralResponse.ok("Appointment canceled", "");
     }
 
     @GetMapping(value = "/own")

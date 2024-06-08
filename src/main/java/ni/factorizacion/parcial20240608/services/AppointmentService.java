@@ -15,9 +15,14 @@ public interface AppointmentService {
     Optional<Appointment> findById(UUID uuid);
 
     List<Appointment> findAll();
+
     List<Appointment> findByStatus(AppointmentState status);
 
     void save(SaveAppointmentDto dto, User patient);
 
     void approve(ApproveAppointmentDto dto, Appointment appointment, List<AppointmentMedicSpecialty> amsList);
+
+    void reject(Appointment appointment);
+
+    void cancel(Appointment appointment);
 }
