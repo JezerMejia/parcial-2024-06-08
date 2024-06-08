@@ -3,6 +3,7 @@ package ni.factorizacion.parcial20240608;
 import jakarta.servlet.http.HttpServletResponse;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.UserService;
+import ni.factorizacion.parcial20240608.utils.Encrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,12 +26,14 @@ public class WebSecurityConfiguration {
     private final PasswordEncoder passwordEncoder = new PasswordEncoder() {
         @Override
         public String encode(CharSequence rawPassword) {
-            return rawPassword.toString();
+            return Encrypt.encryptPassword(rawPassword.toString());
         }
 
         @Override
         public boolean matches(CharSequence rawPassword, String encodedPassword) {
-            return encodedPassword.equals(rawPassword.toString());
+            String decodedRaw = Encrypt.decryptPassword(rawPassword.toString());
+            String decodedPass = Encrypt.decryptPassword(encodedPassword);
+            return decodedRaw.equals(decodedPass);
         }
     };
 

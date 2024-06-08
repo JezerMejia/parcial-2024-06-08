@@ -7,6 +7,7 @@ import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.repositories.TokenRepository;
 import ni.factorizacion.parcial20240608.repositories.UserRepository;
 import ni.factorizacion.parcial20240608.services.UserService;
+import ni.factorizacion.parcial20240608.utils.Encrypt;
 import ni.factorizacion.parcial20240608.utils.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(Encrypt.encryptPassword(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setActive(true);
 
@@ -60,7 +61,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean validAuthentication(User user, String password) {
-        return user.getPassword().equals(password);
+        String encodedPassword = Encrypt.encryptPassword(password);
+        return encodedPassword.equals(user.getPassword());
     }
 
     @Override
