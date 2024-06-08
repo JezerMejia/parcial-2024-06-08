@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
@@ -40,19 +41,27 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<History> history;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Role> roles = new HashSet<>();
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Role> roles;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        var authorities = new ArrayList<GrantedAuthority>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getId()));
+        }
+        return authorities;
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.email;
     }
 
     @OneToMany(mappedBy = "medic", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private Set<AppointmentMedicSpecialty> appointmentMedicSpecialty = new HashSet<>();
 }
