@@ -27,7 +27,6 @@ public class Token {
     private Boolean active;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "uuid")
     @JsonIgnore
     private User user;
 

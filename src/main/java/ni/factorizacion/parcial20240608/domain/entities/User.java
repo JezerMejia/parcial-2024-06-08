@@ -8,9 +8,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Entity
@@ -47,4 +45,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return this.email;
     }
+
+    @OneToMany(mappedBy = "medic", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<AppointmentMedicSpecialty> appointmentMedicSpecialty = new HashSet<>();
 }
