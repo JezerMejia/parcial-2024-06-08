@@ -4,7 +4,6 @@ import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +23,8 @@ public class UserRestController {
     public ResponseEntity<GeneralResponse<List<User>>> findAllUsers() {
         List<User> users = userService.findAll();
         if (users.isEmpty()) {
-            return GeneralResponse.getResponse(HttpStatus.NOT_FOUND, "No users found", users);
+            return GeneralResponse.error404("No users found");
         }
-        return GeneralResponse.getResponse(HttpStatus.OK, "Found users", users);
+        return GeneralResponse.ok("Found users", users);
     }
 }

@@ -24,6 +24,9 @@ public class GeneralResponse<T> {
     public static <T> ResponseEntity<GeneralResponse<T>> error401(String message) {
         return GeneralResponse.getResponse(HttpStatus.UNAUTHORIZED, message, null);
     }
+    public static <T> ResponseEntity<GeneralResponse<T>> error500(String message) {
+        return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, message, null);
+    }
     public static <T> ResponseEntity<GeneralResponse<T>> ok(String message, T data) {
         return GeneralResponse.getResponse(HttpStatus.OK, message, data);
     }
