@@ -32,6 +32,7 @@ public class Appointment {
      */
     @NotNull
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime requestDate;
 
     /**
@@ -42,13 +43,11 @@ public class Appointment {
     /**
      * Fecha aproximada en la que finalizará la cita médica
      */
-    @NotNull
     private LocalDateTime approxEndDate;
 
     /**
      * Fecha en la que la cita médica finalizó
      */
-    @NotNull
     private LocalDateTime endDate;
 
     @NotNull
@@ -56,9 +55,8 @@ public class Appointment {
     private AppointmentState status;
 
     @OneToMany(mappedBy = "appointment", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<AppointmentMedicSpecialty> appointmentMedicSpecialty = new HashSet<>();
+    private List<AppointmentMedicSpecialty> appointmentMedicSpecialty;
 
     @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Prescription> prescriptions;
 }
