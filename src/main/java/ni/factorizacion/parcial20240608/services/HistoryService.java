@@ -15,5 +15,6 @@ public interface HistoryService {
     List<HistorySimpleDto> getAll();
     Optional<History> findByDate(LocalDateTime dateTime);
     void saveHistory(SaveHistoryDto dto) throws ControlException;
+    void updateHistory(String uuid, SaveHistoryDto dto) throws ControlException;
     void removeHistory(String uuid) throws ControlException;
 }

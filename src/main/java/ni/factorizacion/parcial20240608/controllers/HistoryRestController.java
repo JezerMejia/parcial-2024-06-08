@@ -38,10 +38,16 @@ public class HistoryRestController {
         return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Residence saved", null);
     }
 
+    @PutMapping(path = "/{uuid}")
+    public ResponseEntity<GeneralResponse<History>> updateUser(@PathVariable("uuid") String uuid, @RequestBody @Valid SaveHistoryDto dto) throws Exception {
+        service.updateHistory(uuid, dto);
+        return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "History Updated", null);
+    }
+
     @DeleteMapping(path = "/{uuid}")
     public ResponseEntity<GeneralResponse<History>> removeResidence(@PathVariable("uuid") String uuid) throws Exception {
         service.removeHistory(uuid);
-        return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Residence Deleted", null);
+        return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "History Deleted", null);
     }
 
 

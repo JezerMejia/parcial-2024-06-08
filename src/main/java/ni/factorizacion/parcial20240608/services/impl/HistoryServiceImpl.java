@@ -43,6 +43,18 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
+    public void updateHistory(String uuid,SaveHistoryDto dto) throws ControlException {
+        Optional<History> found = repository.findById(UUID.fromString(uuid));
+        if (found.isEmpty()) {
+            throw new ControlException(HttpStatus.CONFLICT, "History does not exist");
+        }
+        History history = found.get();
+        history.setDate(dto.getDateTime());
+        history.setReason(dto.getReason());
+        repository.save(history);
+    }
+
+    @Override
     public void removeHistory(String uuid) throws ControlException{
         boolean exist = repository.existsById(UUID.fromString(uuid));
         if(!exist){
