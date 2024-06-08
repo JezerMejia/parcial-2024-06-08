@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
+    long getCount();
+
     User findByEmail(String username);
 
     void saveUser(SaveUserDto userDto);

@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public long getCount() {
+        return userRepository.count();
+    }
+
+    @Override
     public void saveUser(SaveUserDto userDto) {
         var user = new User();
 
