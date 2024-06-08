@@ -51,4 +51,8 @@ public class User implements UserDetails {
         }
         return authorities;
     }
+
+    public void addRole(Role role) {
+        this.getRoles().add(role);
+    }
 }

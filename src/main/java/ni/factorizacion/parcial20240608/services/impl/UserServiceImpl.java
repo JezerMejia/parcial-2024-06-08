@@ -64,12 +64,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserAuthenticated() {
-        String email = SecurityContextHolder
+        User user = (User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
-                .getName();
+                .getPrincipal();
 
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(user.getEmail());
     }
 
     @Override

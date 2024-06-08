@@ -21,6 +21,11 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     private SpecialtyRepository specialtyRepository;
 
     @Override
+    public Optional<Specialty> findById(String id) {
+        return specialtyRepository.findById(id);
+    }
+
+    @Override
     public List<Specialty> findAll() {
         return specialtyRepository.findAll();
     }

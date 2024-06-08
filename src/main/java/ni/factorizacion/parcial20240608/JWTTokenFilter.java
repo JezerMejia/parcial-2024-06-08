@@ -32,14 +32,14 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String tokenHeader = request.getHeader("Authorization");
-        String username = null;
+        String email = null;
         String token = null;
 
         if (tokenHeader != null && tokenHeader.startsWith("Bearer ") && tokenHeader.length() > 7) {
             token = tokenHeader.substring(7);
 
             try {
-                username = jwtTools.getUsernameFrom(token);
+                email = jwtTools.getUsernameFrom(token);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -51,8 +51,8 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             System.out.println("Bearer string not found");
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userService.findByEmail(username);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userService.findByEmail(email);
 
             if (user != null) {
                 Boolean tokenValidity = userService.isTokenValid(user, token);
