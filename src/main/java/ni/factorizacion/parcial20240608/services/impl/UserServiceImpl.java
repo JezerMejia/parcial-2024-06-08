@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAllByActive(true);
+        return userRepository.findAll();
     }
 
     @Override
@@ -39,18 +39,15 @@ public class UserServiceImpl implements UserService {
     public void saveUser(SaveUserDto userDto) {
         var user = new User();
 
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
         user.setPassword(Encrypt.encryptPassword(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
-        user.setActive(true);
+        user.setUsername(userDto.getUsername());
 
         userRepository.save(user);
     }
 
     @Override
     public void toggleActive(User user) {
-        user.setActive(!user.getActive());
         userRepository.save(user);
     }
 

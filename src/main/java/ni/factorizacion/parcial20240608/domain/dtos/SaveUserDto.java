@@ -8,10 +8,7 @@ import lombok.Data;
 @Data
 public class SaveUserDto {
     @NotEmpty
-    private String firstName;
-    @NotEmpty
-    private String lastName;
-
+    private String username;
     @NotEmpty
     @Email
     private String email;

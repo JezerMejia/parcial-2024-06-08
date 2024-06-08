@@ -26,8 +26,7 @@ public class DataLoader implements ApplicationRunner {
         }
         SaveUserDto dto = new SaveUserDto();
         dto.setEmail("juan.perez@gmail.com");
-        dto.setFirstName("Juan");
-        dto.setLastName("Pérez");
+        dto.setUsername("juan.perez");
         dto.setPassword("123456a");
 
         userService.saveUser(dto);

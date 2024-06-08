@@ -59,7 +59,7 @@ public class WebSecurityConfiguration {
                 .userDetailsService(email -> {
                     User user = userService.findByEmail(email);
 
-                    if (user == null || !user.getActive())
+                    if (user == null)
                         throw new UsernameNotFoundException("User: " + email + ", not found!");
 
                     return user;
