@@ -3,6 +3,7 @@ package ni.factorizacion.parcial20240608.domain.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -25,4 +26,6 @@ public class Prescription {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Appointment appointment;
+
+
 }
