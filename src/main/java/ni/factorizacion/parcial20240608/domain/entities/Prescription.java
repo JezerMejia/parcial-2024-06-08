@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -14,7 +15,13 @@ public class Prescription {
     private UUID uuid;
 
     @NotEmpty
-    private String description;
+    private String dose;
+
+    @NotEmpty
+    private String medicine;
+
+    @NotEmpty
+    private LocalDateTime endDate;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Appointment appointment;

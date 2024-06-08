@@ -19,19 +19,13 @@ public class User implements UserDetails {
     private UUID uuid;
 
     @NotEmpty
-    private String firstName;
-    @NotEmpty
-    private String lastName;
-
+    private String username;
     @NotEmpty
     @Email
     private String email;
     @NotEmpty
     @JsonIgnore
     private String password;
-
-    @JsonIgnore
-    private Boolean active;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -44,6 +38,9 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Role> roles;
+    @OneToMany(mappedBy = "medic", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private Set<AppointmentMedicSpecialty> appointmentMedicSpecialty = new HashSet<>();
 
     @Override
     @JsonIgnore
@@ -54,14 +51,4 @@ public class User implements UserDetails {
         }
         return authorities;
     }
-
-    @Override
-    @JsonIgnore
-    public String getUsername() {
-        return this.email;
-    }
-
-    @OneToMany(mappedBy = "medic", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    private Set<AppointmentMedicSpecialty> appointmentMedicSpecialty = new HashSet<>();
 }

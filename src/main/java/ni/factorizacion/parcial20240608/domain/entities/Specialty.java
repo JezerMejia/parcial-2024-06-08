@@ -8,8 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,5 +21,5 @@ public class Specialty {
     private String name;
 
     @OneToMany(mappedBy = "specialty", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<AppointmentMedicSpecialty> appointmentMedicSpecialty = new HashSet<>();
+    private List<AppointmentMedicSpecialty> appointmentMedicSpecialty;
 }
