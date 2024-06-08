@@ -23,7 +23,7 @@ public class AuthRestController {
     private final UserService service;
 
     @PostMapping("/login")
-    public ResponseEntity<GeneralResponse<TokenDto>> login(@Valid @RequestBody UserLoginDto info, BindingResult validations) {
+    public ResponseEntity<GeneralResponse<TokenDto>> login(@Valid @RequestBody UserLoginDto info) {
         User user = service.findByEmail(info.getEmail());
 
         if (user == null || !user.getActive()) {
@@ -36,7 +36,7 @@ public class AuthRestController {
 
         try {
             Token token = service.registerToken(user);
-            return GeneralResponse.getResponse(HttpStatus.OK, "", new TokenDto(token));
+            return GeneralResponse.getResponse(HttpStatus.OK, "Valid authentication", new TokenDto(token));
         } catch (Exception e) {
             e.printStackTrace();
             return GeneralResponse.getResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error", null);
