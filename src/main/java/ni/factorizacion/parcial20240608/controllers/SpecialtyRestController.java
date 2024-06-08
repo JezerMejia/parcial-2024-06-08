@@ -4,6 +4,7 @@ import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveSpecialtyDto;
 import ni.factorizacion.parcial20240608.domain.entities.Specialty;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
+import ni.factorizacion.parcial20240608.types.ControlException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,18 +29,20 @@ public class SpecialtyRestController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<GeneralResponse<Specialty>> createSpecialty(@RequestBody SaveSpecialtyDto specialty) throws Exception {
+    public ResponseEntity<GeneralResponse<Specialty>> createSpecialty(@RequestBody SaveSpecialtyDto specialty) throws ControlException {
         service.SaveSpecialty(specialty);
         return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Specialty saved", null);
     }
 
-    @DeleteMapping(path = "/{uuid}")
-    public void removeSpecialty(@PathVariable("uuid") String id) throws Exception {
+    @DeleteMapping(path = "/{id}")
+    public void removeSpecialty(@PathVariable("id") String id) throws ControlException {
         service.DeleteSpecialty(id);
+        GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Specialty removed", null);
     }
 
-    @PutMapping(path = "/{uuid}")
-    public void updateSpecialty(@PathVariable("uuid") String id, @RequestBody SaveSpecialtyDto specialty) throws Exception {
+    @PutMapping(path = "/{id}")
+    public void updateSpecialty(@PathVariable("id") String id, @RequestBody SaveSpecialtyDto specialty) throws ControlException {
         service.UpdateSpecialty(id, specialty);
+        GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Specialty updated", null);
     }
 }

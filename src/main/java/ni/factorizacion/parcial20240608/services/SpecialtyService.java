@@ -12,8 +12,6 @@ public interface SpecialtyService {
 
     long getCount();
 
-    Specialty findByName(String name);
-
     void SaveSpecialty(SaveSpecialtyDto specialtyDto);
 
     void DeleteSpecialty(String id);

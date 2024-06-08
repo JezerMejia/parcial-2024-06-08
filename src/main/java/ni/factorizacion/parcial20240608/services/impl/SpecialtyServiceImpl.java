@@ -31,30 +31,28 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     }
 
     @Override
-    public Specialty findByName(String name) {
-        return specialtyRepository.findByName(name);
-    }
-
-    @Override
     public void SaveSpecialty(SaveSpecialtyDto specialtyDto) {
         Specialty specialty = new Specialty();
+        specialty.setId(specialtyDto.getId());
         specialty.setName(specialtyDto.getName());
+
         specialtyRepository.save(specialty);
     }
 
+
     @Override
     public void DeleteSpecialty(String id) {
-        boolean exists = specialtyRepository.existsById(UUID.fromString(id));
+        boolean exists = specialtyRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException(
                     "Specialty with the id +" + id +" does not exist");
         }
-        specialtyRepository.deleteById(UUID.fromString(id));
+        specialtyRepository.deleteById(id);
     }
 
     @Override
     public void UpdateSpecialty(String id, SaveSpecialtyDto saveSpecialtyDto) throws ControlException {
-        Optional<Specialty> found = specialtyRepository.findById(UUID.fromString(id));
+        Optional<Specialty> found = specialtyRepository.findById(id);
         if (found.isEmpty()) {
             throw new ControlException(HttpStatus.CONFLICT, "Specialty does not exists");
         }

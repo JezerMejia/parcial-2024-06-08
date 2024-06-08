@@ -7,6 +7,9 @@ import lombok.Data;
 public class SaveSpecialtyDto {
 
     @NotEmpty
+    private String id;
+
+    @NotEmpty
     private String name;
 
 }
