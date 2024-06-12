@@ -2,6 +2,7 @@ package ni.factorizacion.parcial20240608.controllers;
 
 
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
+import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SavePrescriptionDto;
 import ni.factorizacion.parcial20240608.domain.entities.Prescription;
 import ni.factorizacion.parcial20240608.services.PrescriptionService;
@@ -10,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/clinic/prescriptions/")
@@ -21,8 +24,8 @@ public class PrescriptionRestController {
 
     @GetMapping(path = "/{user_id}")
     //@PreAuthorize("hasAuthority('DOCT')")
-    public ResponseEntity<GeneralResponse<Optional<Prescription>>> getByid(@PathVariable String user_id) {
-        var  prescription = service.getById(user_id);
+    public ResponseEntity<GeneralResponse<Optional<List<PrescriptionSimpleDto>>>> getAllByUserId(@PathVariable UUID user_id) {
+        var prescription = service.getAllByUserId(user_id);
         if(prescription.isEmpty()){
             return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "No prescription found", prescription);
 
