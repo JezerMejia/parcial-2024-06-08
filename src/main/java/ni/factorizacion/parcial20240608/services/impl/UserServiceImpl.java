@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -114,4 +115,10 @@ public class UserServiceImpl implements UserService {
             }
         });
     }
+
+    @Override
+    public User findById(UUID uuid) {
+        return userRepository.findById(uuid).orElse(null);
+    }
+
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/clinic/prescriptions/")
 
@@ -17,7 +19,7 @@ public class PrescriptionRestController {
     private PrescriptionService service;
 
     @GetMapping(path = "/{user_id}")
-    public ResponseEntity<GeneralResponse<Prescription>> getByid(@PathVariable String user_id) {
+    public ResponseEntity<GeneralResponse<Prescription>> getByid(@PathVariable UUID user_id) {
         Prescription prescription = service.getById(user_id);
         if(prescription == null){
             return GeneralResponse.error404("Preescripcoin no encontrada");

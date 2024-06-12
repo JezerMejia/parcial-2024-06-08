@@ -5,6 +5,7 @@ import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
     List<User> findAll();
@@ -26,4 +27,6 @@ public interface UserService {
     Boolean isTokenValid(User user, String token);
 
     void cleanTokens(User user) throws Exception;
+
+    User findById(UUID uuid);
 }
