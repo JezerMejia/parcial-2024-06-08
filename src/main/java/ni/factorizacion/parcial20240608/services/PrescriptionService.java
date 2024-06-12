@@ -1,11 +1,21 @@
 package ni.factorizacion.parcial20240608.services;
 
+import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
+import ni.factorizacion.parcial20240608.domain.dtos.SavePrescriptionDto;
 import ni.factorizacion.parcial20240608.domain.entities.Prescription;
+import ni.factorizacion.parcial20240608.types.ControlException;
+
+import java.util.Optional;
 
 
 public interface PrescriptionService {
 
 
-    Prescription getById(String uuid);
+    Optional<Prescription> getById(String uuid);
+
+
+    void savePrescription(PrescriptionSimpleDto prescriptionDto);
+    void UpdatePrescription(String id, SavePrescriptionDto prescriptionDto) throws ControlException;
+    void deletePrescription(String id);
 
 }
