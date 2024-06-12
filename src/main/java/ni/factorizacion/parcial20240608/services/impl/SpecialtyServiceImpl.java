@@ -1,7 +1,6 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
 import ni.factorizacion.parcial20240608.domain.dtos.SaveSpecialtyDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SpecialtySimpleDto;
 import ni.factorizacion.parcial20240608.domain.entities.Specialty;
 import ni.factorizacion.parcial20240608.repositories.SpecialtyRepository;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class SpecialtyServiceImpl implements SpecialtyService {

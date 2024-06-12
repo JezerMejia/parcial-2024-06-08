@@ -5,7 +5,6 @@ import lombok.experimental.SuperBuilder;
 import ni.factorizacion.parcial20240608.domain.entities.History;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @SuperBuilder

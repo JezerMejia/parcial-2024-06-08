@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
        }
         userRepository.save(user);
     }
-
+    
     @Override
     public Boolean validAuthentication(User user, String password) {
         String encodedPassword = Encrypt.encryptPassword(password);
