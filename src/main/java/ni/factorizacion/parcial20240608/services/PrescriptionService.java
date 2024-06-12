@@ -14,8 +14,8 @@ public interface PrescriptionService {
     Optional<Prescription> getById(String uuid);
 
 
-    void savePrescription(PrescriptionSimpleDto prescriptionDto);
+    void SavePrescription(SavePrescriptionDto prescriptionDto);
     void UpdatePrescription(String id, SavePrescriptionDto prescriptionDto) throws ControlException;
-    void deletePrescription(String id);
+    void DeletePrescription(String id);
 
 }

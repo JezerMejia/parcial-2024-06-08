@@ -22,11 +22,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public Optional<Prescription> getById(String id) { return prescriptionRepository.findById(id);}
 
     @Override
-    public void savePrescription(PrescriptionSimpleDto prescriptionDto){
+    public void SavePrescription(SavePrescriptionDto prescriptionDto){
                Prescription prescription = new Prescription();
                prescription.setMedicine(prescriptionDto.getMedicine());
                prescription.setDose(prescriptionDto.getDose());
-               prescription.setEndDate(prescriptionDto.getDateTime());
+               prescription.setEndDate(prescriptionDto.getEndDate());
 
                prescriptionRepository.save(prescription);
     }
@@ -47,7 +47,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public void deletePrescription(String id) {
+    public void DeletePrescription(String id) {
         boolean exists = prescriptionRepository.existsById(id);
         if(!exists){
             throw new IllegalStateException(
