@@ -89,7 +89,7 @@ public class WebSecurityConfiguration {
         http.authorizeHttpRequests(auth ->
                 auth
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
         );
 
         // Statelessness
