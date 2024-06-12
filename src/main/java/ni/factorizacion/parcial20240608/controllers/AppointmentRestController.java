@@ -88,6 +88,26 @@ public class AppointmentRestController {
         return GeneralResponse.ok("Appointment canceled", "");
     }
 
+    @PostMapping("/finish")
+    @PreAuthorize("hasAuthority('DOCT')")
+    public ResponseEntity<GeneralResponse<String>> finishAppointment(@RequestBody UUID appointmentId) {
+        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+        User userDoctor = userService.findUserAuthenticated();
+        boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
+
+        if(appointment.get().getStatus() == AppointmentState.RUNNING && isMedicAssigned){
+                appointment.get().setStatus(AppointmentState.ENDED);
+                appointmentService.finish(appointment.get());
+                return GeneralResponse.ok("Appointment finished", "");
+        }else {
+            return GeneralResponse.error409("The appointment is not running");
+        }
+
+    }
+
     @GetMapping(value = "/own")
     @PreAuthorize("hasAuthority('PTNT')")
     public ResponseEntity<GeneralResponse<List<AppointmentDto>>> ownAppointment(@RequestParam(value = "status", required = false) AppointmentState status) {

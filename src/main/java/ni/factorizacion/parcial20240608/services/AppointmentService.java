@@ -25,4 +25,6 @@ public interface AppointmentService {
     void reject(Appointment appointment);
 
     void cancel(Appointment appointment);
+
+    void finish(Appointment appointment);
 }

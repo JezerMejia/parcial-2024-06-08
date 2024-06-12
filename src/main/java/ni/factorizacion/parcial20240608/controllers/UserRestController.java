@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.ToggleRolDto;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,12 @@ public class UserRestController {
 
         userService.editUser(user, userDto);
         return GeneralResponse.ok("User edited", null);
+    }
+    @PostMapping("/config/user-role")
+    @PreAuthorize("hasAuthority('ADMN')")
+    public ResponseEntity<GeneralResponse<String>> toggleRole(@RequestBody ToggleRolDto userDto) {
+        User user = userService.findByEmail(userDto.getEmail());
+        userService.toggleRole(user, userDto);
+        return GeneralResponse.ok("Role edited", null);
     }
 }

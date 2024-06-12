@@ -3,10 +3,13 @@ package ni.factorizacion.parcial20240608.services.impl;
 import jakarta.transaction.Transactional;
 import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.ToggleRolDto;
+import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.repositories.TokenRepository;
 import ni.factorizacion.parcial20240608.repositories.UserRepository;
+import ni.factorizacion.parcial20240608.services.RoleService;
 import ni.factorizacion.parcial20240608.services.UserService;
 import ni.factorizacion.parcial20240608.utils.Encrypt;
 import ni.factorizacion.parcial20240608.utils.JWTTools;
@@ -15,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +29,9 @@ public class UserServiceImpl implements UserService {
     private TokenRepository tokenRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleService roleService;
 
     @Override
     public List<User> findAll() {
@@ -73,6 +80,19 @@ public class UserServiceImpl implements UserService {
             user.setUsername(userDto.getUsername());
         }
 
+        userRepository.save(user);
+    }
+    @Override
+    public void toggleRole (User user, ToggleRolDto toggleRolDto) {
+       Optional<Role> role = roleService.findById(toggleRolDto.getRole());
+
+       if(role.isPresent()){
+           if(user.getRoles().contains(role.get())){
+               user.getRoles().remove(role.get());
+           }else{
+               user.getRoles().add(role.get());
+           }
+       }
         userRepository.save(user);
     }
 

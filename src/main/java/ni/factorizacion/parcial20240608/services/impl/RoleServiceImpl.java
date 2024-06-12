@@ -2,10 +2,11 @@ package ni.factorizacion.parcial20240608.services.impl;
 
 import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.repositories.RoleRepository;
-import ni.factorizacion.parcial20240608.repositories.TokenRepository;
 import ni.factorizacion.parcial20240608.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -21,5 +22,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public long getCount() {
         return roleRepository.count();
+    }
+
+    @Override
+    public Optional<Role> findById(String id){
+        return roleRepository.findById(id);
     }
 }
