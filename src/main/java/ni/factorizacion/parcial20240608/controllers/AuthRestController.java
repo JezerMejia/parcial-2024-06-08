@@ -3,6 +3,7 @@ package ni.factorizacion.parcial20240608.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
+import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.TokenDto;
 import ni.factorizacion.parcial20240608.domain.dtos.UserLoginDto;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthRestController {
     private final UserService service;
-
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse<TokenDto>> login(@Valid @RequestBody UserLoginDto info) {
         User user = service.findByEmail(info.getEmail());
@@ -39,5 +39,11 @@ public class AuthRestController {
             e.printStackTrace();
             return GeneralResponse.error500("Error");
         }
+    }
+
+    @PostMapping(value="/register", consumes = "application/json")
+    public ResponseEntity<GeneralResponse<User>> register(@Valid @RequestBody SaveUserDto user) {
+        service.saveUser(user);
+        return GeneralResponse.ok("User registered", service.findByEmail(user.getEmail()));
     }
 }
