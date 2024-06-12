@@ -1,5 +1,6 @@
 package ni.factorizacion.parcial20240608.services;
 
+import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;
@@ -19,6 +20,10 @@ public interface UserService {
     Boolean validAuthentication(User user, String password);
 
     User findUserAuthenticated();
+
+    void deleteUser (User user);
+
+    void editUser (User user, EditUserDto userDto);
 
     Token registerToken(User user) throws Exception;
 

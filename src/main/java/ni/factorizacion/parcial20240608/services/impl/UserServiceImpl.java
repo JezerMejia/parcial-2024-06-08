@@ -1,6 +1,7 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
 import jakarta.transaction.Transactional;
+import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;
@@ -54,6 +55,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void deleteUser (User user) {
+        userRepository.delete(user);
+        userRepository.flush();
+    }
+
+    @Override
+    public void editUser (User user, EditUserDto userDto) {
+        if(user.getPassword() !=null){
+            user.setPassword(Encrypt.encryptPassword(userDto.getPassword()));
+        }
+
+        if (user.getUsername()!= null){
+            user.setUsername(userDto.getUsername());
+        }
+
+        userRepository.save(user);
     }
 
     @Override
