@@ -55,12 +55,7 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String username) {
         return userRepository.findByEmail(username);
     }
-
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
+    
     @Override
     public Boolean validAuthentication(User user, String password) {
         String encodedPassword = Encrypt.encryptPassword(password);

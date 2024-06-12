@@ -37,17 +37,6 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<HistorySimpleDto> getByUser(String username) {
-        Optional<User> userOpt = Optional.ofNullable(userRepository.findByUsername(username));
-
-
-        return repository.findAll().stream()
-                .filter(history -> userOpt.isPresent() && history.getPatient().equals(userOpt.get()))
-                .map(HistorySimpleDto::from)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Optional<History> findByDate(LocalDateTime dateTime){
         return repository.findByDate(dateTime);
     }
