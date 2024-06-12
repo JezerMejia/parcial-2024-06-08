@@ -3,7 +3,9 @@ package ni.factorizacion.parcial20240608.services.impl;
 import ni.factorizacion.parcial20240608.domain.dtos.HistorySimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveHistoryDto;
 import ni.factorizacion.parcial20240608.domain.entities.History;
+import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.repositories.HistoryRepository;
+import ni.factorizacion.parcial20240608.repositories.UserRepository;
 import ni.factorizacion.parcial20240608.services.HistoryService;
 import ni.factorizacion.parcial20240608.types.ControlException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,35 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
     @Autowired
     private HistoryRepository repository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public List<HistorySimpleDto> getAll() {
-        return repository.findAll().stream().map(HistorySimpleDto::from).toList();
+    public List<HistorySimpleDto> getAll(String user) {
+        Optional<User> userOpt = Optional.ofNullable(userRepository.findByEmail(user));
+
+
+        return repository.findAll().stream()
+                .filter(history -> userOpt.isPresent() && history.getPatient().equals(userOpt.get()))
+                .map(HistorySimpleDto::from)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<HistorySimpleDto> getByUser(String username) {
+        Optional<User> userOpt = Optional.ofNullable(userRepository.findByUsername(username));
+
+
+        return repository.findAll().stream()
+                .filter(history -> userOpt.isPresent() && history.getPatient().equals(userOpt.get()))
+                .map(HistorySimpleDto::from)
+                .collect(Collectors.toList());
     }
 
     @Override

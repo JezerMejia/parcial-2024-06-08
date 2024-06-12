@@ -15,19 +15,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/history/")
+@RequestMapping("/user/")
 public class HistoryRestController {
     @Autowired
     private HistoryService service;
-    @GetMapping
+    @GetMapping("/record")
     //@PreAuthorize("hasAuthority('PTNT')")
-    public ResponseEntity<GeneralResponse<List<HistorySimpleDto>>> getAllHistories() {
-        var histories = service.getAll();
+    public ResponseEntity<GeneralResponse<List<HistorySimpleDto>>> getAllHistories(@RequestParam("user") String user) {
+        var histories = service.getAll(user);
         if (histories.isEmpty()) {
             return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "No Histories found", histories);
         }
         return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Found Histories", histories);
     }
+
+
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<GeneralResponse<History>> saveResidence(@Valid @RequestBody SaveHistoryDto historyDto) throws Exception {

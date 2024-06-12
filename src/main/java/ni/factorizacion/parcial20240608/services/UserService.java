@@ -13,6 +13,8 @@ public interface UserService {
 
     User findByEmail(String username);
 
+    User findByUsername(String username);
+
     void saveUser(SaveUserDto userDto);
 
     void toggleActive(User user);

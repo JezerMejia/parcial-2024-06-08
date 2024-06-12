@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistoryService {
-    List<HistorySimpleDto> getAll();
+    List<HistorySimpleDto> getAll(String user);
+    List<HistorySimpleDto> getByUser(String user);
     Optional<History> findByDate(LocalDateTime dateTime);
     void saveHistory(SaveHistoryDto dto) throws ControlException;
     void updateHistory(String uuid, SaveHistoryDto dto) throws ControlException;

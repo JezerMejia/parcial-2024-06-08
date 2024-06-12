@@ -10,5 +10,4 @@ import java.util.UUID;
 public interface HistoryRepository extends JpaRepository<History, UUID> {
     Optional<History> findByDate(LocalDateTime dateTime);
     Optional<History> findByReason(String Reason);
-
 }
