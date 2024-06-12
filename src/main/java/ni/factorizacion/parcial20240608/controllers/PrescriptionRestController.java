@@ -8,7 +8,6 @@ import ni.factorizacion.parcial20240608.services.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -28,25 +27,25 @@ public class PrescriptionRestController {
             return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "No prescription found", prescription);
 
         }
-        return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Found prescription", prescription);
+        return GeneralResponse.ok("Found prescription", prescription);
     }
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<GeneralResponse<Prescription>> createPrescription(@RequestBody SavePrescriptionDto prescriptionDto) throws Exception{
         service.SavePrescription(prescriptionDto);
-        return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Prescription saved", null);
+        return GeneralResponse.ok("Prescription saved", null);
     }
 
     @PutMapping(path = "/{id}")
     public void updatePrescription(@PathVariable String id, @RequestBody SavePrescriptionDto prescriptionDto) throws Exception{
         service.UpdatePrescription(id, prescriptionDto);
-        GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Prescription updated", null);
+        GeneralResponse.ok("Prescription updated", null);
     }
 
     @DeleteMapping(path = "/{id}")
     public void deletePrescription(@PathVariable String id) throws Exception{
         service.DeletePrescription(id);
-        GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Prescription deleted", null);
+        GeneralResponse.ok("Prescription deleted", null);
     }
 
 }

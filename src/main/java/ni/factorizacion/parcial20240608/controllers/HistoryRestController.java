@@ -6,13 +6,10 @@ import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.dtos.HistorySimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveHistoryDto;
 import ni.factorizacion.parcial20240608.domain.entities.History;
-import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.HistoryService;
-import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

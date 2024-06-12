@@ -4,7 +4,6 @@ import ni.factorizacion.parcial20240608.domain.dtos.HistorySimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveHistoryDto;
 import ni.factorizacion.parcial20240608.domain.entities.History;
 import ni.factorizacion.parcial20240608.repositories.HistoryRepository;
-import ni.factorizacion.parcial20240608.repositories.UserRepository;
 import ni.factorizacion.parcial20240608.services.HistoryService;
 import ni.factorizacion.parcial20240608.types.ControlException;
 import org.springframework.beans.factory.annotation.Autowired;

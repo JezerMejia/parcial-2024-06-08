@@ -1,7 +1,6 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
 import ni.factorizacion.parcial20240608.domain.dtos.ApproveAppointmentDto;
-import ni.factorizacion.parcial20240608.domain.dtos.MedicAppointmentDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveAppointmentDto;
 import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentMedicSpecialty;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
