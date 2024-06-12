@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class PrescriptionSimpleDto {
 
-
-    private LocalDateTime dateTime;
+    private LocalDateTime endDate;
     private String medicine;
-    private  String dose;
-
+    private String dose;
+    private AppointmentSimpleDto appointment;
 
     static public PrescriptionSimpleDto from(Prescription prescription){
         return PrescriptionSimpleDto.builder()
-                .dateTime(prescription.getEndDate())
+                .endDate(prescription.getEndDate())
                 .medicine(prescription.getMedicine())
                 .dose(prescription.getDose())
+                .appointment(AppointmentSimpleDto.from(prescription.getAppointment()))
                 .build();
     }
 }
