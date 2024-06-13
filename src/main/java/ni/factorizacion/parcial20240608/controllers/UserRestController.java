@@ -1,23 +1,18 @@
 package ni.factorizacion.parcial20240608.controllers;
 
-import jakarta.validation.Valid;
 import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
-import ni.factorizacion.parcial20240608.domain.dtos.ToggleRolDto;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
-@RequestMapping("/api/users/")
+@RequestMapping("/api/users")
 public class UserRestController {
     @Autowired
     private UserService userService;
@@ -50,32 +45,27 @@ public class UserRestController {
     public ResponseEntity<GeneralResponse<String>> deleteUser(@RequestBody String email) {
         User user = userService.findByEmail(email);
 
-        if (user == null){
+        if (user == null) {
             return GeneralResponse.error404("User not found");
         }
         userService.deleteUser(user);
         return GeneralResponse.ok("User deleted", null);
     }
+
     @PatchMapping()
     @PreAuthorize("hasAuthority('ADMN')")
     public ResponseEntity<GeneralResponse<String>> editUser(@RequestBody EditUserDto userDto) {
         User user = userService.findByEmail(userDto.getEmail());
 
-        if (user == null){
+        if (user == null) {
             return GeneralResponse.error404("User not found");
         }
-        if (userService.findByUsername(userDto.getUsername()) != null){
-           return GeneralResponse.error409("Username already exists");
+        if (userService.findByUsername(userDto.getUsername()) != null) {
+            return GeneralResponse.error409("Username already exists");
         }
 
         userService.editUser(user, userDto);
         return GeneralResponse.ok("User edited", null);
     }
-    @PostMapping("/config/user-role")
-    @PreAuthorize("hasAuthority('ADMN')")
-    public ResponseEntity<GeneralResponse<String>> toggleRole(@RequestBody ToggleRolDto userDto) {
-        User user = userService.findByEmail(userDto.getEmail());
-        userService.toggleRole(user, userDto);
-        return GeneralResponse.ok("Role edited", null);
-    }
+
 }

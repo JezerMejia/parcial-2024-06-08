@@ -27,17 +27,9 @@ public class HistoryServiceImpl implements HistoryService {
     private UserRepository userRepository;
 
     @Override
-    public List<HistorySimpleDto> getAll(String user, LocalDate startDate, LocalDate endDate) {
-        Optional<User> userOpt;
-
-        if (user.contains("@")) {
-            userOpt = Optional.ofNullable(userRepository.findByEmail(user));
-        } else {
-            userOpt = Optional.ofNullable(userRepository.findByUsername(user));
-        }
-
+    public List<HistorySimpleDto> findAll(User user, LocalDate startDate, LocalDate endDate) {
         return repository.findAll().stream()
-                .filter(history -> userOpt.isPresent() && history.getPatient().equals(userOpt.get()))
+                .filter(history -> history.getPatient().equals(user))
                 .filter(history -> {
                     LocalDate historyDate = LocalDate.from(history.getDate());
                     return (startDate == null || !historyDate.isBefore(startDate)) &&
@@ -49,7 +41,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Optional<History> findByDate(LocalDateTime dateTime){
+    public Optional<History> findByDate(LocalDateTime dateTime) {
         return repository.findByDate(dateTime);
     }
 
@@ -66,29 +58,17 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public void addHistoryEntry(String userIdentifier, String reason) throws ControlException {
-        Optional<User> userOpt;
-
-        if (userIdentifier.contains("@")) {
-            userOpt = Optional.ofNullable(userRepository.findByEmail(userIdentifier));
-        } else {
-            userOpt = Optional.ofNullable(userRepository.findByUsername(userIdentifier));
-        }
-
-        if (userOpt.isEmpty()) {
-            throw new ControlException(HttpStatus.NOT_FOUND, "User not found");
-        }
-
+    public void addHistoryEntry(User user, String reason) throws ControlException {
         History history = new History();
         history.setDate(LocalDateTime.now());
         history.setReason(reason);
-        history.setPatient(userOpt.get());
+        history.setPatient(user);
 
         repository.save(history);
     }
 
     @Override
-    public void updateHistory(String uuid,SaveHistoryDto dto) throws ControlException {
+    public void updateHistory(String uuid, SaveHistoryDto dto) throws ControlException {
         Optional<History> found = repository.findById(UUID.fromString(uuid));
         if (found.isEmpty()) {
             throw new ControlException(HttpStatus.CONFLICT, "History does not exist");
@@ -100,11 +80,11 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public void removeHistory(String uuid) throws ControlException{
+    public void removeHistory(String uuid) throws ControlException {
         boolean exist = repository.existsById(UUID.fromString(uuid));
-        if(!exist){
+        if (!exist) {
             throw new IllegalStateException(
-                    "History with the id +" + uuid +" does not exist");
+                    "History with the id +" + uuid + " does not exist");
         }
         repository.deleteById(UUID.fromString(uuid));
     }

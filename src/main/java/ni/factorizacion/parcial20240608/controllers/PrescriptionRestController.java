@@ -25,11 +25,10 @@ public class PrescriptionRestController {
 
     @GetMapping(path = "/{user_id}")
     //@PreAuthorize("hasAuthority('DOCT')")
-    public ResponseEntity<GeneralResponse<Optional<List<PrescriptionSimpleDto>>>> getAllByUserId(@PathVariable UUID user_id) {
+    public ResponseEntity<GeneralResponse<List<PrescriptionSimpleDto>>> getAllByUserId(@PathVariable UUID user_id) {
         var prescription = service.getAllByUserId(user_id);
-        if(prescription.isEmpty()){
-            return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "No prescription found", prescription);
-
+        if (prescription.isEmpty()) {
+            return GeneralResponse.ok("No prescription found", prescription);
         }
         return GeneralResponse.ok("Found prescription", prescription);
     }
@@ -41,13 +40,13 @@ public class PrescriptionRestController {
     }
 
     @PutMapping(path = "/{id}")
-    public void updatePrescription(@PathVariable String id, @RequestBody SavePrescriptionDto prescriptionDto) throws Exception{
+    public void updatePrescription(@PathVariable String id, @RequestBody SavePrescriptionDto prescriptionDto) throws Exception {
         service.UpdatePrescription(id, prescriptionDto);
         GeneralResponse.ok("Prescription updated", null);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deletePrescription(@PathVariable String id) throws Exception{
+    public void deletePrescription(@PathVariable String id) throws Exception {
         service.DeletePrescription(id);
         GeneralResponse.ok("Prescription deleted", null);
     }

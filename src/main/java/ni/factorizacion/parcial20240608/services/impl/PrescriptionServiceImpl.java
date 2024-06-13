@@ -30,16 +30,18 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private AppointmentRepository appointmentRepository;
 
     @Override
-    public Optional<Prescription> getById(String id) { return prescriptionRepository.findById(id);}
+    public Optional<Prescription> getById(String id) {
+        return prescriptionRepository.findById(id);
+    }
 
     @Override
-    public Optional<List<PrescriptionSimpleDto>> getAllByUserId(UUID userId) {
+    public List<PrescriptionSimpleDto> getAllByUserId(UUID userId) {
         var user = userRepository.findById(userId);
         var allPrescriptions = prescriptionRepository.findAllByUser(user);
 
-        return Optional.of(allPrescriptions.stream()
+        return allPrescriptions.stream()
                 .map(PrescriptionSimpleDto::from)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -62,7 +64,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public void UpdatePrescription(String id, SavePrescriptionDto prescriptionDto) throws ControlException {
         Optional<Prescription> found = prescriptionRepository.findById(id);
-        if(found.isEmpty()){
+        if (found.isEmpty()) {
             throw new ControlException(HttpStatus.CONFLICT, "Prescription does not exists");
         }
 
@@ -77,9 +79,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public void DeletePrescription(String id) {
         boolean exists = prescriptionRepository.existsById(id);
-        if(!exists){
+        if (!exists) {
             throw new IllegalStateException(
-                    "Prescription with the id +" + id +" does not exist");
+                    "Prescription with the id +" + id + " does not exist");
         }
         prescriptionRepository.deleteById(id);
     }
