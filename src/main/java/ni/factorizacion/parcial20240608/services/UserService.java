@@ -3,6 +3,7 @@ package ni.factorizacion.parcial20240608.services;
 import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.ToggleRolDto;
+import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 
@@ -26,7 +27,7 @@ public interface UserService {
 
     void editUser (User user, EditUserDto userDto);
 
-    void toggleRole (User user, ToggleRolDto toggleRolDto);
+    void toggleRole (User user, Role role);
 
     Token registerToken(User user) throws Exception;
 
