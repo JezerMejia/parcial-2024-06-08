@@ -21,31 +21,13 @@ public class ClinicRestController {
     @Autowired
     private ClinicService service;
 
-    @Autowired
-    private PrescriptionService servicePre;
-
     @GetMapping(path = "/schedule")
-    public ResponseEntity<GeneralResponse<List<ScheduleSimpleDto>>> getAllMedicsAppointments() {
-        var medicsAppointments = service.getAllMedicsAppointments();
+    public ResponseEntity<GeneralResponse<List<AppointmentMedicSimpleDto>>> getAllMedicsAppointments() {
+        List<AppointmentMedicSimpleDto> medicsAppointments = service.getAllAppointmentByMedic();
         if (medicsAppointments.isEmpty()) {
             return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "No Medics with Appointments found", medicsAppointments);
         }
         return GeneralResponse.getResponse(HttpStatus.ACCEPTED, "Found Medics with Appointments", medicsAppointments);
     }
-
-   /*@GetMapping(path = "/prescription/{uuid}")
-    public ResponseEntity<GeneralResponse<PrescriptionSimpleDto>> getPrescriptionById(@PathVariable UUID uuid) {
-        try {
-            var prescription = servicePre.getById(uuid);
-            if (prescription == null) {
-                return GeneralResponse.error404("Prescription not found");
-            }
-            return GeneralResponse.ok("Found Prescription", PrescriptionSimpleDto.from(prescription));
-        } catch (IllegalArgumentException e) {
-            return GeneralResponse.error400("Invalid UUID format: " + e.getMessage());
-        } catch (Exception e) {
-            return GeneralResponse.error500("Internal Server Error: " + e.getMessage());
-        }
-    }*/
 
 }
