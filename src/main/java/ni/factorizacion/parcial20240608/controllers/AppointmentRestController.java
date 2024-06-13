@@ -6,6 +6,7 @@ import ni.factorizacion.parcial20240608.domain.entities.*;
 import ni.factorizacion.parcial20240608.services.AppointmentService;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
 import ni.factorizacion.parcial20240608.services.UserService;
+import ni.factorizacion.parcial20240608.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -79,8 +80,12 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/cancel")
     @PreAuthorize("hasAuthority('PTNT')")
-    public ResponseEntity<GeneralResponse<String>> cancelAppointment(@RequestBody UUID appointmentId) {
-        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+    public ResponseEntity<GeneralResponse<String>> cancelAppointment(@RequestBody String appointmentId) {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            return GeneralResponse.error400("Incorrect UUID");
+        }
+        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -90,22 +95,25 @@ public class AppointmentRestController {
 
     @PostMapping("/finish")
     @PreAuthorize("hasAuthority('DOCT')")
-    public ResponseEntity<GeneralResponse<String>> finishAppointment(@RequestBody UUID appointmentId) {
-        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+    public ResponseEntity<GeneralResponse<String>> finishAppointment(@RequestBody String appointmentId) {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            return GeneralResponse.error400("Incorrect UUID");
+        }
+        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
         User userDoctor = userService.findUserAuthenticated();
         boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
 
-        if(appointment.get().getStatus() == AppointmentState.RUNNING && isMedicAssigned){
-                appointment.get().setStatus(AppointmentState.ENDED);
-                appointmentService.finish(appointment.get());
-                return GeneralResponse.ok("Appointment finished", "");
-        }else {
+        if (appointment.get().getStatus() == AppointmentState.RUNNING && isMedicAssigned) {
+            appointment.get().setStatus(AppointmentState.ENDED);
+            appointmentService.finish(appointment.get());
+            return GeneralResponse.ok("Appointment finished", "");
+        } else {
             return GeneralResponse.error409("The appointment is not running");
         }
-
     }
 
     @GetMapping(value = "/own")
