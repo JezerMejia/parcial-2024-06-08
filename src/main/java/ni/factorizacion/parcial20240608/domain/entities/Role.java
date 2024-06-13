@@ -9,15 +9,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
 public class Role {
     @ManyToMany(cascade = {CascadeType.ALL})
-    Set<User> users = new HashSet<>();
+    List<User> users;
     @Id
     @Length(max = 4)
     private String id;
