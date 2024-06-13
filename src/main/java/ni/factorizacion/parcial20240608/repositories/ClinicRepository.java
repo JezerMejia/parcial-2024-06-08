@@ -11,5 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ClinicRepository extends JpaRepository<AppointmentMedicSpecialty, Event.ID> {
-    Optional<AppointmentMedicSpecialty> findByMedic(User medic);
+    @Query("SELECT p FROM AppointmentMedicSpecialty p JOIN FETCH p.appointment a JOIN FETCH p.medic b JOIN FETCH p.specialty c")
+    List<AppointmentMedicSpecialty> findByMedic();
 }

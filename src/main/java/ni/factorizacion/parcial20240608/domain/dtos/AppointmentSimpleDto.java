@@ -6,28 +6,29 @@ import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentState;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Data
 @SuperBuilder
-public class AppointmentSimpleDto
-{
+public class AppointmentSimpleDto {
     private UUID uuid;
     private String reason;
-    private LocalDateTime requestDate;
-    private LocalDateTime startDate;
-    private LocalDateTime approxEndDate;
-    private LocalDateTime endDate;
+    private String requestDate;
+    private String startDate;
+    private String approxEndDate;
+    private String endDate;
     private AppointmentState status;
 
-    static public AppointmentSimpleDto from(Appointment appointment){
+    static public AppointmentSimpleDto from(Appointment appointment) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return AppointmentSimpleDto.builder()
                 .uuid(appointment.getUuid())
                 .reason(appointment.getReason())
-                .requestDate(appointment.getRequestDate())
-                .startDate(appointment.getStartDate())
-                .approxEndDate(appointment.getApproxEndDate())
-                .endDate(appointment.getEndDate())
+                .requestDate(appointment.getRequestDate().format(formatter))
+                .startDate(appointment.getStartDate().format(formatter))
+                .approxEndDate(appointment.getApproxEndDate().format(formatter))
+                .endDate(appointment.getEndDate().format(formatter))
                 .status(appointment.getStatus())
                 .build();
     }
