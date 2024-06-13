@@ -1,8 +1,11 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
+import jakarta.transaction.Transactional;
 import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SavePrescriptionDto;
+import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.Prescription;
+import ni.factorizacion.parcial20240608.repositories.AppointmentRepository;
 import ni.factorizacion.parcial20240608.repositories.PrescriptionRepository;
 import ni.factorizacion.parcial20240608.repositories.UserRepository;
 import ni.factorizacion.parcial20240608.services.PrescriptionService;
@@ -23,6 +26,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private PrescriptionRepository prescriptionRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Override
     public Optional<Prescription> getById(String id) { return prescriptionRepository.findById(id);}
@@ -37,14 +42,21 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 .collect(Collectors.toList()));
     }
 
+    @Transactional
     @Override
-    public void SavePrescription(SavePrescriptionDto prescriptionDto){
-       Prescription prescription = new Prescription();
-       prescription.setMedicine(prescriptionDto.getMedicine());
-       prescription.setDose(prescriptionDto.getDose());
-       prescription.setEndDate(prescriptionDto.getEndDate());
-
-       prescriptionRepository.save(prescription);
+    public void SavePrescription(SavePrescriptionDto prescriptionDto) {
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(prescriptionDto.getUuid_appointment());
+        if (optionalAppointment.isPresent()) {
+            Appointment appointment = optionalAppointment.get();
+            Prescription prescription = new Prescription();
+            prescription.setMedicine(prescriptionDto.getMedicine());
+            prescription.setDose(prescriptionDto.getDose());
+            prescription.setEndDate(prescriptionDto.getEndDate());
+            prescription.setAppointment(appointment);
+            prescriptionRepository.save(prescription);
+        } else {
+            throw new IllegalArgumentException("Appointment not found with UUID: " + prescriptionDto.getUuid_appointment());
+        }
     }
 
     @Override

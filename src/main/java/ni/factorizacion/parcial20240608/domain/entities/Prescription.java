@@ -2,6 +2,7 @@ package ni.factorizacion.parcial20240608.domain.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 
@@ -21,7 +22,7 @@ public class Prescription {
     @NotEmpty
     private String medicine;
 
-    @NotEmpty
+    @NotNull
     private LocalDateTime endDate;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

@@ -1,6 +1,7 @@
 package ni.factorizacion.parcial20240608.controllers;
 
 
+import jakarta.validation.Valid;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SavePrescriptionDto;
@@ -34,7 +35,7 @@ public class PrescriptionRestController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<GeneralResponse<Prescription>> createPrescription(@RequestBody SavePrescriptionDto prescriptionDto) throws Exception{
+    public ResponseEntity<GeneralResponse<Prescription>> createPrescription(@Valid @RequestBody SavePrescriptionDto prescriptionDto) {
         service.SavePrescription(prescriptionDto);
         return GeneralResponse.ok("Prescription saved", null);
     }
