@@ -1,4 +1,5 @@
 package ni.factorizacion.parcial20240608.services.impl;
+import ni.factorizacion.parcial20240608.domain.dtos.AppointmentMedicSimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.ScheduleSimpleDto;
 import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentMedicSpecialty;
@@ -16,20 +17,10 @@ import java.util.stream.Collectors;
 public class ClinicServiceImpl implements ClinicService {
     @Autowired
     private ClinicRepository repository;
-    private PrescriptionRepository repositoryPre;
-
     @Override
-    public List<ScheduleSimpleDto> getAllMedicsAppointments() {
-        return repository.findAll().stream()
-                .collect(Collectors.groupingBy(AppointmentMedicSpecialty::getMedic))
-                .entrySet().stream()
-                .map(entry -> {
-                    User medic = entry.getKey();
-                    List<Appointment> appointments = entry.getValue().stream()
-                            .map(AppointmentMedicSpecialty::getAppointment)
-                            .collect(Collectors.toList());
-                    return ScheduleSimpleDto.from(medic, appointments);
-                })
-                .toList();
+    public List<AppointmentMedicSimpleDto> getAllAppointmentByMedic() {
+        return repository.findByMedic().stream()
+                .map(AppointmentMedicSimpleDto::from)
+                .collect(Collectors.toList());
     }
 }
