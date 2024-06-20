@@ -40,7 +40,7 @@ onUnmounted(() => {
     @click="close()"
   >
     <div
-      class="w-[480px] overflow-hidden rounded-lg border border-blue-300 bg-white"
+      class="max-h-[90svh] w-[480px] overflow-scroll rounded-lg border border-blue-300 bg-white"
       @click.stop=""
     >
       <slot></slot>

@@ -62,6 +62,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findMedics() {
+        return userRepository.findMedics();
+    }
+
+    @Override
+    public List<User> findPatients() {
+        return userRepository.findPatients();
+    }
+
+    @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
         userRepository.flush();
