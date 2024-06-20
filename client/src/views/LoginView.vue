@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { useAuthenticatedFetch, useBaseFetch } from "@/composables/useBaseFetch";
 import type GeneralResponse from "@/types/GeneralResponse";
 import type User from "@/types/User";
@@ -7,6 +7,8 @@ import { useUser } from "@/stores/user";
 import { useAuth } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import type { ErrorMap } from "@/types/ErrorMap";
+import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
+import FormInput from "@/components/FormInput.vue";
 
 enum Message {
   EMPTY = "",
@@ -28,6 +30,15 @@ const auth = useAuth();
 const user = useUser();
 const router = useRouter();
 
+const identifierInput = ref<FormInputType>();
+const passwordInput = ref<FormInputType>();
+const inputMap = new Map<string, Ref<FormInputType | undefined>>();
+
+onMounted(() => {
+  inputMap.set(identifierInput.value!.props.name, identifierInput);
+  inputMap.set(passwordInput.value!.props.name, passwordInput);
+});
+
 async function doLogin() {
   message.value = Message.LOADING_LOGIN;
   const { data, statusCode } = await useBaseFetch("/auth/login")
@@ -42,8 +53,7 @@ async function doLogin() {
   if (statusCode.value == 400) {
     message.value = Message.EMPTY;
     const errorMap = data.value.data as unknown as ErrorMap;
-    console.log(errorMap);
-    // TODO: Asignar errores a cada campo
+    setValidationErrorForm(inputMap, errorMap);
     return;
   }
 
@@ -92,12 +102,25 @@ async function handleSubmit() {
 <template>
   <main class="flex size-full flex-col items-center justify-center gap-24">
     <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col">
-      <input type="text" v-model="formData.identifier" />
-      <input type="password" v-model="formData.password" />
+      <FormInput
+        ref="identifierInput"
+        label="Identificador: "
+        type="text"
+        name="identifier"
+        v-model="formData.identifier"
+      />
+
+      <FormInput
+        ref="passwordInput"
+        label="Contraseña: "
+        type="password"
+        name="password"
+        v-model="formData.password"
+      />
+
+      <span v-if="message != Message.EMPTY">{{ message }}</span>
 
       <button type="submit">Iniciar sesión</button>
     </form>
-
-    <span v-if="message != Message.EMPTY">{{ message }}</span>
   </main>
 </template>

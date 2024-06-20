@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import { useAuthenticatedFetch, useBaseFetch } from "@/composables/useBaseFetch";
 import type GeneralResponse from "@/types/GeneralResponse";
 import type User from "@/types/User";
@@ -7,6 +7,9 @@ import { useUser } from "@/stores/user";
 import { useAuth } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import type { ErrorMap } from "@/types/ErrorMap";
+import FormInput from "@/components/FormInput.vue";
+import { ValidationError } from "@/types/ValidationError";
+import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 
 enum Message {
   EMPTY = "",
@@ -31,6 +34,19 @@ const auth = useAuth();
 const user = useUser();
 const router = useRouter();
 
+const usernameInput = ref<FormInputType>();
+const emailInput = ref<FormInputType>();
+const passwordInput = ref<FormInputType>();
+const confirmPasswordInput = ref<FormInputType>();
+const inputMap = new Map<string, Ref<FormInputType | undefined>>();
+
+onMounted(() => {
+  inputMap.set(usernameInput.value!.props.name, usernameInput);
+  inputMap.set(emailInput.value!.props.name, emailInput);
+  inputMap.set(passwordInput.value!.props.name, passwordInput);
+  inputMap.set(confirmPasswordInput.value!.props.name, confirmPasswordInput);
+});
+
 async function doRegister() {
   message.value = Message.LOADING_REGISTER;
   const { data, statusCode } = await useBaseFetch("/auth/register")
@@ -45,8 +61,7 @@ async function doRegister() {
   if (statusCode.value == 400) {
     message.value = Message.EMPTY;
     const errorMap = data.value.data as unknown as ErrorMap;
-    console.log(errorMap);
-    // TODO: Asignar errores a cada campo
+    setValidationErrorForm(inputMap, errorMap);
     return;
   }
 
@@ -62,7 +77,6 @@ async function doRegister() {
     message.value = Message.ERROR_AUTH;
     return;
   }
-  console.log(data.value);
   if (!data.value.ok || typeof data.value.data !== "string") {
     message.value = Message.ERROR;
     return;
@@ -87,6 +101,8 @@ async function doUserData() {
 
 function validateForm(): boolean {
   if (formData.value.password != formData.value.confirmPassword) {
+    const errorMap: ErrorMap = { confirmPassword: ["CONFIRM_PASSWORD"] };
+    setValidationErrorForm(inputMap, errorMap);
     return false;
   }
   return true;
@@ -109,15 +125,43 @@ async function handleSubmit() {
 
 <template>
   <main class="flex size-full flex-col items-center justify-center gap-24">
-    <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col">
-      <input type="text" v-model="formData.username" />
-      <input type="email" v-model="formData.email" />
-      <input type="password" v-model="formData.password" />
-      <input type="password" v-model="formData.confirmPassword" />
+    <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col gap-2" novalidate>
+      <FormInput
+        ref="usernameInput"
+        label="Nombre de usuario:"
+        type="text"
+        name="username"
+        v-model="formData.username"
+      />
+
+      <FormInput
+        ref="emailInput"
+        label="Correo electrónico: "
+        type="email"
+        name="email"
+        v-model="formData.email"
+      />
+
+      <FormInput
+        ref="passwordInput"
+        label="Contraseña: "
+        type="password"
+        name="password"
+        sub-label="La contraseña debe empezar con números y terminar con una letra"
+        v-model="formData.password"
+      />
+
+      <FormInput
+        ref="confirmPasswordInput"
+        label="Confirmar contraseña: "
+        type="password"
+        name="confirmPassword"
+        v-model="formData.confirmPassword"
+      />
+
+      <span v-if="message != Message.EMPTY">{{ message }}</span>
 
       <button type="submit">Registrarse</button>
     </form>
-
-    <span v-if="message != Message.EMPTY">{{ message }}</span>
   </main>
 </template>
