@@ -15,5 +15,6 @@ const handleInputUpdate = (value: string) => {
   <div class="bg-white p-8">
     <DateTimeForm title="Testing" />
     <InputForm @update:value="handleInputUpdate" title="Testing" />
+    <p >{{testingInput}}</p>
   </div>
 </template>
