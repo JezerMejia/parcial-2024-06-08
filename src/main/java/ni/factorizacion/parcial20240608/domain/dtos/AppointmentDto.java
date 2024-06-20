@@ -13,6 +13,6 @@ public class AppointmentDto {
     private String endDate;
     private String approxEndDate;
     private String status;
-    private List<Prescription> prescriptions;
+    private List<AppointmentPrescriptionDto> prescriptions;
     private List<SimpleMedicDto> medics;
 }

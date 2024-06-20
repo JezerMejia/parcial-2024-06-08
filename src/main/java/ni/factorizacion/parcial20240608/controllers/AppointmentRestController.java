@@ -142,7 +142,7 @@ public class AppointmentRestController {
             if (appointment.getEndDate() != null) {
                 dto.setEndDate(appointment.getEndDate().toString());
             }
-            dto.setPrescriptions(appointment.getPrescriptions());
+            dto.setPrescriptions(appointment.getPrescriptions().stream().map(AppointmentPrescriptionDto::from).toList());
 
             List<SimpleMedicDto> medics = new ArrayList<>();
             for (AppointmentMedicSpecialty ams : appointment.getAppointmentMedicSpecialty()) {
