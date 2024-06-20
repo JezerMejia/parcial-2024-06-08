@@ -18,7 +18,7 @@ public class UserDto {
         return UserDto.builder()
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .roles(user.getRoles().stream().map(Role::getName).toList())
+                .roles(user.getRoles().stream().map(Role::getId).toList())
                 .build();
     }
 }
