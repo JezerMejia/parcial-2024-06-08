@@ -3,11 +3,12 @@ import { ref } from "vue";
 import {
   useAuthenticatedFetch,
   useBaseFetch,
-} from "../composables/useBaseFetch";
-import GeneralResponse from "../types/GeneralResponse";
-import { useUser } from "../stores/user";
-import { useAuth } from "../stores/auth";
+} from "@/composables/useBaseFetch";
+import GeneralResponse from "@/types/GeneralResponse";
+import { useUser } from "@/stores/user";
+import { useAuth } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import User from "@/types/User";
 
 enum Message {
   EMPTY = "",
@@ -60,13 +61,16 @@ async function doUserData() {
   message.value = Message.LOADING_LOGIN;
 
   const { data } = await useAuthenticatedFetch("/auth/self").json<
-    GeneralResponse<string>
+    GeneralResponse<User>
   >();
   if (data.value == null) {
     message.value = Message.ERROR_USER;
     return;
   }
-  console.log(data.value);
+  if (typeof data.value.data !== "object") {
+    message.value = Message.ERROR;
+    return;
+  }
   user.setUser(data.value.data);
 }
 
