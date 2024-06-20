@@ -6,9 +6,12 @@ import type User from "@/types/User";
 import { useUser } from "@/stores/user";
 import { useAuth } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import VueFeather from "vue-feather";
 import type { ErrorMap } from "@/types/ErrorMap";
 import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 import FormInput from "@/components/FormInput.vue";
+import InputForm from '@/components/Forms/InputForm.vue';
+
 
 enum Message {
   EMPTY = "",
@@ -100,19 +103,27 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <main class="flex size-full flex-col items-center justify-center gap-24">
-    <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col">
+  <main class="flex size-[570px] flex-col items-center justify-center gap-10 rounded-lg bg-white">
+    <div class="flex flex-col items-center justify-center">
+      <img src="/identity/logo.svg" alt="Logo" />
+      <h1  class="text-base font-bold text-blue-400">YA MERITO</h1>
+      <h2  class="text-2xl font-bold text-blue-400">Inicia Sesion</h2>
+    </div>
+    <form @submit.prevent="handleSubmit" autocomplete="on" class="flex w-[500px] flex-col">
+        
       <FormInput
+        class="text-blue-400"
         ref="identifierInput"
-        label="Identificador: "
+        label="Identificador"
         type="text"
         name="identifier"
         v-model="formData.identifier"
       />
 
       <FormInput
+        class="text-blue-400"
         ref="passwordInput"
-        label="Contraseña: "
+        label="Contraseña"
         type="password"
         name="password"
         v-model="formData.password"
@@ -120,7 +131,10 @@ async function handleSubmit() {
 
       <span v-if="message != Message.EMPTY">{{ message }}</span>
 
-      <button type="submit">Iniciar sesión</button>
+      <button type="submit" class="mt-3 inline-flex items-center justify-center rounded-lg bg-blue-200 p-2 text-center text-sm font-normal text-blue-400 transition-all hover:rounded-xl active:scale-95">
+        <VueFeather type="log-out" stroke-width="2.5" size="16"/>
+        <span>Ingresar</span>
+      </button>
     </form>
   </main>
 </template>

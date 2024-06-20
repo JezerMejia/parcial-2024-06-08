@@ -25,15 +25,9 @@ defineExpose({ setError, props });
 
 <template>
   <label class="flex flex-col gap-1">
-    <span v-if="label" class="text-blue-400">{{ label }}</span>
-    <input
-      :type
-      :name
-      v-model="model"
-      @input="handleInput"
-      class="rounded bg-gray-100 p-2 font-light text-blue-500"
-    />
-    <span v-if="subLabel" class="text-xs text-blue-200">
+    <span v-if="label">{{ label }}</span>
+    <input :type :name v-model="model" @input="handleInput" class="rounded-md bg-gray-100 p-4 text-blue-500 transition-all hover:bg-gray-200 disabled:opacity-40"/>
+    <span v-if="subLabel" class="font-medium text-blue-500">
       {{ subLabel }}
     </span>
     <span v-if="errorMessage" class="text-xs text-red-500" aria-live="polite">

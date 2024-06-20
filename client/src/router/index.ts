@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BlankLayout from "@/layouts/BlankLayout.vue";
-import DefaultLayout from "@/layouts/DefaultLayout.vue"
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +34,17 @@ const router = createRouter({
           path: "register",
           name: "register",
           component: () => import("../views/RegisterView.vue"),
+        },
+      ],
+    },
+    {
+      path: "/usuario",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "citas",
+          name: "citas",
+          component: () => import("../views/User/AppointmentView.vue"),
         },
       ],
     },
