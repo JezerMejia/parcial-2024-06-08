@@ -114,7 +114,7 @@ async function handleSubmit() {
       <FormInput
         class="text-blue-400"
         ref="identifierInput"
-        label="Nombre de usuario "
+        label="Identificador"
         type="text"
         name="identifier"
         v-model="formData.identifier"
@@ -123,7 +123,7 @@ async function handleSubmit() {
       <FormInput
         class="text-blue-400"
         ref="passwordInput"
-        label="Contraseña "
+        label="Contraseña"
         type="password"
         name="password"
         v-model="formData.password"
