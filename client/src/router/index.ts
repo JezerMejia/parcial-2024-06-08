@@ -19,6 +19,11 @@ const router = createRouter({
           name: "login",
           component: () => import("../views/HomeView.vue"),
         },
+        {
+          path: "asignar-rol",
+          name: "asign-role",
+          component: () => import("../views/AsignRoleView.vue"),
+        },
       ],
     },
     {
