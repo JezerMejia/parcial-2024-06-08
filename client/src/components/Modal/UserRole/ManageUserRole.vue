@@ -8,11 +8,16 @@ import { toggleRole } from "@/composables/useConfig";
 import type UserWithRole from "@/types/UserWithRole";
 import { getUserRoles } from "@/composables/useUser";
 import { ref } from "vue";
+import { useToast } from "@/stores/toast";
+import type Toast from "@/types/Toast";
+import {ToastType} from "@/types/Toast";
+
 
 const modal = ref<InstanceType<typeof Modal>>();
 
 const props = defineProps<{ user?: User }>()
 const currentRoles = ref<string[] | undefined>();
+const { addToast } = useToast()
 
 
 defineExpose({
@@ -24,6 +29,15 @@ defineExpose({
 
 const ALL_ROLES = ["PTNT", "DOCT", "RECP", "ADMN"];
 
+function crearToastMierda(){
+  const toast : Toast = {
+    message: "Error inesperado, intente más tarde " + Math.random() * 1000,
+    type: ToastType.INFO
+  }
+
+  addToast(toast);
+}
+
 async function handleRoleToggleClick(role: string) {
 
   const userWithRole: UserWithRole = {
@@ -34,6 +48,13 @@ async function handleRoleToggleClick(role: string) {
   const response = (await toggleRole(userWithRole)).data.value
 
   if (!response?.ok) {
+
+  const toast : Toast = {
+    message: response?.message || "Error inesperado, intente más tarde",
+    type: ToastType.ERROR
+  }
+
+    addToast(toast);
     return
   };
 

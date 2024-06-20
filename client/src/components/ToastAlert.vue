@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, onMounted, defineEmits, ref } from "vue";
 import VueFeather from "vue-feather";
 import type Toast from "../types/Toast";
 import { ToastType } from "../types/Toast";
@@ -38,30 +38,37 @@ const toastColor: { [key in ToastType]: string } = {
   [ToastType.SUCCESS]: "text-green-400",
   [ToastType.WARNING]: "text-yellow-400",
 };
-
 const props = defineProps<{ toast: Toast }>();
+const visible = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    visible.value = false;
+  }, 5000);
+});
 </script>
 
 <template>
   <li
+    :style="!visible && 'display: none;'"
     class="my-2 flex flex-row items-center justify-between gap-2 rounded-md border-2"
-    :class="[toastBackground[props.toast.type], toastBorder[props.toast.type]]"
+    :class="[toastBackground[toast.type], toastBorder[toast.type]]"
   >
-    <div class="flex flex-row items-center p-2" :class="toastColor[props.toast.type]">
+    <div class="flex flex-row items-center p-2" :class="toastColor[toast.type]">
       <div class="flex size-10 shrink-0 items-center justify-center">
-        <VueFeather :type="toastIcons[props.toast.type]" size="25" stroke-width="1.5"></VueFeather>
+        <VueFeather :type="toastIcons[toast.type]" size="25" stroke-width="1.5"></VueFeather>
       </div>
-
       <p class="font-semibold">{{ props.toast.message }}</p>
     </div>
 
     <button
-      class="group relative hidden flex-row items-center justify-center border-l-2 px-3 transition-all active:scale-90"
-      :class="[toastColor[props.toast.type], toastBorder[props.toast.type]]"
+      class="group relative grid flex-row items-center justify-center border-l-2 px-3 transition-all active:scale-90"
+      @click="() => { visible = !visible }"
+      :class="[toastColor[toast.type], toastBorder[toast.type]]"
     >
       <div
         class="absolute left-1/2 top-1/2 size-8 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors"
-        :class="toastBackgroundDark[props.toast.type]"
+        :class="toastBackgroundDark[toast.type]"
       ></div>
       <VueFeather
         type="x"
