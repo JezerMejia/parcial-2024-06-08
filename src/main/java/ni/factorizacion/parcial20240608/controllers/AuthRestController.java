@@ -46,9 +46,24 @@ public class AuthRestController {
     }
 
     @PostMapping(value = "/register", consumes = "application/json")
-    public ResponseEntity<GeneralResponse<User>> register(@Valid @RequestBody SaveUserDto user) {
-        userService.saveUser(user);
-        return GeneralResponse.ok("User registered", userService.findByEmail(user.getEmail()));
+    public ResponseEntity<GeneralResponse<String>> register(@Valid @RequestBody SaveUserDto userDto) {
+        User foundUser = userService.findByEmail(userDto.getEmail());
+        if (foundUser != null) {
+            return GeneralResponse.error409("Email already used");
+        }
+        foundUser = userService.findByUsername(userDto.getUsername());
+        if (foundUser != null) {
+            return GeneralResponse.error409("Username already used");
+        }
+
+        User user = userService.saveUser(userDto);
+        try {
+            Token token = userService.registerToken(user);
+            return GeneralResponse.ok("User registered", token.getContent());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GeneralResponse.error500("Error");
+        }
     }
 
     @RequestMapping("/self")
