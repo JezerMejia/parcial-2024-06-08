@@ -1,7 +1,7 @@
-import {ExecutionState as ExcecutionStateType } from "@/types/ExecutionState";
+import { ExecutionState as ExcecutionStateType } from "@/types/ExecutionState";
 
-export default interface Appointment{
-    status: ExcecutionStateType;
-    startDate: Date;
-    endDate: Date;
+export default interface Appointment {
+  status: ExcecutionStateType;
+  startDate: Date;
+  endDate: Date;
 }
