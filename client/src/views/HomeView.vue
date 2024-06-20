@@ -4,7 +4,7 @@ import { useUser } from '@/stores/user';
 import { ref } from 'vue';
 import VueFeather from "vue-feather";
 
-const testingInput = ref<string>()
+const testingInput = ref<string>();
 
 const handleInputUpdate = (value: string) => {
   testingInput.value = value;

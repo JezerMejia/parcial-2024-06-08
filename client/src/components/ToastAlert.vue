@@ -56,7 +56,7 @@ const props = defineProps<{ toast: Toast }>();
     </div>
 
     <button
-      class="group relative hidden flex-row items-center justify-center border-l-2 px-3 transition-all active:scale-90  "
+      class="group relative hidden flex-row items-center justify-center border-l-2 px-3 transition-all active:scale-90"
       :class="[toastColor[props.toast.type], toastBorder[props.toast.type]]"
     >
       <div
