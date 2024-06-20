@@ -32,7 +32,7 @@ defineExpose({ setError, props });
       :name
       v-model="model"
       @input="handleInput"
-      class="rounded-md bg-gray-100 p-4 text-blue-500 transition-all hover:bg-gray-200 disabled:opacity-40"
+      class="rounded-md bg-gray-100 p-3 text-blue-500 transition-all hover:bg-gray-200 disabled:opacity-40"
     />
     <span v-if="subLabel" class="font-medium text-blue-500">
       {{ subLabel }}

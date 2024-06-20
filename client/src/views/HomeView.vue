@@ -16,21 +16,21 @@ const isAdmin = user.user?.roles.includes("ADMN");
 </script>
 <template>
   <div class="flex flex-1 items-center justify-center gap-3">
-    <SquareButton title="Ver mis citas" icon="folder" href="/auth/logout" />
+    <SquareButton title="Ver mis citas" icon="folder" href="/" />
     <SquareButton
       v-if="isDoctor || isAssistant"
       title="Ver horario medico"
       icon="calendar"
-      href="/auth/logout"
+      href="/medico/historial"
     />
     <SquareButton
       v-if="isDoctor || isAssistant"
       title="Gestionar historial médico"
       icon="settings"
-      href="/auth/logout"
+      href="/"
     />
-    <SquareButton v-if="isDoctor" title="Ver prescripciones" icon="eye" href="/auth/logout" />
-    <SquareButton v-if="isAssistant" title="Gestionar especialidades" icon="settings" href="/auth/logout" />
+    <SquareButton v-if="isDoctor" title="Ver prescripciones" icon="eye" href="/" />
+    <SquareButton v-if="isAssistant" title="Gestionar especialidades" icon="settings" href="/" />
     <SquareButton v-if="isAdmin" title="Asignar roles" icon="settings" href="/asignar-rol" />
   </div>
 </template>

@@ -45,7 +45,7 @@ defineExpose({
                                     {{ associatedMedics.medic }}
                                 </p>
                             </div>
-                            <div class="flex-1 text-blue-500">
+                            <div class="flex-1 text-right text-blue-500">
                                 <p class="text-sm font-semibold">
                                     Especialista
                                 </p>

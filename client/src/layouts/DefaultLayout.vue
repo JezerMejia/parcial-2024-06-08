@@ -9,11 +9,13 @@ const { toasts } = useToast()
 
 <template>
   <main class="flex min-h-dvh flex-col gap-4 px-4">
-    <header class="mt-4 flex justify-between rounded-md bg-white p-2 shadow-header">
-      <img src="/identity/logo.svg" class="h-12" />
+    <header class="mt-4 flex items-center  justify-between rounded-md bg-white p-2 shadow-header">
+      <a href="/">
+        <img src="/identity/logo.svg" class="h-12" />
+      </a>
       <a
         href="/auth/logout"
-        class="flex h-full items-center gap-1 rounded-md p-4 text-blue-400 transition-all hover:bg-shades-100 active:scale-95"
+        class="flex h-full items-center gap-1 rounded-lg p-4 text-blue-400 transition-all hover:rounded-xl hover:bg-shades-100 active:scale-95"
       >
         <VueFeather type="log-out" />
         <span>Cerrar Sesión</span>

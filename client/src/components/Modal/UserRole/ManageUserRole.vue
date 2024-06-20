@@ -84,7 +84,7 @@ const ROLE_NAMES = {
           <div class="flex flex-wrap gap-2">
             <button @click="() => { handleRoleToggleClick(role) }"
               :class="(currentRoles ? currentRoles.includes(role) : props.user?.roles.includes(role)) ? 'bg-green-200 text-green-400 hover:bg-green-300' : 'bg-red-200 text-red-400 hover:bg-red-300'"
-              class="rounded-md p-2 px-4 transition-all active:scale-95" :key="index"
+              class="rounded-lg p-2 px-4 transition-all hover:rounded-xl active:scale-95" :key="index"
               v-for="(role, index) in ALL_ROLES">
               {{ ROLE_NAMES[role as keyof typeof ROLE_NAMES] }}
             </button>
@@ -93,7 +93,7 @@ const ROLE_NAMES = {
       </div>
       <div class="flex justify-end gap-2 p-2">
         <button type="reset"
-          class="flex items-center gap-1 rounded-lg bg-red-200 px-4 py-2 text-red-400 transition-all hover:bg-red-300 active:scale-95"
+          class="flex items-center gap-1 rounded-lg bg-red-200 px-4 py-2 text-red-400 transition-all hover:rounded-xl hover:bg-red-300 active:scale-95"
           @click="modal?.close()">
           <VueFeather stroke-width="4" size="18" type="x" />
           <span>Cerrar</span>

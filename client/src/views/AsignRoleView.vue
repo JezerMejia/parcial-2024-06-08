@@ -58,7 +58,7 @@ watch(toasts, (newToasts, oldToasts) => {
         <CurrentPageInfo title="Asignar Roles" icon="grid">
             <button
                 @click="fetchUsers"
-                class="group grid aspect-square h-full min-h-9 w-auto place-content-center rounded-md bg-green-200 text-green-400 transition-all hover:bg-green-300 active:scale-95">
+                class="group grid aspect-square h-full min-h-9 w-auto place-content-center rounded-lg bg-green-200 text-green-400 transition-all hover:rounded-xl hover:bg-green-300 active:scale-95">
                 <VueFeather class="size-[18px] transition-all group-active:rotate-[32deg]" type="loader" />
             </button>
         </CurrentPageInfo>
@@ -103,7 +103,7 @@ watch(toasts, (newToasts, oldToasts) => {
                     <td>{{ user.roles.join(", ") }}</td>
                     <td>
                         <button @click="() => { handleModifyClick(user) }"
-                            class="mx-auto grid aspect-square h-full min-h-9 w-auto place-content-center rounded-md bg-blue-200 text-blue-400 transition-all hover:bg-blue-300 active:scale-95">
+                            class="mx-auto grid aspect-square h-full min-h-9 w-auto place-content-center rounded-lg bg-blue-200 text-blue-400 transition-all hover:rounded-xl hover:bg-blue-300 active:scale-95">
                             <VueFeather class="size-[18px]" type="edit-2" />
                         </button>
                     </td>
