@@ -10,27 +10,30 @@ import type { ErrorMap } from "@/types/ErrorMap";
 
 enum Message {
   EMPTY = "",
-  LOADING_LOGIN = "Iniciando sesión...",
+  LOADING_REGISTER = "Registrando usuario...",
   LOADING_USER = "Cargando datos de usuario...",
-  NO_USER = "No existe un usuario para esta cuenta",
-  ERROR_AUTH = "Inicio de sesión incorrecto",
+  USERNAME_USED = "Este nombre de usuario ya está en uso",
+  EMAIL_USED = "Este correo electrónico ya está en uso",
+  ERROR_AUTH = "Autenticación incorrecta",
   ERROR_USER = "No se pudo obtener los datos de este usuario, por favor intente más tarde",
   ERROR = "Ocurrió un error en el sistema, por favor intente más tarde",
 }
 const message = ref<Message>(Message.EMPTY);
 
 const formData = ref({
-  identifier: "",
+  username: "",
+  email: "",
   password: "",
+  confirmPassword: "",
 });
 
 const auth = useAuth();
 const user = useUser();
 const router = useRouter();
 
-async function doLogin() {
-  message.value = Message.LOADING_LOGIN;
-  const { data, statusCode } = await useBaseFetch("/auth/login")
+async function doRegister() {
+  message.value = Message.LOADING_REGISTER;
+  const { data, statusCode } = await useBaseFetch("/auth/register")
     .json<GeneralResponse<string>>()
     .post(formData.value);
 
@@ -47,8 +50,12 @@ async function doLogin() {
     return;
   }
 
-  if (statusCode.value == 404) {
-    message.value = Message.NO_USER;
+  if (statusCode.value == 409) {
+    if (data.value.message == "Email already used") {
+      message.value = Message.EMAIL_USED;
+    } else {
+      message.value = Message.USERNAME_USED;
+    }
     return;
   }
   if (statusCode.value == 401) {
@@ -64,7 +71,7 @@ async function doLogin() {
 }
 
 async function doUserData() {
-  message.value = Message.LOADING_LOGIN;
+  message.value = Message.LOADING_REGISTER;
 
   const { data } = await useAuthenticatedFetch("/auth/self").json<GeneralResponse<User>>();
   if (data.value == null) {
@@ -78,8 +85,19 @@ async function doUserData() {
   user.setUser(data.value.data);
 }
 
+function validateForm(): boolean {
+  if (formData.value.password != formData.value.confirmPassword) {
+    return false;
+  }
+  return true;
+}
+
 async function handleSubmit() {
-  await doLogin();
+  if (!validateForm()) {
+    return;
+  }
+
+  await doRegister();
   if (auth.token != null) {
     await doUserData();
   }
@@ -92,10 +110,12 @@ async function handleSubmit() {
 <template>
   <main class="flex size-full flex-col items-center justify-center gap-24">
     <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col">
-      <input type="text" v-model="formData.identifier" />
+      <input type="text" v-model="formData.username" />
+      <input type="email" v-model="formData.email" />
       <input type="password" v-model="formData.password" />
+      <input type="password" v-model="formData.confirmPassword" />
 
-      <button type="submit">Iniciar sesión</button>
+      <button type="submit">Registrarse</button>
     </form>
 
     <span v-if="message != Message.EMPTY">{{ message }}</span>

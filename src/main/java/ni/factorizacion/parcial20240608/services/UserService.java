@@ -17,7 +17,7 @@ public interface UserService {
     User findByEmail(String email);
     User findByUsername(String username);
 
-    void saveUser(SaveUserDto userDto);
+    User saveUser(SaveUserDto userDto);
 
     Boolean validAuthentication(User user, String password);
 
