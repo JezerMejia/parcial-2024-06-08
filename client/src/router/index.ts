@@ -37,6 +37,17 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/usuario",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "citas",
+          name: "citas",
+          component: () => import("../views/User/HomeView.vue"),
+        },
+      ],
+    },
   ],
 });
 
