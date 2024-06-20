@@ -53,6 +53,7 @@ public class User implements UserDetails {
     }
 
     public void addRole(Role role) {
+        if (roles.contains(role)) return;
         this.getRoles().add(role);
         role.getUsers().add(this);
     }

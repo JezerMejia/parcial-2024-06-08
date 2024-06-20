@@ -48,8 +48,46 @@ const router = createRouter({
       children: [
         {
           path: "citas",
-          name: "citas",
-          component: () => import("../views/User/AppointmentView.vue"),
+          name: "citas-usuario",
+          component: () => import("../views/AppointmentView.vue"),
+        },
+      ],
+    },
+    {
+      path: "/medico",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "citas",
+          name: "citas-medico",
+          component: () => import("../views/AppointmentView.vue"),
+        },
+        {
+          path: "historial",
+          name: "historial",
+          component: () => import("../views/Medic/HistoryView.vue"),
+        },
+      ],
+    },
+    {
+      path: "/asistente",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "citas",
+          name: "citas-asistente",
+          component: () => import("../views/AppointmentView.vue"),
+        },
+      ],
+    },
+    {
+      path: "/administrador",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "citas",
+          name: "citas-administrador",
+          component: () => import("../views/AppointmentView.vue"),
         },
       ],
     },

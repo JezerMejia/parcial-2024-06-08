@@ -2,36 +2,28 @@
 import { onMounted, ref, type Ref } from "vue";
 import HeaderModal from "../HeaderModal.vue";
 import Modal from "../ModalComponent.vue";
-import FormInput from "@/components/FormInput.vue";
 import VueFeather from "vue-feather";
-import type Appointment from "@/types/Appointment";
-import { requestAppointment } from "@/composables/useAppointment";
+import { rejectAppointment } from "@/composables/useAppointment";
 import type { ErrorMap } from "@/types/ErrorMap";
 import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 
 const modal = ref<InstanceType<typeof Modal>>();
-
-const formData = ref<Appointment>({
-  reason: "",
-  date: new Date().toISOString().split("T")[0],
-});
 
 defineExpose({
   close: () => modal.value?.close(),
   show: () => modal.value?.show(),
 });
 
-const reasonInput = ref<FormInputType>();
-const dateInput = ref<FormInputType>();
+const props = defineProps<{
+  uuid: string;
+}>();
+
 const inputMap = new Map<string, Ref<FormInputType | undefined>>();
 
-onMounted(() => {
-  inputMap.set(reasonInput.value!.props.name, reasonInput);
-  inputMap.set(dateInput.value!.props.name, dateInput);
-});
+onMounted(() => {});
 
 async function request(): Promise<boolean> {
-  const { data, statusCode, isFetching } = await requestAppointment(formData.value);
+  const { data, statusCode, isFetching } = await rejectAppointment(props.uuid);
 
   if (!data.value) {
     return false;
@@ -48,27 +40,16 @@ async function request(): Promise<boolean> {
 async function handleSubmit() {
   const valid = await request();
 
-  if (valid) {
-    formData.value.reason = "";
-    formData.value.date = new Date().toISOString().split("T")[0];
-  }
+  modal.value?.close();
 }
 </script>
 
 <template>
   <Modal ref="modal">
+    <HeaderModal icon="user-minus" title="Finalizar cita" />
+
     <form novalidate class="flex flex-col gap-0" @submit.prevent="handleSubmit">
-      <HeaderModal icon="grid" title="Crear cita" />
-      <div class="flex max-h-[80vh] flex-col gap-6 px-4 py-6">
-        <FormInput
-          ref="reasonInput"
-          label="Razón"
-          type="text"
-          name="reason"
-          v-model="formData.reason"
-        />
-        <FormInput ref="dateInput" label="Fecha" type="date" name="date" v-model="formData.date" />
-      </div>
+      <div class="flex flex-col gap-2.5 p-4">¿Desea rechazar la cita?</div>
 
       <div class="flex flex-row gap-2 self-end p-2">
         <button

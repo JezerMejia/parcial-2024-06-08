@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class AppointmentDto {
+    private String uuid;
     private String reason;
     private String requestDate;
     private String startDate;

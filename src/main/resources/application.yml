@@ -12,6 +12,9 @@ spring:
     jdbc:
       initialize-schema: always
 
+  mvc:
+    dispatch-options-request: true
+
   security:
     user:
       name: user
