@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,17 +29,21 @@ public class UserRestController {
         return GeneralResponse.ok("Found users", users);
     }
 
-    @GetMapping(value = "/userRoles")
+    @PostMapping(value = "/userRoles")
     @PreAuthorize("hasAuthority('ADMN') or hasAuthority('RECP')")
-    public ResponseEntity<GeneralResponse<List<Role>>> findUserRoles(@RequestBody String emailOrUsername) {
+    public ResponseEntity<GeneralResponse<List<String>>> findUserRoles(@RequestBody String emailOrUsername) {
         User user = userService.findByEmail(emailOrUsername);
+        List<String> roles = new ArrayList<>();
         if (user == null) {
             user = userService.findByUsername(emailOrUsername);
         }
         if (user == null) {
             return GeneralResponse.error404("User not found");
         }
-        return GeneralResponse.ok("User roles found", user.getRoles());
+
+        user.getRoles().forEach(role -> roles.add(role.getId()));
+
+        return GeneralResponse.ok("User roles found", roles);    
     }
 
     @PostMapping(value = "/emailOrUsername")
