@@ -3,12 +3,12 @@ import VueFeather from "vue-feather";
 import ToastAlert from "../components/ToastAlert.vue"
 import { useToast } from "@/stores/toast";
 
-const { toasts }= useToast()
+const { toasts } = useToast()
 
 </script>
 
 <template>
-  <main class="flex flex-col gap-4 px-4">
+  <main class="flex flex-col gap-4 px-4 min-h-dvh">
     <header class="mt-4 flex justify-between rounded-md bg-white p-2 shadow-header">
       <img src="/identity/logo.svg" class="h-12" />
       <a href="/auth/logout"
