@@ -3,8 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      boxShadow: {
+        'header': "0px 2px 12px 0px rgba(0,52,116,0.15);"
+      },
       colors: {
-        pasadita: {
           yellow: {
             100: "#FFFFF0",
             200: "#FFFFD7",
@@ -30,14 +32,13 @@ export default {
             400: "#003474",
             500: "#001024",
           },
-          shade: {
+          shades: {
             100: "#F6F8FA",
             200: "#E6E6E6",
             300: "#B5B5B5",
             400: "#747474",
           },
         },
-      },
     },
     fontFamily: {
       poppins: "Poppins, sans-serif",
