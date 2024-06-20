@@ -132,6 +132,7 @@ public class AppointmentRestController {
         List<AppointmentDto> dtos = new ArrayList<>();
         for (Appointment appointment : appointments) {
             AppointmentDto dto = new AppointmentDto();
+            dto.setUuid(appointment.getUuid().toString());
             dto.setReason(appointment.getReason());
             dto.setStatus(appointment.getStatus().toString());
             dto.setRequestDate(appointment.getRequestDate().toString());

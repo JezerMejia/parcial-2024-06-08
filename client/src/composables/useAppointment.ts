@@ -7,3 +7,9 @@ export async function requestAppointment(appointment: Appointment) {
     .json<GeneralResponse<string>>()
     .post(appointment);
 }
+
+export async function rejectAppointment(appointmentUUID: string) {
+  return useAuthenticatedFetch("/appointment/reject")
+    .json<GeneralResponse<string>>()
+    .post(appointmentUUID, "json"); // Sí, json...
+}
