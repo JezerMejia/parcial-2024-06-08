@@ -87,11 +87,7 @@ async function handleSubmit() {
 
 <template>
   <main class="flex size-full flex-col items-center justify-center gap-24">
-    <form
-      @submit.prevent="handleSubmit"
-      autocomplete="on"
-      class="flex flex-col"
-    >
+    <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col">
       <input type="text" v-model="formData.identifier" />
       <input type="password" v-model="formData.password" />
 
