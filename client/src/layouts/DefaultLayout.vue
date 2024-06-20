@@ -3,7 +3,7 @@ import VueFeather from "vue-feather";
 import ToastAlert from "../components/ToastAlert.vue";
 import { useToast } from "@/stores/toast";
 
-const { toasts } = useToast();
+const { toasts } = useToast()
 </script>
 
 <template>
