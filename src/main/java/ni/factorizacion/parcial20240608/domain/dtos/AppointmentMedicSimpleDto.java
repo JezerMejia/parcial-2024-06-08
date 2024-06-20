@@ -15,7 +15,7 @@ public class AppointmentMedicSimpleDto {
         return AppointmentMedicSimpleDto.builder()
                 .appointment(AppointmentSimpleDto.from(appointmentMedicSpecialty.getAppointment()))
                 .user(SimpleUserDto.from(appointmentMedicSpecialty.getMedic()))
-                .specialty(SpecialtySimpleDto.fromDTO(appointmentMedicSpecialty.getSpecialty()))
+                .specialty(SpecialtySimpleDto.from(appointmentMedicSpecialty.getSpecialty()))
                 .build();
     }
 
