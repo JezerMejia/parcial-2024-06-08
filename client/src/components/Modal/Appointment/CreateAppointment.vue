@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import HeaderModal from "../HeaderModal.vue";
 import Modal from "../ModalComponent.vue";
 import FormInput from "@/components/FormInput.vue";
 import VueFeather from "vue-feather";
+import type Appointment from "@/types/Appointment";
+import { requestAppointment } from "@/composables/useAppointment";
+import type { ErrorMap } from "@/types/ErrorMap";
+import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 
 const modal = ref<InstanceType<typeof Modal>>();
 
-const formData = ref({
+const formData = ref<Appointment>({
   reason: "",
   date: new Date().toISOString().split("T")[0],
 });
@@ -17,8 +21,37 @@ defineExpose({
   show: () => modal.value?.show(),
 });
 
+const reasonInput = ref<FormInputType>();
+const dateInput = ref<FormInputType>();
+const inputMap = new Map<string, Ref<FormInputType | undefined>>();
+
+onMounted(() => {
+  inputMap.set(reasonInput.value!.props.name, reasonInput);
+  inputMap.set(dateInput.value!.props.name, dateInput);
+});
+
+async function request(): Promise<boolean> {
+  const { data, statusCode, isFetching } = await requestAppointment(formData.value);
+
+  if (!data.value) {
+    return false;
+  }
+
+  if (statusCode.value == 400) {
+    const errorMap = data.value?.data as unknown as ErrorMap;
+    setValidationErrorForm(inputMap, errorMap);
+  }
+
+  return data.value?.ok;
+}
+
 async function handleSubmit() {
-  console.log(formData.value);
+  const valid = await request();
+
+  if (valid) {
+    formData.value.reason = "";
+    formData.value.date = new Date().toISOString().split("T")[0];
+  }
 }
 </script>
 
@@ -29,19 +62,13 @@ async function handleSubmit() {
     <form novalidate class="flex flex-col gap-0" @submit.prevent="handleSubmit">
       <div class="flex flex-col gap-2.5 p-4">
         <FormInput
-          ref="identifierInput"
+          ref="reasonInput"
           label="Razón"
           type="text"
           name="reason"
           v-model="formData.reason"
         />
-        <FormInput
-          ref="identifierInput"
-          label="Fecha"
-          type="date"
-          name="date"
-          v-model="formData.date"
-        />
+        <FormInput ref="dateInput" label="Fecha" type="date" name="date" v-model="formData.date" />
       </div>
 
       <div class="flex flex-row gap-2 self-end p-2">

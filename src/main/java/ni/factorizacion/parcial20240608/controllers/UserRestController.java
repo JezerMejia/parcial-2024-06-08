@@ -2,6 +2,7 @@ package ni.factorizacion.parcial20240608.controllers;
 
 import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
+import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,13 +20,30 @@ public class UserRestController {
     private UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMN') and hasAuthority('RECP')")
+    @PreAuthorize("hasAuthority('ADMN') or hasAuthority('RECP')")
     public ResponseEntity<GeneralResponse<List<User>>> findAllUsers() {
         List<User> users = userService.findAll();
         if (users.isEmpty()) {
             return GeneralResponse.error404("No users found");
         }
         return GeneralResponse.ok("Found users", users);
+    }
+
+    @PostMapping(value = "/userRoles")
+    @PreAuthorize("hasAuthority('ADMN') or hasAuthority('RECP')")
+    public ResponseEntity<GeneralResponse<List<String>>> findUserRoles(@RequestBody String emailOrUsername) {
+        User user = userService.findByEmail(emailOrUsername);
+        List<String> roles = new ArrayList<>();
+        if (user == null) {
+            user = userService.findByUsername(emailOrUsername);
+        }
+        if (user == null) {
+            return GeneralResponse.error404("User not found");
+        }
+
+        user.getRoles().forEach(role -> roles.add(role.getId()));
+
+        return GeneralResponse.ok("User roles found", roles);    
     }
 
     @PostMapping(value = "/emailOrUsername")
