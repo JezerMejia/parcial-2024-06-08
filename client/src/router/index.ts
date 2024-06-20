@@ -44,7 +44,7 @@ const router = createRouter({
         {
           path: "citas",
           name: "citas",
-          component: () => import("../views/User/HomeView.vue"),
+          component: () => import("../views/User/AppointmentView.vue"),
         },
       ],
     },
