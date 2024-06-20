@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(SaveUserDto userDto) {
+    public User saveUser(SaveUserDto userDto) {
         var user = new User();
 
         user.setPassword(Encrypt.encryptPassword(userDto.getPassword()));
@@ -47,6 +47,8 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername());
 
         userRepository.save(user);
+
+        return user;
     }
 
     @Override

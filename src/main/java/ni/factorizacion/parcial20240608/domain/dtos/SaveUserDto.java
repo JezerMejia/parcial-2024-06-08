@@ -14,6 +14,6 @@ public class SaveUserDto {
     private String email;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d*\\w$")
+    @Pattern(regexp = "^\\d*\\w$", message = "{password.message}")
     private String password;
 }
