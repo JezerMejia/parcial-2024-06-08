@@ -48,6 +48,17 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/doctor",
+      component: DefaultLayout,
+      children: [
+        {
+          path: "gestionHistorial",
+          name: "gestionHistorial",
+          component: () => import("../views/Doctor/ManageHistoryView.vue"),
+        },
+      ],
+    }
   ],
 });
 
