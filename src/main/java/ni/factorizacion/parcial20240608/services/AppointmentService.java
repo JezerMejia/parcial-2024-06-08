@@ -27,8 +27,8 @@ public interface AppointmentService {
     void cancel(Appointment appointment);
 
     void finish(Appointment appointment);
-  
-    List<Appointment> findByPatient(User patient);
-  
+
     void start(Appointment appointment);
+
+    List<Appointment> findByPatient(User patient);
 }
