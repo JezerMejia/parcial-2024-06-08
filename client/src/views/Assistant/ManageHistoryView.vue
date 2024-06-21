@@ -6,7 +6,7 @@
     </div>
     <div class="grid grid-cols-5 gap-4">
       <div v-for="item in users">
-        <PatientCard :patient="item" :asist="false" />
+        <PatientCard :patient="item" :asist="true" />
       </div>
     </div>
   </main>

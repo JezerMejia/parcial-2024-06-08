@@ -93,6 +93,16 @@ const router = createRouter({
           name: "historial-gestionar-asistente",
           component: () => import("../views/Assistant/ManageHistories.vue"),
         },
+        {
+          path: "gestionHistorial",
+          name: "gestionHistorialAsis",
+          component: () => import("../views/Assistant/ManageHistoryView.vue"),
+        },
+        {
+          path: "gestionHistorial/:username",
+          name: "gestionHistorialByPatientAsis",
+          component: () => import("../views/Assistant/PatientHistoryView.vue"),
+        },
       ],
     },
     {
@@ -121,7 +131,7 @@ const router = createRouter({
           component: () => import("../views/Doctor/PatientHistoryView.vue"),
         },
       ],
-    }
+    },
   ],
 });
 
