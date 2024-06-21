@@ -51,6 +51,11 @@ const router = createRouter({
           name: "citas-usuario",
           component: () => import("../views/AppointmentView.vue"),
         },
+        {
+          path: "historial",
+          name: "historial-usuario",
+          component: () => import("../views/Patient/HistoryView.vue"),
+        },  
       ],
     },
     {
