@@ -2,18 +2,18 @@
 const props = defineProps<{ state: string }>();
 
 const background: { [key: string]: string } = {
-  "Cancelado": "bg-red-200",
-  "Rechazado": "bg-red-200",
-  "Finalizado": "bg-green-200",
+  Cancelado: "bg-red-200",
+  Rechazado: "bg-red-200",
+  Finalizado: "bg-green-200",
   "En ejecución": "bg-yellow-200",
   "Pendiente de aprobación": "bg-blue-200",
   "Pendiente de ejecución": "bg-blue-200",
 };
 
 const text: { [key: string]: string } = {
-  "Cancelado": "text-red-400",
-  "Rechazado": "text-red-400",
-  "Finalizado": "text-green-400",
+  Cancelado: "text-red-400",
+  Rechazado: "text-red-400",
+  Finalizado: "text-green-400",
   "En ejecución": "text-yellow-400",
   "Pendiente de aprobación": "text-blue-400",
   "Pendiente de ejecución": "text-blue-400",

@@ -63,7 +63,11 @@ onMounted(() => {
 
     <button
       class="group relative grid flex-row items-center justify-center border-l-2 px-3 transition-all active:scale-90"
-      @click="() => { visible = !visible }"
+      @click="
+        () => {
+          visible = !visible;
+        }
+      "
       :class="[toastColor[toast.type], toastBorder[toast.type]]"
     >
       <div

@@ -12,4 +12,4 @@ export default interface Appointment {
   status: ExcecutionStateType;
   prescriptions: Prescription;
   medics: Medic;
-} 
+}
