@@ -4,7 +4,7 @@ import { getAllHistories } from '@/composables/usePantientRecord';
 import CurrentPageInfo from '@/components/CurrentPageInfo.vue';
 import VueFeather from "vue-feather";
 import type Record from "@/types/PantientRecord";
-import { RefSymbol } from '@vue/reactivity';
+import { useUser } from '@/stores/user';
 
 const records = ref<Record[]>([]);
 
@@ -17,7 +17,13 @@ onMounted(async () => {
 });
 
 async function fetchUsers() {
-    const record = (await getAllHistories()).data.value;
+    const user = useUser();
+    if (!user.user) {
+        return;
+    }
+    const { data } = await getAllHistories(user.user.email);
+    const record = data.value;
+
     if (!record || !record.ok) return;
     records.value = record.data ?? [];
     console.log(records.value)
