@@ -97,4 +97,22 @@ public class HistoryRestController {
         return GeneralResponse.ok("Found Histories", historyService.countHistoriesByUser(user));
     }
 
+    @PostMapping(value = "/getHistoriesByPatient")
+@PreAuthorize("hasAuthority('DOCT') or hasAuthority('RECP')")
+public ResponseEntity<GeneralResponse<List<HistorySimpleDto>>> getHistoriesByPatient(@RequestBody String userIdentifier) {
+        User user = userService.findByEmail(userIdentifier);
+        if (user == null) {
+            user = userService.findByUsername(userIdentifier);
+        }
+        if (user == null) {
+            return GeneralResponse.error404("No user found");
+        }
+        List<History> histories = historyService.findHistoriesByUser(user);
+        List<HistorySimpleDto> historySimpleDtos = histories.stream()
+                .map(HistorySimpleDto::from)
+                .toList();
+
+        return GeneralResponse.ok("Found Histories", historySimpleDtos);
+    }
+
 }
