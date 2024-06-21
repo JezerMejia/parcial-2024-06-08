@@ -2,9 +2,10 @@
 import { ref } from "vue";
 import VueFeather from "vue-feather";
 import ExcecutionState from "../ExcecutionState.vue";
-import type AppointmentCardType from "@/types/AppointmentCard";
+import type Appointment from "@/types/Appointment";
+import getFormattedDateTime from "@/utils/getFormattedDateTime";
 import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
-const props = defineProps<{ appointmentCardType: AppointmentCardType; controls?: boolean }>();
+const props = defineProps<{ appointmentCardType: Appointment; controls?: boolean }>();
 const modalSee = ref<typeof ModalSee>();
 </script>
 
@@ -31,7 +32,7 @@ const modalSee = ref<typeof ModalSee>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de inicio</p>
             <p class="text-base font-semibold">
-              {{ props.appointmentCardType.startDate }}
+              {{ getFormattedDateTime(new Date (props.appointmentCardType.startDate)) }}
             </p>
           </div>
         </li>
@@ -45,7 +46,7 @@ const modalSee = ref<typeof ModalSee>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de fin</p>
             <p class="text-base font-semibold">
-              {{ props.appointmentCardType.endDate }}
+              {{ getFormattedDateTime(new Date (props.appointmentCardType.endDate)) }}
             </p>
           </div>
         </li>
