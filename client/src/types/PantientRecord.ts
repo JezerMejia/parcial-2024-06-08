@@ -1,5 +1,4 @@
 export default interface Patient {
-    reason: string;
-    dateTime: string;
-  }
-  
+  reason: string;
+  dateTime: string;
+}

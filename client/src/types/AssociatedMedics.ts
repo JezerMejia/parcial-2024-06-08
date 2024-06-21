@@ -1,5 +1,4 @@
 export default interface AssociatedMedics {
-    medic: string;
-    specialty: string;
-  }
-  
+  medic: string;
+  specialty: string;
+}

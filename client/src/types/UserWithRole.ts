@@ -1,4 +1,4 @@
 export default interface UserWithRole {
-    identifier: string;
-    role: string;
+  identifier: string;
+  role: string;
 }
