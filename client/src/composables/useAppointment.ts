@@ -12,13 +12,25 @@ export async function requestAppointment(appointment: Appointment) {
 export async function rejectAppointment(appointmentUUID: string) {
   return useAuthenticatedFetch("/appointment/reject")
     .json<GeneralResponse<string>>()
-    .post(appointmentUUID, "json"); // Sí, json...
+    .post(appointmentUUID);
 }
 
-export async function approveAppointment(approveAppointment: ApproveAppointment) {
+export async function approveAppointment(approveApp: ApproveAppointment) {
   return useAuthenticatedFetch("/appointment/approve")
     .json<GeneralResponse<string>>()
-    .post(approveAppointment);
+    .post(approveApp);
+}
+
+export async function startAppointment(appointmentUUID: string) {
+  return useAuthenticatedFetch("/appointment/start")
+    .json<GeneralResponse<string>>()
+    .post(appointmentUUID);
+}
+
+export async function finishAppointment(appointmentUUID: string) {
+  return useAuthenticatedFetch("/appointment/finish")
+    .json<GeneralResponse<string>>()
+    .post(appointmentUUID);
 }
 
 export async function getOwnAppointments() {

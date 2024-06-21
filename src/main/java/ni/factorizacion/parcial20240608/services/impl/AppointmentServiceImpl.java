@@ -88,6 +88,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void finish(Appointment appointment) {
+        appointment.setStatus(AppointmentState.ENDED);
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void start(Appointment appointment) {
+        appointment.setStatus(AppointmentState.RUNNING);
         appointmentRepository.save(appointment);
     }
 }
