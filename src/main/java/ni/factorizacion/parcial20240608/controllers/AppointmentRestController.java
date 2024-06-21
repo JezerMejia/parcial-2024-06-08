@@ -75,12 +75,8 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/reject")
     @PreAuthorize("hasAuthority('RECP')")
-    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody String appointmentId) {
-        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
-        if (uuid.isEmpty()) {
-            return GeneralResponse.error400("Incorrect UUID");
-        }
-        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
+    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody String appointmentId) throws ControlException {
+        Optional<Appointment> appointment = findAppointmentById(appointmentId);
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -119,12 +115,8 @@ public class AppointmentRestController {
 
     @PostMapping("/start")
     @PreAuthorize("hasAuthority('DOCT')")
-    public ResponseEntity<GeneralResponse<String>> startAppointment(@RequestBody String appointmentId) {
-        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
-        if (uuid.isEmpty()) {
-            return GeneralResponse.error400("Incorrect UUID");
-        }
-        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
+    public ResponseEntity<GeneralResponse<String>> startAppointment(@RequestBody String appointmentId) throws ControlException {
+        Optional<Appointment> appointment = findAppointmentById(appointmentId);
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
