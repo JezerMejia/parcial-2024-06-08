@@ -1,14 +1,37 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from 'vue';
 import VueFeather from "vue-feather";
 import CurrentPageInfo from "@/components/CurrentPageInfo.vue";
 import AppointmentCard from "@/components/Cards/AppointmentCard.vue";
-import type Appointment from "@/types/AppointmentCard";
+import type Appointment from "@/types/Appointment";
 import { ExecutionState as ExcecutionStateType } from "@/types/ExecutionState";
 import ModalAdd from "@/components/Modal/Appointment/CreateAppointment.vue";
 const modalAdd = ref<typeof ModalAdd>();
+import { getOwnAppointments } from "@/composables/useAppointment";
+import { useUser } from '@/stores/user';
 
-const appointmentHistory: Appointment[] = [
+const appointments = ref<Appointment[]>([]);
+
+const user = useUser();
+
+onMounted(async () => {
+    await fetchUsers();
+
+    setInterval(async ()=> {
+        await fetchUsers();
+    }, 30000)
+});
+
+async function fetchUsers() {
+    const { data } = await getOwnAppointments();
+    const record = data.value;
+
+    if (!record || !record.ok) return;
+    appointments.value = record.data ?? [];
+    console.log(appointments.value)
+}
+
+/*const appointmentHistory: Appointment[] = [
   {
     status: ExcecutionStateType.CANCELED,
     startDate: new Date("2024-01-01"),
@@ -24,8 +47,9 @@ const appointmentHistory: Appointment[] = [
     startDate: new Date("2024-01-01"),
     endDate: new Date("2024-01-29"),
   },
-];
+];*/
 </script>
+
 
 <template>
   <div class="bg-white p-4">
@@ -39,8 +63,8 @@ const appointmentHistory: Appointment[] = [
       </button>
     </div>
 
-    <ul class="grid w-full gap-4 py-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <AppointmentCard :appointmentCardType="item" :key="index" v-for="(item, index) in appointmentHistory" />
+    <ul class="grid w-full gap-4 py-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" v-if="user.user?.roles.includes('PTNT')">
+      <AppointmentCard :appointmentCardType="item" :key="index" v-for="(item, index) in appointments" />
     </ul>
   </div>
   <ModalAdd ref="modalAdd" />

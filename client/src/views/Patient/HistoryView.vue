@@ -9,14 +9,14 @@ import { useUser } from '@/stores/user';
 const records = ref<Record[]>([]);
 
 onMounted(async () => {
-    await fetchUsers();
+    await getRecord();
 
     setInterval(async ()=> {
-        await fetchUsers();
+        await getRecord();
     }, 30000)
 });
 
-async function fetchUsers() {
+async function getRecord() {
     const user = useUser();
     if (!user.user) {
         return;
@@ -33,7 +33,7 @@ async function fetchUsers() {
     <section class="rounded-md bg-white p-4">
         <CurrentPageInfo title="Ver Historial" icon="grid">
             <div class="flex flex-row items-center justify-end gap-2">
-                <button @click="fetchUsers"
+                <button @click="getRecord"
                     class="inline-flex items-center rounded-lg bg-green-200 p-2 text-center text-sm font-normal text-green-400 transition-all hover:rounded-xl hover:bg-green-300 active:scale-95">
                     <VueFeather type="loader" stroke-width="2.5" size="16"></VueFeather>
                 </button>

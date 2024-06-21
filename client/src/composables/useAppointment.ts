@@ -20,3 +20,8 @@ export async function approveAppointment(approveAppointment: ApproveAppointment)
     .json<GeneralResponse<string>>()
     .post(approveAppointment);
 }
+
+export async function getOwnAppointments() {
+  return useAuthenticatedFetch("/appointment/own")
+    .json<GeneralResponse<Appointment[]>>()
+}
