@@ -1,8 +1,15 @@
 <template>
   <main class="flex flex-col gap-6 w-full bg-white p-4 rounded-lg">
-    <div class="w-full flex text-blue-500 items-center gap-1">
-      <VueFeather type="grid" />
-      <h2 class="text-2xl font-black">Gestionar Historial</h2>
+    <div class="w-full flex text-blue-500 justify-between items-center">
+      <div class="flex items-center gap-1">
+        <VueFeather type="grid" />
+        <h2 class="text-2xl font-black">Gestionar Historial</h2>
+      </div>
+      <button
+        class="flex items-center bg-blue-200 text-blue-400 py-2 px-3 gap-1 rounded-lg mr-2 active:scale-95 transition-all">
+        <VueFeather type="plus" />
+        <span>Nuevo historial</span>
+      </button>
     </div>
     <div class="grid grid-cols-5 gap-4">
       <div v-for="item in users">
