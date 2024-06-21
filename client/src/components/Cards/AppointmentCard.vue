@@ -6,8 +6,6 @@ import type AppointmentCardType from "@/types/AppointmentCard";
 import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
 const props = defineProps<{ appointmentCardType: AppointmentCardType; controls?: boolean }>();
 const modalSee = ref<typeof ModalSee>();
-
-console.log(props.appointmentCardType.status.toString());
 </script>
 
 <template>
@@ -18,7 +16,7 @@ console.log(props.appointmentCardType.status.toString());
     </div>
     <ExcecutionState
       class="border-x border-blue-300 text-sm"
-      :state="props.appointmentCardType.status.toString()"
+      :state="props.appointmentCardType.status"
     />
     <!--Fechas-->
     <div class="flex flex-1 flex-row border-x border-blue-300 p-4">

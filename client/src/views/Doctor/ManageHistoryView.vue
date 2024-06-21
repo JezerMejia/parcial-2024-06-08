@@ -22,10 +22,11 @@ import type GeneralResponse from "@/types/GeneralResponse";
 const users = ref<User[]>([]);
 
 onMounted(async () => {
-  const { data } = await useAuthenticatedFetch("/api/users/getPatients").json<GeneralResponse<User[]>>();
+  const { data } =
+    await useAuthenticatedFetch("/api/users/getPatients").json<GeneralResponse<User[]>>();
   const response = data.value;
-  users.value = response?.data ?? []
+  users.value = response?.data ?? [];
 
   console.log(users.value);
-})
+});
 </script>

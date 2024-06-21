@@ -8,15 +8,17 @@ const props = defineProps<{
   patient: User;
 }>();
 
-const nEntries = ref<number>(0)
+const nEntries = ref<number>(0);
 
 onMounted(async () => {
-  const { data } = await useAuthenticatedFetch("/user/getCountEntriesByPatient").json<GeneralResponse<number>>().post(props.patient.email);
+  const { data } = await useAuthenticatedFetch("/user/getCountEntriesByPatient")
+    .json<GeneralResponse<number>>()
+    .post(props.patient.email);
   const response = data.value;
   nEntries.value = response?.data ?? 0;
 
   console.log("entries: " + response?.data);
-})
+});
 </script>
 <template>
   <div class="flex flex-col rounded-[4px] border border-blue-300 bg-blue-100">
@@ -28,10 +30,13 @@ onMounted(async () => {
         </div>
         <p class="font-light text-blue-400">{{ props.patient.username }}</p>
       </div>
-      <p class="font-medium"> {{ nEntries }} entradas</p>
+      <p class="font-medium">{{ nEntries }} entradas</p>
     </div>
     <div class="flex w-full justify-end rounded-b-[4px] bg-white p-2">
-      <a href="#" class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95">
+      <a
+        href="#"
+        class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95"
+      >
         <VueFeather type="eye" class="size-[18px] font-black" />
       </a>
     </div>
