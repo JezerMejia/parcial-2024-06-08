@@ -1,14 +1,13 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
 import jakarta.transaction.Transactional;
-import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.EditUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.repositories.TokenRepository;
 import ni.factorizacion.parcial20240608.repositories.UserRepository;
-import ni.factorizacion.parcial20240608.services.RoleService;
 import ni.factorizacion.parcial20240608.services.UserService;
 import ni.factorizacion.parcial20240608.utils.Encrypt;
 import ni.factorizacion.parcial20240608.utils.JWTTools;

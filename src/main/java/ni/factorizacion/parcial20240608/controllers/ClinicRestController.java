@@ -1,6 +1,6 @@
 package ni.factorizacion.parcial20240608.controllers;
 
-import ni.factorizacion.parcial20240608.domain.dtos.AppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.output.AppointmentDto;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.User;

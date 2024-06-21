@@ -1,9 +1,8 @@
-package ni.factorizacion.parcial20240608.domain.dtos;
+package ni.factorizacion.parcial20240608.domain.dtos.input;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
