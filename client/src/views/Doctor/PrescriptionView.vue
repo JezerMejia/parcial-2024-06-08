@@ -2,7 +2,12 @@
   <section v-if="isAllowed" class="flex w-full flex-col gap-6 rounded-lg bg-white p-4">
     <CurrentPageInfo title="Ver prescripciones" icon="grid" />
     <ul class="grid grid-cols-5 gap-4">
-        <PrescriptionCard :key="index" v-for="item,index in users" :patient="item" :asist="false" />
+      <PrescriptionCard
+        :key="index"
+        v-for="(item, index) in users"
+        :patient="item"
+        :asist="false"
+      />
     </ul>
   </section>
   <ForbiddenAlert v-else />
@@ -19,10 +24,10 @@ import { RoleType } from "@/types/RoleType";
 import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const users = ref<User[]>([]);
-const isAllowed = hasPermission(RoleType.DOCT)
+const isAllowed = hasPermission(RoleType.DOCT);
 
 onMounted(async () => {
-  if(!isAllowed) return;
+  if (!isAllowed) return;
 
   const { data } =
     await useAuthenticatedFetch("/api/users/getPatients").json<GeneralResponse<User[]>>();

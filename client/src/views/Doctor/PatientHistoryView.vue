@@ -13,11 +13,10 @@ import { RoleType } from "@/types/RoleType";
 const route = useRoute();
 const par = route.params.username;
 const historyList = ref<History[]>([]);
-const isAllowed = hasPermission(RoleType.DOCT)
+const isAllowed = hasPermission(RoleType.DOCT);
 
 onMounted(async () => {
-
-  if(!isAllowed) return;
+  if (!isAllowed) return;
 
   const { data } = await useAuthenticatedFetch("/user/getHistoriesByPatient")
     .json<GeneralResponse<History[]>>()
@@ -60,8 +59,11 @@ function formatDate(value: string) {
         </tr>
       </thead>
       <tbody class="font-medium text-blue-500">
-        <tr :key="index" v-for="item, index in historyList"
-          class="border-b border-b-blue-200 *:border-r *:border-r-blue-200 *:p-2">
+        <tr
+          :key="index"
+          v-for="(item, index) in historyList"
+          class="border-b border-b-blue-200 *:border-r *:border-r-blue-200 *:p-2"
+        >
           <td>
             <div class="flex justify-center">
               <span>{{ item.reason }}</span>
@@ -74,10 +76,14 @@ function formatDate(value: string) {
           </td>
           <td>
             <div class="flex items-center justify-center gap-[10px]">
-              <button class="flex size-[34px] items-center justify-center rounded-lg bg-red-200 active:scale-95">
+              <button
+                class="flex size-[34px] items-center justify-center rounded-lg bg-red-200 active:scale-95"
+              >
                 <VueFeather class="size-[18px] text-red-300" type="trash-2" />
               </button>
-              <button class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95">
+              <button
+                class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95"
+              >
                 <VueFeather class="size-[18px] text-blue-400" type="edit-2" />
               </button>
             </div>

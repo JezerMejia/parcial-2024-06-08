@@ -6,18 +6,21 @@ import { useUser } from "@/stores/user";
 
 const { toasts } = useToast();
 const currentUser = useUser();
-
 </script>
 
 <template>
   <main class="flex min-h-dvh flex-col gap-4 px-4">
-    <header class="sticky top-4 mt-4 flex items-center justify-between rounded-md bg-white p-2 shadow-header">
+    <header
+      class="sticky top-4 mt-4 flex items-center justify-between rounded-md bg-white p-2 shadow-header"
+    >
       <a href="/">
         <img src="/identity/logo.svg" class="h-12" />
       </a>
       <nav class="flex gap-1">
-        <div class=" pointer-events-none flex items-center gap-1 font-medium text-blue-400">
-          <div class="grid size-10 place-items-center rounded-full border border-blue-400 bg-blue-200">
+        <div class="pointer-events-none flex items-center gap-1 font-medium text-blue-400">
+          <div
+            class="grid size-10 place-items-center rounded-full border border-blue-400 bg-blue-200"
+          >
             <VueFeather class="size-6" type="user" />
           </div>
           <div>
@@ -25,8 +28,10 @@ const currentUser = useUser();
             <p class="leading-none">{{ currentUser.user?.username }}</p>
           </div>
         </div>
-        <a href="/auth/logout"
-          class="flex h-full items-center gap-1 rounded-lg p-4 text-blue-400 transition-all hover:rounded-xl hover:bg-shades-100 active:scale-95">
+        <a
+          href="/auth/logout"
+          class="flex h-full items-center gap-1 rounded-lg p-4 text-blue-400 transition-all hover:rounded-xl hover:bg-shades-100 active:scale-95"
+        >
           <VueFeather class="size-4" type="log-out" />
         </a>
       </nav>

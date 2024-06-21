@@ -30,7 +30,10 @@ const url = `/medico/prescripcion/${props.patient.username}`;
       <p class="font-medium">{{ prescriptionsList.length }} prescripciones</p>
     </div>
     <div class="flex w-full justify-end rounded-b-[4px] bg-white p-2">
-      <a :href="url" class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95">
+      <a
+        :href="url"
+        class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95"
+      >
         <VueFeather type="eye" class="size-[18px] font-black" />
       </a>
     </div>
