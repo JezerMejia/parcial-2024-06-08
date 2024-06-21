@@ -24,3 +24,7 @@ export async function approveAppointment(approveAppointment: ApproveAppointment)
 export async function getOwnAppointments() {
   return useAuthenticatedFetch("/appointment/own").json<GeneralResponse<Appointment[]>>();
 }
+
+export async function getAppointmentByMedic() {
+  return useAuthenticatedFetch("/clinic/schedule").json<GeneralResponse<Appointment[]>>();
+}

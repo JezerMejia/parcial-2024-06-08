@@ -1,6 +1,7 @@
 import { ExecutionState as ExcecutionStateType } from "@/types/ExecutionState";
 import type Prescription from "./Prescription";
 import type Medic from "./Medic";
+import type SimpleUser from "./SimpleUser";
 
 export default interface Appointment {
   uuid: string;
@@ -10,6 +11,7 @@ export default interface Appointment {
   endDate: string;
   approxEndDate: string;
   status: ExcecutionStateType;
-  prescriptions: Prescription;
-  medics: Medic;
+  patient: SimpleUser;
+  prescriptions: Prescription[];
+  medics: Medic[];
 }

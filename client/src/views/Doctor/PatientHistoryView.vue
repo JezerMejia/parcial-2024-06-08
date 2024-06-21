@@ -51,7 +51,10 @@ function formatDate(value: string) {
       </tr>
     </thead>
     <tbody class="font-medium text-blue-500">
-      <tr v-for="item in historyList" class="border-b border-b-blue-200 *:border-r *:border-r-blue-200 *:p-2">
+      <tr
+        v-for="item in historyList"
+        class="border-b border-b-blue-200 *:border-r *:border-r-blue-200 *:p-2"
+      >
         <td>
           <div class="flex justify-center">
             <span>{{ item.reason }}</span>
@@ -64,10 +67,14 @@ function formatDate(value: string) {
         </td>
         <td>
           <div class="flex items-center justify-center gap-[10px]">
-            <button class="flex items-center justify-center size-[34px] bg-red-200 rounded-lg active:scale-95">
+            <button
+              class="flex items-center justify-center size-[34px] bg-red-200 rounded-lg active:scale-95"
+            >
               <VueFeather class="size-[18px] text-red-300" type="trash-2" />
             </button>
-            <button class="flex items-center justify-center size-[34px] bg-blue-200 rounded-lg active:scale-95">
+            <button
+              class="flex items-center justify-center size-[34px] bg-blue-200 rounded-lg active:scale-95"
+            >
               <VueFeather class="size-[18px] text-blue-400" type="edit-2" />
             </button>
           </div>
