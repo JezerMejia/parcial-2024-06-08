@@ -55,7 +55,7 @@ const router = createRouter({
           path: "historial",
           name: "historial-usuario",
           component: () => import("../views/Patient/HistoryView.vue"),
-        },  
+        },
       ],
     },
     {
@@ -114,6 +114,11 @@ const router = createRouter({
           path: "gestionHistorial",
           name: "gestionHistorial",
           component: () => import("../views/Doctor/ManageHistoryView.vue"),
+        },
+        {
+          path: "gestionHistorial/:username",
+          name: "gestionHistorialByPatient",
+          component: () => import("../views/Doctor/PatientHistoryView.vue"),
         },
       ],
     }

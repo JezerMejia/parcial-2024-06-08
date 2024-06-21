@@ -89,4 +89,9 @@ public class HistoryServiceImpl implements HistoryService {
         repository.deleteById(UUID.fromString(uuid));
     }
 
+    @Override
+    public Integer countHistoriesByUser(User user) {
+        return repository.countByPatient(user);
+    }
+
 }
