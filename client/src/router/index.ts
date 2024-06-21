@@ -63,9 +63,9 @@ const router = createRouter({
           component: () => import("../views/AppointmentView.vue"),
         },
         {
-          path: "historial",
-          name: "historial",
-          component: () => import("../views/Medic/HistoryView.vue"),
+          path: "horario",
+          name: "horario",
+          component: () => import("../views/Medic/ScheduleView.vue"),
         },
       ],
     },
