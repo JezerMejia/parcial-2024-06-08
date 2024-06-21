@@ -1,8 +1,8 @@
 package ni.factorizacion.parcial20240608.controllers;
 
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveSpecialtyDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SpecialtySimpleDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveSpecialtyDto;
+import ni.factorizacion.parcial20240608.domain.dtos.output.SpecialtySimpleDto;
 import ni.factorizacion.parcial20240608.domain.entities.Specialty;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
 import ni.factorizacion.parcial20240608.types.ControlException;

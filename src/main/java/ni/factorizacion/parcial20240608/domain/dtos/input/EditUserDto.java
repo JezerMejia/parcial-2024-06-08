@@ -1,4 +1,4 @@
-package ni.factorizacion.parcial20240608.domain.dtos;
+package ni.factorizacion.parcial20240608.domain.dtos.input;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -6,14 +6,13 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class SaveUserDto {
-    @NotEmpty
+public class EditUserDto {
     private String username;
+
     @NotEmpty
     @Email
     private String email;
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d*\\w$", message = "{password.message}")
+    @Pattern(regexp = "^\\d*\\w$")
     private String password;
 }
