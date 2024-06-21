@@ -78,6 +78,16 @@ const router = createRouter({
           name: "citas-asistente",
           component: () => import("../views/AppointmentView.vue"),
         },
+        {
+          path: "historial",
+          name: "historial-asistente",
+          component: () => import("../views/Assistant/HistoryView.vue"),
+        },
+        {
+          path: "historial/gestionar",
+          name: "historial-gestionar-asistente",
+          component: () => import("../views/Assistant/ManageHistories.vue"),
+        },
       ],
     },
     {

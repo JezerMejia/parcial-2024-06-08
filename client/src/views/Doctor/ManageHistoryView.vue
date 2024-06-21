@@ -5,11 +5,11 @@
       <h2 class="text-2xl font-black">Gestionar Historial</h2>
     </div>
     <div class="grid grid-cols-5 gap-4">
+      <!--<PatientCard />
       <PatientCard />
       <PatientCard />
       <PatientCard />
-      <PatientCard />
-      <PatientCard />
+      <PatientCard />-->
     </div>
   </main>
 </template>
