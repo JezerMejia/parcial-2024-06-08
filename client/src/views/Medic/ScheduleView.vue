@@ -36,7 +36,7 @@ async function fetchUsers() {
   <section v-if="isAllowed" class="bg-white p-4">
     <CurrentPageInfo title="Ver Horario Medico" icon="grid" />
     <ul class="grid w-full gap-4 py-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <ScheduleCard :schedule="item" :key="index" v-for="(item, index) in appointments" />
+      <ScheduleCard :appointment="item" :key="index" v-for="(item, index) in appointments" />
     </ul>
   </section>
   <ForbiddenAlert v-else />
