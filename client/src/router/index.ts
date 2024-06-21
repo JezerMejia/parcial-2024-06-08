@@ -51,6 +51,11 @@ const router = createRouter({
           name: "citas-usuario",
           component: () => import("../views/AppointmentView.vue"),
         },
+        {
+          path: "historial",
+          name: "historial-usuario",
+          component: () => import("../views/Patient/HistoryView.vue"),
+        },
       ],
     },
     {
@@ -77,6 +82,16 @@ const router = createRouter({
           path: "citas",
           name: "citas-asistente",
           component: () => import("../views/AppointmentView.vue"),
+        },
+        {
+          path: "historial",
+          name: "historial-asistente",
+          component: () => import("../views/Assistant/HistoryView.vue"),
+        },
+        {
+          path: "historial/gestionar",
+          name: "historial-gestionar-asistente",
+          component: () => import("../views/Assistant/ManageHistories.vue"),
         },
       ],
     },
