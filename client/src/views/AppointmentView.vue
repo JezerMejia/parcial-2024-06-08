@@ -16,8 +16,7 @@ const appointments = ref<Appointment[]>([]);
 const user = useUser();
 
 onMounted(async () => {
-
-  if(!hasPermission(RoleType.PTNT)) return;
+  if (!hasPermission(RoleType.PTNT)) return;
 
   await fetchUsers();
 
@@ -31,11 +30,10 @@ async function fetchUsers() {
   const record = data.value;
 
   if (!record || !record.ok) return;
-  appointments.value = record.data.filter((app) => app.patient.username == user.user?.username) ?? [];
+  appointments.value = record.data ?? [];
 
   console.log(appointments.value);
 }
-
 </script>
 
 <template>
@@ -54,11 +52,7 @@ async function fetchUsers() {
       class="grid gap-4 py-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       v-if="user.user?.roles.includes('PTNT')"
     >
-      <AppointmentCard
-        :appointmentCardType="item"
-        :key="index"
-        v-for="(item, index) in appointments"
-      />
+      <AppointmentCard :appointment="item" :key="index" v-for="(item, index) in appointments" />
     </ul>
   </section>
   <ModalAdd ref="modalAdd" />
