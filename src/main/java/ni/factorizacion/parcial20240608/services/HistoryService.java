@@ -23,4 +23,6 @@ public interface HistoryService {
     void updateHistory(String uuid, SaveHistoryDto dto) throws ControlException;
 
     void removeHistory(String uuid) throws ControlException;
+
+    Integer countHistoriesByUser(User user);
 }

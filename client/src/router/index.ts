@@ -115,6 +115,11 @@ const router = createRouter({
           name: "gestionHistorial",
           component: () => import("../views/Doctor/ManageHistoryView.vue"),
         },
+        {
+          path: "gestionHistorial/:username",
+          name: "gestionHistorialByPatient",
+          component: () => import("../views/Doctor/PatientHistoryView.vue"),
+        },
       ],
     },
   ],

@@ -46,6 +46,16 @@ public class UserRestController {
         return GeneralResponse.ok("User roles found", roles);    
     }
 
+    @GetMapping(value = "/getPatients")
+    @PreAuthorize("hasAuthority('RECP') or hasAuthority('DOCT')")
+    public ResponseEntity<GeneralResponse<List<User>>> getPatients() {
+        List<User> users = userService.findPatients();
+        if (users.isEmpty()) {
+            return GeneralResponse.error404("No patients found");
+        }
+        return GeneralResponse.ok("Found patients", users);
+    }
+
     @PostMapping(value = "/emailOrUsername")
     @PreAuthorize("hasAuthority('ADMN') or hasAuthority('DOCT')")
     public ResponseEntity<GeneralResponse<User>> findByEmailOrUsername(@RequestBody String emailOrUsername) {
