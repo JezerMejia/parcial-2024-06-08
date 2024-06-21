@@ -55,11 +55,7 @@ async function fetchUsers() {
     </div>
 
     <ul class="grid w-full gap-4 py-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <ScheduleCard
-      :scheduleCardType="item"
-        :key="index"
-        v-for="(item, index) in appointments"
-      />
+      <ScheduleCard :scheduleCardType="item" :key="index" v-for="(item, index) in appointments" />
     </ul>
   </div>
   <ModalAdd ref="modalAdd" />

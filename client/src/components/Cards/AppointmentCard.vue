@@ -32,7 +32,7 @@ const modalSee = ref<typeof ModalSee>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de inicio</p>
             <p class="text-base font-semibold">
-              {{ getFormattedDateTime(new Date (props.appointmentCardType.startDate)) }}
+              {{ getFormattedDateTime(new Date(props.appointmentCardType.startDate)) }}
             </p>
           </div>
         </li>
@@ -46,7 +46,7 @@ const modalSee = ref<typeof ModalSee>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de fin</p>
             <p class="text-base font-semibold">
-              {{ getFormattedDateTime(new Date (props.appointmentCardType.endDate)) }}
+              {{ getFormattedDateTime(new Date(props.appointmentCardType.endDate)) }}
             </p>
           </div>
         </li>

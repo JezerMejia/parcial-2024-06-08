@@ -37,7 +37,10 @@ const url = props.asist
       <p class="font-medium">{{ nEntries }} entradas</p>
     </div>
     <div class="flex justify-end p-2 bg-white w-full rounded-b-[4px]">
-      <a :href="url" class="size-[34px] bg-blue-200 flex items-center justify-center rounded-lg active:scale-95">
+      <a
+        :href="url"
+        class="size-[34px] bg-blue-200 flex items-center justify-center rounded-lg active:scale-95"
+      >
         <VueFeather type="eye" class="size-[18px] font-black" />
       </a>
     </div>

@@ -36,7 +36,7 @@ const modalEnd = ref<typeof ModalEnd>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha Inicio</p>
             <p class="text-base">
-              {{ getFormattedDateTime(new Date (props.scheduleCardType.startDate)) }}
+              {{ getFormattedDateTime(new Date(props.scheduleCardType.startDate)) }}
             </p>
           </div>
         </li>
@@ -46,7 +46,7 @@ const modalEnd = ref<typeof ModalEnd>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de fin</p>
             <p class="text-base">
-              {{ getFormattedDateTime(new Date (props.scheduleCardType.endDate)) }}
+              {{ getFormattedDateTime(new Date(props.scheduleCardType.endDate)) }}
             </p>
           </div>
         </li>
