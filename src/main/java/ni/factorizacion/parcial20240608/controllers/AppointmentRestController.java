@@ -129,36 +129,8 @@ public class AppointmentRestController {
             return GeneralResponse.error404("No appointments found");
         }
 
-        List<AppointmentDto> dtos = new ArrayList<>();
-        for (Appointment appointment : appointments) {
-            AppointmentDto dto = new AppointmentDto();
-            dto.setUuid(appointment.getUuid().toString());
-            dto.setReason(appointment.getReason());
-            dto.setStatus(appointment.getStatus().toString());
-            dto.setRequestDate(appointment.getRequestDate().toString());
-            dto.setStartDate(appointment.getStartDate().toString());
-            if (appointment.getApproxEndDate() != null) {
-                dto.setEndDate(appointment.getApproxEndDate().toString());
-            }
-            if (appointment.getEndDate() != null) {
-                dto.setEndDate(appointment.getEndDate().toString());
-            }
-            dto.setPrescriptions(appointment.getPrescriptions().stream().map(AppointmentPrescriptionDto::from).toList());
+        List<AppointmentDto> appointmentDtos = appointments.stream().map(AppointmentDto::from).toList();
 
-            List<SimpleMedicDto> medics = new ArrayList<>();
-            for (AppointmentMedicSpecialty ams : appointment.getAppointmentMedicSpecialty()) {
-                SimpleMedicDto medicDto = new SimpleMedicDto();
-                medicDto.setEmail(ams.getMedic().getEmail());
-                medicDto.setUsername(ams.getMedic().getUsername());
-                medicDto.setSpecialty(ams.getSpecialty().getName());
-                medics.add(medicDto);
-            }
-
-            dto.setMedics(medics);
-
-            dtos.add(dto);
-        }
-
-        return GeneralResponse.ok("Found appointments", dtos);
+        return GeneralResponse.ok("Found appointments", appointmentDtos);
     }
 }

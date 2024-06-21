@@ -27,8 +27,8 @@ public class AppointmentSimpleDto {
                 .reason(appointment.getReason())
                 .requestDate(appointment.getRequestDate().format(formatter))
                 .startDate(appointment.getStartDate().format(formatter))
-                .approxEndDate(appointment.getApproxEndDate().format(formatter))
-                .endDate(appointment.getEndDate().format(formatter))
+                .approxEndDate(appointment.getApproxEndDate() != null ? appointment.getApproxEndDate().format(formatter) : null)
+                .endDate(appointment.getEndDate() != null ? appointment.getEndDate().format(formatter) : null)
                 .status(appointment.getStatus())
                 .build();
     }
