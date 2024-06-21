@@ -1,8 +1,7 @@
 package ni.factorizacion.parcial20240608.controllers;
 
-import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.EditUserDto;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
-import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

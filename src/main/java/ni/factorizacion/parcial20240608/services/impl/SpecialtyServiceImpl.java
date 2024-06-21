@@ -1,6 +1,6 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
-import ni.factorizacion.parcial20240608.domain.dtos.SaveSpecialtyDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveSpecialtyDto;
 import ni.factorizacion.parcial20240608.domain.entities.Specialty;
 import ni.factorizacion.parcial20240608.repositories.SpecialtyRepository;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
