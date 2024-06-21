@@ -2,8 +2,9 @@ import type Appointment from "@/types/Appointment";
 import { useAuthenticatedFetch } from "./useBaseFetch";
 import type GeneralResponse from "@/types/GeneralResponse";
 import type ApproveAppointment from "@/types/ApproveAppointment";
+import type SaveAppointment from "@/types/SaveAppointment";
 
-export async function requestAppointment(appointment: Appointment) {
+export async function requestAppointment(appointment: SaveAppointment) {
   return useAuthenticatedFetch("/appointment/request")
     .json<GeneralResponse<string>>()
     .post(appointment);
