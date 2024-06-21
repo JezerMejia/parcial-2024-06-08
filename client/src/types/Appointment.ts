@@ -11,7 +11,7 @@ export default interface Appointment {
   endDate: string;
   approxEndDate: string;
   status: ExcecutionStateType;
-    patient: SimpleUser;
+  patient: SimpleUser;
   prescriptions: Prescription[];
   medics: Medic[];
 }
