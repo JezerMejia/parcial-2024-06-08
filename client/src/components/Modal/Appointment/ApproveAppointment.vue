@@ -128,7 +128,7 @@ async function handleSubmit() {
 
 <template>
   <Modal ref="modal">
-    <HeaderModal icon="grid" title="Crear cita" />
+    <HeaderModal icon="grid" title="Aprobar cita" />
 
     <form novalidate class="flex flex-col gap-0" @submit.prevent="handleSubmit">
       <div class="flex flex-col gap-2.5 p-4">

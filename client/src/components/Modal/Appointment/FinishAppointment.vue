@@ -36,7 +36,7 @@ async function handleFinishAppointment() {
 <template>
   <Modal ref="modal">
     <form class="overflow-hidden rounded-md bg-white">
-      <HeaderModal title="Ver Medicos Asignados" icon="grid" />
+      <HeaderModal title="Finalizar cita" icon="grid" />
       <div class="flex max-h-[80vh] w-full flex-col gap-4 p-4">
         <ul class="grid gap-4 min-[480px]:grid-cols-1">
           <p>¿Desea finalizar la Cita?</p>

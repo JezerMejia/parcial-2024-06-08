@@ -32,10 +32,10 @@ const modalApprove = ref<typeof ApproveAppointment>();
       </div>
     </div>
     <ExcecutionState class="text-sm" :state="props.appointment.status" />
-    <!--Fechas-->
     <p class="line-clamp-2 px-4 py-2">
       {{ props.appointment.reason }}
     </p>
+    <!--Fechas-->
     <ul class="flex w-full flex-col justify-center gap-2 p-4 text-blue-500">
       <li class="flex items-center gap-2">
         <VueFeather

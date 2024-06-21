@@ -16,10 +16,10 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
 </script>
 
 <template>
-  <li class="flex flex-col bg-white">
+  <li class="flex flex-col overflow-hidden rounded-lg border border-blue-300 bg-white">
     <!--Intro-->
-    <div class="flex flex-col gap-1 rounded-t-lg border-x border-t border-blue-300 bg-blue-100 p-2">
-      <p class="font-bold text-blue-500">Horario Medico</p>
+    <div class="flex flex-col gap-1 bg-blue-100 p-2">
+      <p class="font-bold text-blue-500">Horario Médico</p>
       <div class="flex items-center gap-1 font-medium text-blue-400">
         <span class="grid place-items-center rounded-full border border-blue-400 bg-blue-200 p-1">
           <VueFeather class="my-auto size-4" type="user" />
@@ -27,9 +27,12 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
         <p>{{ props.appointment.patient.username }}</p>
       </div>
     </div>
-    <ExcecutionState class="border-x border-blue-300 text-sm" :state="props.appointment.status" />
+    <ExcecutionState class="text-sm" :state="props.appointment.status" />
+    <p class="line-clamp-2 px-4 py-2">
+      {{ props.appointment.reason }}
+    </p>
     <!--Fechas-->
-    <div class="flex flex-1 flex-row border-x border-blue-300 p-4">
+    <div class="flex flex-1 flex-row p-4">
       <ul class="flex w-full flex-col justify-center gap-2 text-blue-500">
         <li class="flex items-center gap-2">
           <VueFeather class="size-10 min-w-10" type="calendar" stroke="#01193F" stroke-width="1.5">
@@ -53,7 +56,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
         </li>
       </ul>
     </div>
-    <div class="flex flex-row justify-end gap-2 rounded-b-lg border-x border-b border-blue-300 p-2">
+    <div class="flex flex-row justify-end gap-2 p-2">
       <button
         v-if="props.appointment.status == ExecutionState.IN_EXC"
         type="button"
