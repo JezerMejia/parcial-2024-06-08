@@ -27,4 +27,6 @@ public interface AppointmentService {
     void cancel(Appointment appointment);
 
     void finish(Appointment appointment);
+
+    void start(Appointment appointment);
 }

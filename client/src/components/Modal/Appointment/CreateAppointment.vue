@@ -4,14 +4,14 @@ import HeaderModal from "../HeaderModal.vue";
 import Modal from "../ModalComponent.vue";
 import FormInput from "@/components/FormInput.vue";
 import VueFeather from "vue-feather";
-import type Appointment from "@/types/Appointment";
 import { requestAppointment } from "@/composables/useAppointment";
 import type { ErrorMap } from "@/types/ErrorMap";
 import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
+import type SaveAppointment from "@/types/SaveAppointment";
 
 const modal = ref<InstanceType<typeof Modal>>();
 
-const formData = ref<Appointment>({
+const formData = ref<SaveAppointment>({
   reason: "",
   date: new Date().toISOString().split("T")[0],
 });
@@ -31,7 +31,7 @@ onMounted(() => {
 });
 
 async function request(): Promise<boolean> {
-  const { data, statusCode, isFetching } = await requestAppointment(formData.value);
+  const { data, statusCode } = await requestAppointment(formData.value);
 
   if (!data.value) {
     return false;

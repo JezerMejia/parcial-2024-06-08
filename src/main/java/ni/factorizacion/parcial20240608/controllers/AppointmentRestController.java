@@ -69,8 +69,12 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/reject")
     @PreAuthorize("hasAuthority('RECP')")
-    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody UUID appointmentId) {
-        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody String appointmentId) {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            return GeneralResponse.error400("Incorrect UUID");
+        }
+        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -108,9 +112,30 @@ public class AppointmentRestController {
         boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
 
         if (appointment.get().getStatus() == AppointmentState.RUNNING && isMedicAssigned) {
-            appointment.get().setStatus(AppointmentState.ENDED);
             appointmentService.finish(appointment.get());
             return GeneralResponse.ok("Appointment finished", "");
+        } else {
+            return GeneralResponse.error409("The appointment is not running");
+        }
+    }
+
+    @PostMapping("/start")
+    @PreAuthorize("hasAuthority('DOCT')")
+    public ResponseEntity<GeneralResponse<String>> startAppointment(@RequestBody String appointmentId) {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            return GeneralResponse.error400("Incorrect UUID");
+        }
+        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+        User userDoctor = userService.findUserAuthenticated();
+        boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
+
+        if (appointment.get().getStatus() == AppointmentState.RUNNING_PENDING && isMedicAssigned) {
+            appointmentService.start(appointment.get());
+            return GeneralResponse.ok("Appointment started", "");
         } else {
             return GeneralResponse.error409("The appointment is not running");
         }
