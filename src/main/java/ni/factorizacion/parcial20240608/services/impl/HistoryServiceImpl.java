@@ -93,10 +93,8 @@ public class HistoryServiceImpl implements HistoryService {
     public Integer countHistoriesByUser(User user) {
         return repository.countByPatient(user);
     }
-
     @Override
     public List<History> findHistoriesByUser(User user) {
         return repository.findByPatient(user);
     }
-
 }

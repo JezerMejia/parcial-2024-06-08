@@ -8,4 +8,3 @@ export async function getAllHistories(email: string) {
     GeneralResponse<Patient[]>
   >();
 }
-

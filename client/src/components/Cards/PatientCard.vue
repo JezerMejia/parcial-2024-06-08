@@ -20,7 +20,6 @@ onMounted(async () => {
 
   console.log("entries: " + response?.data);
 });
-
 const url = props.asist
   ? `/asistente/gestionHistorial/${props.patient.username}`
   : `/doctor/gestionHistorial/${props.patient.username}`;
