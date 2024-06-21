@@ -130,6 +130,16 @@ const router = createRouter({
           name: "gestionHistorialByPatient",
           component: () => import("../views/Doctor/PatientHistoryView.vue"),
         },
+        {
+          path: "verPrescripciones",
+          name: "verPrescripciones",
+          component: () => import("../views/Doctor/PrescriptionView.vue"),
+        },
+        {
+          path: "prescripcionHistorial/:username",
+          name: "prescripcionHistorialByPatient",
+          component: () => import("../views/Doctor/PrescriptionHistoryView.vue"),
+        },
       ],
     },
   ],

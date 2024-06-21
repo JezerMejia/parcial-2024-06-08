@@ -39,6 +39,19 @@ public class AppointmentRestController {
         return GeneralResponse.ok("Appointment created", "");
     }
 
+    @PostMapping(value="/getAppointmentsByPatient")
+    @PreAuthorize("hasAuthority('DOCT')")
+    public ResponseEntity<GeneralResponse<List<Appointment>>> getAppointmentsByPatient(@RequestBody String identifier){
+        User user = userService.findByEmail(identifier);
+        if(user == null){
+            user = userService.findByUsername(identifier);
+        }
+        if(user == null){
+            return GeneralResponse.error404("User not found");
+        }
+        return GeneralResponse.ok("Appointments found", appointmentService.findByPatient(user));
+    }
+
     @PostMapping(value = "/approve", consumes = "application/json")
     @PreAuthorize("hasAuthority('RECP')")
     public ResponseEntity<GeneralResponse<String>> approveAppointment(@RequestBody @Valid ApproveAppointmentDto dto) {
