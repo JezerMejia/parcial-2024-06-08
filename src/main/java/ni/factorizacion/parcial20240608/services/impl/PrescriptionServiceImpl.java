@@ -1,10 +1,10 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
 import jakarta.transaction.Transactional;
-import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SavePrescriptionDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SavePrescriptionDto;
 import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.Prescription;
+import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.repositories.AppointmentRepository;
 import ni.factorizacion.parcial20240608.repositories.PrescriptionRepository;
 import ni.factorizacion.parcial20240608.repositories.UserRepository;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
@@ -35,13 +33,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public List<PrescriptionSimpleDto> getAllByUserId(UUID userId) {
-        var user = userRepository.findById(userId);
-        var allPrescriptions = prescriptionRepository.findAllByUser(user);
-
-        return allPrescriptions.stream()
-                .map(PrescriptionSimpleDto::from)
-                .collect(Collectors.toList());
+    public List<Prescription> getAllByUserId(User user) {
+        return prescriptionRepository.findAllByUser(user);
     }
 
     @Transactional

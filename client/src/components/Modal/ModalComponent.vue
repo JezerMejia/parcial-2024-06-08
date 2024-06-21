@@ -39,7 +39,10 @@ onUnmounted(() => {
     class="fixed left-0 top-0 z-10 hidden h-dvh w-dvw place-items-center bg-black/50 open:grid"
     @click="close()"
   >
-    <div class="overflow-hidden rounded-lg border border-blue-300 bg-white" @click.stop="">
+    <div
+      class="flex w-full max-w-xl flex-col gap-0 overflow-hidden rounded-lg border border-blue-300 bg-white"
+      @click.stop=""
+    >
       <slot></slot>
     </div>
   </dialog>

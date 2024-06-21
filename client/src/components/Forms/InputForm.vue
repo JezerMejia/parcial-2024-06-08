@@ -48,8 +48,15 @@ onMounted(() => {
     <label :for="titleSlug" class="font-medium text-blue-500">
       {{ props.title }}
     </label>
-    <input :type="props.type" :id="titleSlug" :name="props.name"
-      class="rounded-md bg-gray-100 p-4 text-blue-500 transition-all hover:bg-gray-200 disabled:opacity-40"
-      :placeholder="props.placeholder" :disabled="props.disabled" :value="props.value" @input="handleChange" />
+    <input
+      :type="props.type"
+      :id="titleSlug"
+      :name="props.name"
+      class="rounded-md bg-gray-100 p-4 text-blue-500 transition-all hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-40"
+      :placeholder="props.placeholder"
+      :disabled="props.disabled"
+      :value="props.value"
+      @input="handleChange"
+    />
   </div>
 </template>

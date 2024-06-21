@@ -1,7 +1,8 @@
 package ni.factorizacion.parcial20240608.controllers;
 
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveSpecialtyDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveSpecialtyDto;
+import ni.factorizacion.parcial20240608.domain.dtos.output.SpecialtySimpleDto;
 import ni.factorizacion.parcial20240608.domain.entities.Specialty;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
 import ni.factorizacion.parcial20240608.types.ControlException;
@@ -18,13 +19,13 @@ public class SpecialtyRestController {
     private SpecialtyService service;
 
     @GetMapping
-    public ResponseEntity<GeneralResponse<List<Specialty>>> getAllSpecialties() {
-        var specialties = service.findAll();
-
+    public ResponseEntity<GeneralResponse<List<SpecialtySimpleDto>>> getAllSpecialties() {
+        List<Specialty> specialties = service.findAll();
         if (specialties.isEmpty()) {
-            return GeneralResponse.ok("No specialties found", specialties);
+            return GeneralResponse.ok("No specialties found", List.of());
         }
-        return GeneralResponse.ok("Found specialties", specialties);
+        List<SpecialtySimpleDto> specialtySimpleDtoList = specialties.stream().map(SpecialtySimpleDto::from).toList();
+        return GeneralResponse.ok("Found specialties", specialtySimpleDtoList);
     }
 
     @PostMapping(consumes = "application/json")

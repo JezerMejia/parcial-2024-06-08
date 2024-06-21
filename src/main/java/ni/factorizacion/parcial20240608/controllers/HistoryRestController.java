@@ -3,8 +3,8 @@ package ni.factorizacion.parcial20240608.controllers;
 
 import jakarta.validation.Valid;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
-import ni.factorizacion.parcial20240608.domain.dtos.HistorySimpleDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveHistoryDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveHistoryDto;
+import ni.factorizacion.parcial20240608.domain.dtos.output.HistorySimpleDto;
 import ni.factorizacion.parcial20240608.domain.entities.History;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.HistoryService;
@@ -41,12 +41,13 @@ public class HistoryRestController {
             return GeneralResponse.error404("No user found");
         }
 
-        var histories = historyService.findAll(user, startDate, endDate);
-
+        List<History> histories = historyService.findAll(user, startDate, endDate);
         if (histories.isEmpty()) {
-            return GeneralResponse.ok("No Histories found", histories);
+            return GeneralResponse.ok("No Histories found", List.of());
         }
-        return GeneralResponse.ok("Found Histories", histories);
+        List<HistorySimpleDto> historySimpleDtos = histories.stream().map(HistorySimpleDto::from).toList();
+
+        return GeneralResponse.ok("Found Histories", historySimpleDtos);
     }
 
     @PostMapping("/record")
@@ -83,5 +84,36 @@ public class HistoryRestController {
         return GeneralResponse.ok("History Deleted", null);
     }
 
+    @PostMapping(value = "/getCountEntriesByPatient")
+    @PreAuthorize("hasAuthority('DOCT') or hasAuthority('RECP')")
+    public ResponseEntity<GeneralResponse<Integer>> getCountByPatient(@RequestBody String userIdentifier) {
+        User user = userService.findByEmail(userIdentifier);
+        if (user == null) {
+            user = userService.findByUsername(userIdentifier);
+        }
+        if (user == null) {
+            return GeneralResponse.error404("No user found");
+        }
+
+        return GeneralResponse.ok("Found Histories", historyService.countHistoriesByUser(user));
+    }
+
+    @PostMapping(value = "/getHistoriesByPatient")
+    @PreAuthorize("hasAuthority('DOCT') or hasAuthority('RECP')")
+    public ResponseEntity<GeneralResponse<List<HistorySimpleDto>>> getHistoriesByPatient(@RequestBody String userIdentifier) {
+        User user = userService.findByEmail(userIdentifier);
+        if (user == null) {
+            user = userService.findByUsername(userIdentifier);
+        }
+        if (user == null) {
+            return GeneralResponse.error404("No user found");
+        }
+        List<History> histories = historyService.findHistoriesByUser(user);
+        List<HistorySimpleDto> historySimpleDtos = histories.stream()
+                .map(HistorySimpleDto::from)
+                .toList();
+
+        return GeneralResponse.ok("Found Histories", historySimpleDtos);
+    }
 
 }

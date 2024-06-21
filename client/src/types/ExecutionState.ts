@@ -1,8 +1,8 @@
 export enum ExecutionState {
-    PEND_APR = "Pendiente de Aprobación",
-    PEND_EXC = "Pendiente de Ejecución",
-    IN_EXC = "En Ejecución",
-    FINISHED = "Finalizado",
-    REJECTED = "Rechazado",
-    CANCELED = "Cancelado"
+  PEND_APR = "Pendiente de aprobación",
+  PEND_EXC = "Pendiente de ejecución",
+  IN_EXC = "En ejecución",
+  FINISHED = "Finalizada",
+  REJECTED = "Rechazada",
+  CANCELED = "Cancelada",
 }

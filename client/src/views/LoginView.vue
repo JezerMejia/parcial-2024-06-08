@@ -10,7 +10,8 @@ import VueFeather from "vue-feather";
 import type { ErrorMap } from "@/types/ErrorMap";
 import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 import FormInput from "@/components/FormInput.vue";
-import InputForm from '@/components/Forms/InputForm.vue';
+
+import InputForm from "@/components/Forms/InputForm.vue";
 
 
 enum Message {

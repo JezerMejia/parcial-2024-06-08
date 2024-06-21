@@ -1,7 +1,6 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
-import ni.factorizacion.parcial20240608.domain.dtos.HistorySimpleDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveHistoryDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveHistoryDto;
 import ni.factorizacion.parcial20240608.domain.entities.History;
 import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.repositories.HistoryRepository;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class HistoryServiceImpl implements HistoryService {
@@ -27,7 +25,7 @@ public class HistoryServiceImpl implements HistoryService {
     private UserRepository userRepository;
 
     @Override
-    public List<HistorySimpleDto> findAll(User user, LocalDate startDate, LocalDate endDate) {
+    public List<History> findAll(User user, LocalDate startDate, LocalDate endDate) {
         return repository.findAll().stream()
                 .filter(history -> history.getPatient().equals(user))
                 .filter(history -> {
@@ -36,8 +34,7 @@ public class HistoryServiceImpl implements HistoryService {
                             (endDate == null || !historyDate.isAfter(endDate));
                 })
                 .sorted((h1, h2) -> h2.getDate().compareTo(h1.getDate()))
-                .map(HistorySimpleDto::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -89,4 +86,13 @@ public class HistoryServiceImpl implements HistoryService {
         repository.deleteById(UUID.fromString(uuid));
     }
 
+    @Override
+    public Integer countHistoriesByUser(User user) {
+        return repository.countByPatient(user);
+    }
+
+    @Override
+    public List<History> findHistoriesByUser(User user) {
+        return repository.findByPatient(user);
+    }
 }

@@ -9,6 +9,5 @@ public interface RoleService {
 
     long getCount();
 
-
-    public Optional<Role> findById(String id);
+    Optional<Role> findById(String id);
 }

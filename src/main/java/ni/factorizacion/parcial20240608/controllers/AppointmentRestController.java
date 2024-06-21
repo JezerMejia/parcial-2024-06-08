@@ -2,12 +2,18 @@ package ni.factorizacion.parcial20240608.controllers;
 
 import jakarta.validation.Valid;
 import ni.factorizacion.parcial20240608.domain.dtos.*;
+import ni.factorizacion.parcial20240608.domain.dtos.input.ApproveAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.MedicAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.output.AppointmentDto;
 import ni.factorizacion.parcial20240608.domain.entities.*;
 import ni.factorizacion.parcial20240608.services.AppointmentService;
 import ni.factorizacion.parcial20240608.services.SpecialtyService;
 import ni.factorizacion.parcial20240608.services.UserService;
+import ni.factorizacion.parcial20240608.types.ControlException;
 import ni.factorizacion.parcial20240608.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -69,8 +75,8 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/reject")
     @PreAuthorize("hasAuthority('RECP')")
-    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody UUID appointmentId) {
-        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody String appointmentId) throws ControlException {
+        Optional<Appointment> appointment = findAppointmentById(appointmentId);
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -80,12 +86,8 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/cancel")
     @PreAuthorize("hasAuthority('PTNT')")
-    public ResponseEntity<GeneralResponse<String>> cancelAppointment(@RequestBody String appointmentId) {
-        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
-        if (uuid.isEmpty()) {
-            return GeneralResponse.error400("Incorrect UUID");
-        }
-        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
+    public ResponseEntity<GeneralResponse<String>> cancelAppointment(@RequestBody String appointmentId) throws ControlException {
+        Optional<Appointment> appointment = findAppointmentById(appointmentId);
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -95,12 +97,8 @@ public class AppointmentRestController {
 
     @PostMapping("/finish")
     @PreAuthorize("hasAuthority('DOCT')")
-    public ResponseEntity<GeneralResponse<String>> finishAppointment(@RequestBody String appointmentId) {
-        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
-        if (uuid.isEmpty()) {
-            return GeneralResponse.error400("Incorrect UUID");
-        }
-        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
+    public ResponseEntity<GeneralResponse<String>> finishAppointment(@RequestBody String appointmentId) throws ControlException {
+        Optional<Appointment> appointment = findAppointmentById(appointmentId);
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -108,9 +106,26 @@ public class AppointmentRestController {
         boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
 
         if (appointment.get().getStatus() == AppointmentState.RUNNING && isMedicAssigned) {
-            appointment.get().setStatus(AppointmentState.ENDED);
             appointmentService.finish(appointment.get());
             return GeneralResponse.ok("Appointment finished", "");
+        } else {
+            return GeneralResponse.error409("The appointment is not running");
+        }
+    }
+
+    @PostMapping("/start")
+    @PreAuthorize("hasAuthority('DOCT')")
+    public ResponseEntity<GeneralResponse<String>> startAppointment(@RequestBody String appointmentId) throws ControlException {
+        Optional<Appointment> appointment = findAppointmentById(appointmentId);
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+        User userDoctor = userService.findUserAuthenticated();
+        boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
+
+        if (appointment.get().getStatus() == AppointmentState.RUNNING_PENDING && isMedicAssigned) {
+            appointmentService.start(appointment.get());
+            return GeneralResponse.ok("Appointment started", "");
         } else {
             return GeneralResponse.error409("The appointment is not running");
         }
@@ -129,35 +144,16 @@ public class AppointmentRestController {
             return GeneralResponse.error404("No appointments found");
         }
 
-        List<AppointmentDto> dtos = new ArrayList<>();
-        for (Appointment appointment : appointments) {
-            AppointmentDto dto = new AppointmentDto();
-            dto.setReason(appointment.getReason());
-            dto.setStatus(appointment.getStatus().toString());
-            dto.setRequestDate(appointment.getRequestDate().toString());
-            dto.setStartDate(appointment.getStartDate().toString());
-            if (appointment.getApproxEndDate() != null) {
-                dto.setEndDate(appointment.getApproxEndDate().toString());
-            }
-            if (appointment.getEndDate() != null) {
-                dto.setEndDate(appointment.getEndDate().toString());
-            }
-            dto.setPrescriptions(appointment.getPrescriptions());
+        List<AppointmentDto> appointmentDtos = appointments.stream().map(AppointmentDto::from).toList();
 
-            List<SimpleMedicDto> medics = new ArrayList<>();
-            for (AppointmentMedicSpecialty ams : appointment.getAppointmentMedicSpecialty()) {
-                SimpleMedicDto medicDto = new SimpleMedicDto();
-                medicDto.setEmail(ams.getMedic().getEmail());
-                medicDto.setUsername(ams.getMedic().getUsername());
-                medicDto.setSpecialty(ams.getSpecialty().getName());
-                medics.add(medicDto);
-            }
+        return GeneralResponse.ok("Found appointments", appointmentDtos);
+    }
 
-            dto.setMedics(medics);
-
-            dtos.add(dto);
+    protected Optional<Appointment> findAppointmentById(String appointmentId) throws ControlException {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            throw new ControlException(HttpStatus.BAD_REQUEST, "Incorrect UUID");
         }
-
-        return GeneralResponse.ok("Found appointments", dtos);
+        return appointmentService.findById(uuid.get());
     }
 }

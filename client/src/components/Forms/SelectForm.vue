@@ -3,7 +3,7 @@ import { defineEmits, defineProps, onMounted, ref } from "vue";
 import type Option from "@/types/Option";
 
 interface Props {
-  textLabel: string,
+  textLabel: string;
   defaultOption: string;
   options: Option[];
   currentIndex?: number;
@@ -34,12 +34,19 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-1">
     <label :for="props.name" class="font-medium text-blue-500">{{ textLabel }}</label>
-    <select :name="props.name"
+    <select
+      :name="props.name"
       class="rounded-md bg-gray-100 p-4 text-blue-500 transition-all hover:bg-gray-200 disabled:opacity-40"
-      @change="handleChange" :disabled="props.disabled">
+      @change="handleChange"
+      :disabled="props.disabled"
+    >
       <option disabled selected>{{ props.defaultOption }}</option>
-      <option v-for="(option, index) in props.options" :key="index" :value="option.value"
-        :selected="index === props.currentIndex">
+      <option
+        v-for="(option, index) in props.options"
+        :key="index"
+        :value="option.value"
+        :selected="index === props.currentIndex"
+      >
         {{ option.text }}
       </option>
     </select>

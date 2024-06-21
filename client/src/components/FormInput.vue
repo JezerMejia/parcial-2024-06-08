@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const model = defineModel<string>();
+const model = defineModel<string | number>();
 
 const props = defineProps<{
   label?: string;
+  class?: string;
   subLabel?: string;
   type: string;
   name: string;

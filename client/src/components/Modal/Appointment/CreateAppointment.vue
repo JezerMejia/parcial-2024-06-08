@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import HeaderModal from "../HeaderModal.vue";
 import Modal from "../ModalComponent.vue";
 import FormInput from "@/components/FormInput.vue";
 import VueFeather from "vue-feather";
+import { requestAppointment } from "@/composables/useAppointment";
+import type { ErrorMap } from "@/types/ErrorMap";
+import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
+import type SaveAppointment from "@/types/SaveAppointment";
+import type Toast from "@/types/Toast";
+import { ToastType } from "@/types/Toast";
+import { useToast } from "@/stores/toast";
 
+const { addToast } = useToast();
 const modal = ref<InstanceType<typeof Modal>>();
 
-const formData = ref({
+const formData = ref<SaveAppointment>({
   reason: "",
   date: new Date().toISOString().split("T")[0],
 });
@@ -17,31 +25,60 @@ defineExpose({
   show: () => modal.value?.show(),
 });
 
+const reasonInput = ref<FormInputType>();
+const dateInput = ref<FormInputType>();
+const inputMap = new Map<string, Ref<FormInputType | undefined>>();
+
+onMounted(() => {
+  inputMap.set(reasonInput.value!.props.name, reasonInput);
+  inputMap.set(dateInput.value!.props.name, dateInput);
+});
+
+async function request(): Promise<boolean> {
+  const { data, statusCode } = await requestAppointment(formData.value);
+
+  const toast: Toast = {
+    message: data?.value?.message || "Error desconocido, intente más tarde",
+    type: data?.value?.ok || false ? ToastType.SUCCESS : ToastType.ERROR,
+  };
+
+  addToast(toast);
+
+  if (!data.value) {
+    return false;
+  }
+
+  if (statusCode.value == 400) {
+    const errorMap = data.value?.data as unknown as ErrorMap;
+    setValidationErrorForm(inputMap, errorMap);
+  }
+
+  return data.value?.ok;
+}
+
 async function handleSubmit() {
-  console.log(formData.value);
+  const valid = await request();
+
+  if (valid) {
+    formData.value.reason = "";
+    formData.value.date = new Date().toISOString().split("T")[0];
+  }
 }
 </script>
 
 <template>
   <Modal ref="modal">
-    <HeaderModal icon="grid" title="Crear cita" />
-
     <form novalidate class="flex flex-col gap-0" @submit.prevent="handleSubmit">
-      <div class="flex flex-col gap-2.5 p-4">
+      <HeaderModal icon="grid" title="Crear cita" />
+      <div class="flex max-h-[80vh] flex-col gap-6 px-4 py-6">
         <FormInput
-          ref="identifierInput"
+          ref="reasonInput"
           label="Razón"
           type="text"
           name="reason"
           v-model="formData.reason"
         />
-        <FormInput
-          ref="identifierInput"
-          label="Fecha"
-          type="date"
-          name="date"
-          v-model="formData.date"
-        />
+        <FormInput ref="dateInput" label="Fecha" type="date" name="date" v-model="formData.date" />
       </div>
 
       <div class="flex flex-row gap-2 self-end p-2">
