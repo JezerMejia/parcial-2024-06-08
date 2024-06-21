@@ -9,18 +9,21 @@ import getFormattedDateTime from "@/utils/getFormattedDateTime";
 import CurrentPageInfo from "@/components/CurrentPageInfo.vue";
 import hasPermission from "@/utils/hasPermission";
 import { RoleType } from "@/types/RoleType";
+import CreateHistory from "@/components/Modal/History/CreateHistory.vue";
 
 const route = useRoute();
-const par = route.params.username;
+const userIdentifier = route.params.username as string;
 const historyList = ref<History[]>([]);
 const isAllowed = hasPermission(RoleType.DOCT);
+
+const createHistory = ref<InstanceType<typeof CreateHistory>>();
 
 onMounted(async () => {
   if (!isAllowed) return;
 
   const { data } = await useAuthenticatedFetch("/user/getHistoriesByPatient")
     .json<GeneralResponse<History[]>>()
-    .post(par);
+    .post(userIdentifier);
   const response = data.value;
 
   historyList.value = response?.data ?? [];
@@ -35,7 +38,16 @@ function formatDate(value: string) {
 </script>
 <template>
   <section v-if="isAllowed" class="rounded-lg bg-white p-4">
-    <CurrentPageInfo icon="grid" :title="`Historial Médico: ${par}`" />
+    <CurrentPageInfo icon="grid" :title="`Historial Médico: ${userIdentifier}`">
+      <button
+        class="mr-2 flex items-center gap-1 rounded-lg bg-blue-200 px-3 py-2 text-blue-400 transition-all active:scale-95"
+        @click="createHistory?.show()"
+      >
+        <VueFeather type="plus" />
+        <span>Nuevo historial</span>
+      </button>
+    </CurrentPageInfo>
+
     <table class="mt-6 w-full rounded-md border border-blue-200 text-left">
       <thead class="bg-blue-200 text-blue-400">
         <tr class="*:px-2 *:py-4">
@@ -93,4 +105,6 @@ function formatDate(value: string) {
     </table>
   </section>
   <ForbiddenAlert v-else />
+
+  <CreateHistory ref="createHistory" :user-identifier="userIdentifier" />
 </template>
