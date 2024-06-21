@@ -57,10 +57,9 @@ async function handleSubmit() {
 
 <template>
   <Modal ref="modal">
-    <HeaderModal icon="grid" title="Crear cita" />
-
     <form novalidate class="flex flex-col gap-0" @submit.prevent="handleSubmit">
-      <div class="flex flex-col gap-2.5 p-4">
+      <HeaderModal icon="grid" title="Crear cita" />
+      <div class="flex max-h-[80vh] flex-col gap-6 px-4 py-6">
         <FormInput
           ref="reasonInput"
           label="Razón"

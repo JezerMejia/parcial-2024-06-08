@@ -8,10 +8,12 @@ import ni.factorizacion.parcial20240608.domain.entities.Specialty;
 @Data
 @SuperBuilder
 public class SpecialtySimpleDto {
+    private String id;
     private String name;
 
-    static  public SpecialtySimpleDto fromDTO(Specialty specialty) {
+    static  public SpecialtySimpleDto from(Specialty specialty) {
         return SpecialtySimpleDto.builder()
+                .id(specialty.getId())
                 .name(specialty.getName())
                 .build();
     }
