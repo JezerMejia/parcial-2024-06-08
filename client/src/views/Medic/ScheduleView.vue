@@ -12,13 +12,12 @@ import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const appointments = ref<Appointment[]>([]);
 
-const isAllowed = hasPermission(RoleType.DOCT)
+const isAllowed = hasPermission(RoleType.DOCT);
 
 onMounted(async () => {
-  if(!isAllowed) return;
+  if (!isAllowed) return;
 
   await fetchUsers();
-
 });
 
 async function fetchUsers() {
@@ -28,37 +27,16 @@ async function fetchUsers() {
   if (!record || !record.ok) return;
   appointments.value = record.data ?? [];
 
-  console.log(record.data)
-  console.log(appointments.value)
+  console.log(record.data);
+  console.log(appointments.value);
 }
-
-/*const scheduleRegister: ScheduleType[] = [
-  {
-    username: "Jose",
-    status: ExcecutionStateType.CANCELED,
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-01-29"),
-  },
-  {
-    username: "Martinez",
-    status: ExcecutionStateType.CANCELED,
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-01-29"),
-  },
-  {
-    username: "Santiago",
-    status: ExcecutionStateType.CANCELED,
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-01-29"),
-  },
-];*/
 </script>
 
 <template>
   <section v-if="isAllowed" class="bg-white p-4">
     <CurrentPageInfo title="Ver Horario Medico" icon="grid" />
     <ul class="grid w-full gap-4 py-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <ScheduleCard :scheduleCardType="item" :key="index" v-for="(item, index) in appointments" />
+      <ScheduleCard :appointment="item" :key="index" v-for="(item, index) in appointments" />
     </ul>
   </section>
   <ForbiddenAlert v-else />

@@ -7,12 +7,16 @@ import getFormattedDateTime from "@/utils/getFormattedDateTime";
 import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
 import RejectAppointment from "../Modal/Appointment/RejectAppointment.vue";
 import ApproveAppointment from "../Modal/Appointment/ApproveAppointment.vue";
+import { ExecutionState } from "@/types/ExecutionState";
 
-const props = defineProps<{ appointmentCardType: Appointment; controls?: boolean ; showUser? : boolean}>();
+const props = defineProps<{
+  appointment: Appointment;
+  controls?: boolean;
+  showUser?: boolean;
+}>();
 const modalSee = ref<typeof ModalSee>();
 const modalReject = ref<typeof RejectAppointment>();
 const modalApprove = ref<typeof ApproveAppointment>();
-
 </script>
 
 <template>
@@ -24,49 +28,47 @@ const modalApprove = ref<typeof ApproveAppointment>();
         <div class="flex size-5 items-center justify-center rounded-full border border-blue-400">
           <VueFeather class="size-[10px] text-blue-400" type="user" />
         </div>
-        <p class="text-blue-400">{{ props.appointmentCardType.patient.username }}</p>
+        <p class="text-blue-400">{{ props.appointment.patient.username }}</p>
       </div>
     </div>
-    <ExcecutionState
-      class="text-sm"
-      :state="props.appointmentCardType.status"
-    />
+    <ExcecutionState class="text-sm" :state="props.appointment.status" />
     <!--Fechas-->
-    <div class="flex flex-1 flex-row  p-4">
-      <ul class="flex w-full flex-col justify-center gap-2 text-blue-500">
-        <li class="flex items-center gap-2">
-          <VueFeather
-            class="size-10 min-w-10"
-            type="calendar"
-            stroke="#01193F"
-            stroke-width="1.5"
-          ></VueFeather>
-          <div class="flex flex-col">
-            <p class="text-xs font-semibold">Fecha de inicio</p>
-            <p class="text-base">
-              {{ getFormattedDateTime(new Date(props.appointmentCardType.startDate)) }}
-            </p>
-          </div>
-        </li>
-        <li class="flex items-center gap-2">
-          <VueFeather
-            class="size-10 min-w-10"
-            type="calendar"
-            stroke="#01193F"
-            stroke-width="1.5"
-          ></VueFeather>
-          <div class="flex flex-col">
-            <p class="text-xs font-semibold">Fecha de fin</p>
-            <p class="text-base">
-              {{ getFormattedDateTime(new Date(props.appointmentCardType.endDate)) }}
-            </p>
-          </div>
-        </li>
-      </ul>
-    </div>
+    <p class="line-clamp-2 px-4 py-2">
+      {{ props.appointment.reason }}
+    </p>
+    <ul class="flex w-full flex-col justify-center gap-2 p-4 text-blue-500">
+      <li class="flex items-center gap-2">
+        <VueFeather
+          class="size-10 min-w-10"
+          type="calendar"
+          stroke="#01193F"
+          stroke-width="1.5"
+        ></VueFeather>
+        <div class="flex flex-col">
+          <p class="text-xs font-semibold">Fecha de inicio</p>
+          <p class="text-base">
+            {{ getFormattedDateTime(new Date(props.appointment.startDate)) }}
+          </p>
+        </div>
+      </li>
+      <li class="flex items-center gap-2">
+        <VueFeather
+          class="size-10 min-w-10"
+          type="calendar"
+          stroke="#01193F"
+          stroke-width="1.5"
+        ></VueFeather>
+        <div class="flex flex-col">
+          <p class="text-xs font-semibold">Fecha de fin</p>
+          <p class="text-base">
+            {{ getFormattedDateTime(new Date(props.appointment.endDate)) }}
+          </p>
+        </div>
+      </li>
+    </ul>
     <div class="flex flex-row justify-end gap-2 p-2">
       <button
-        v-if="controls"
+        v-if="controls && appointment.status == ExecutionState.PEND_APR"
         type="button"
         class="inline-flex items-center gap-1 rounded-lg bg-red-200 p-2.5 text-center text-sm font-normal text-red-400 transition-all hover:rounded-xl hover:bg-red-300 active:scale-95"
         @click="modalReject?.show()"
@@ -75,7 +77,7 @@ const modalApprove = ref<typeof ApproveAppointment>();
         <span>Rechazar</span>
       </button>
       <button
-        v-if="controls"
+        v-if="controls && appointment.status == ExecutionState.PEND_APR"
         type="button"
         class="inline-flex items-center gap-1 rounded-lg bg-green-200 p-2.5 text-center text-sm font-normal text-green-400 transition-all hover:rounded-xl hover:bg-green-300 active:scale-95"
         @click="modalApprove?.show()"
@@ -92,7 +94,7 @@ const modalApprove = ref<typeof ApproveAppointment>();
       </button>
     </div>
   </li>
-  <ModalSee :medics="props.appointmentCardType.medics" ref="modalSee" />
-  <RejectAppointment ref="modalReject" :uuid="appointmentCardType.uuid" />
-  <ApproveAppointment ref="modalApprove" :uuid="appointmentCardType.uuid" />
+  <ModalSee :medics="props.appointment.medics" ref="modalSee" />
+  <RejectAppointment ref="modalReject" :uuid="appointment.uuid" />
+  <ApproveAppointment ref="modalApprove" :uuid="appointment.uuid" />
 </template>

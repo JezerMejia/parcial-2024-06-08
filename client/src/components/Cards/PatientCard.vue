@@ -20,7 +20,7 @@ onMounted(async () => {
 
   console.log("entries: " + response?.data);
 });
-const url = `/medico/historial/${props.patient.username}`
+const url = `/medico/historial/${props.patient.username}`;
 </script>
 <template>
   <li class="flex flex-col rounded-[4px] border border-blue-300 bg-blue-100">
@@ -35,7 +35,10 @@ const url = `/medico/historial/${props.patient.username}`
       <p class="font-medium">{{ nEntries }} entradas</p>
     </div>
     <div class="flex w-full justify-end rounded-b-[4px] bg-white p-2">
-      <a :href="url" class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95">
+      <a
+        :href="url"
+        class="flex size-[34px] items-center justify-center rounded-lg bg-blue-200 active:scale-95"
+      >
         <VueFeather type="eye" class="size-[18px] font-black" />
       </a>
     </div>

@@ -12,7 +12,7 @@ import type Toast from "@/types/Toast";
 import { ToastType } from "@/types/Toast";
 import { useToast } from "@/stores/toast";
 
-const { addToast } = useToast()
+const { addToast } = useToast();
 const modal = ref<InstanceType<typeof Modal>>();
 
 const formData = ref<SaveAppointment>({
@@ -37,10 +37,10 @@ onMounted(() => {
 async function request(): Promise<boolean> {
   const { data, statusCode } = await requestAppointment(formData.value);
 
-  const toast : Toast = {
+  const toast: Toast = {
     message: data?.value?.message || "Error desconocido, intente más tarde",
-    type: data?.value?.ok  || false ? ToastType.SUCCESS : ToastType.ERROR
-  }
+    type: data?.value?.ok || false ? ToastType.SUCCESS : ToastType.ERROR,
+  };
 
   addToast(toast);
 

@@ -6,8 +6,7 @@ import Modal from "@/components/Modal/ModalComponent.vue";
 import type Medic from "@/types/Medic";
 
 const modal = ref<typeof Modal>();
-const props = defineProps<{medics : Medic[]}>()
-
+const props = defineProps<{ medics: Medic[] }>();
 
 defineExpose({
   show: () => modal.value?.show(),
@@ -21,12 +20,8 @@ defineExpose({
       <HeaderModal title="Ver Medicos Asignados" icon="grid" />
       <div class="flex max-h-[80vh] w-full flex-col gap-4 p-4">
         <div>
-          <ul class="grid gap-4 min-[480px]:grid-cols-1" v-if="props.medics.length > 0" >
-            <li
-              class="flex flex-row gap-2"
-              :key="index"
-              v-for="(medic, index) in props.medics"
-            >
+          <ul class="grid gap-4 min-[480px]:grid-cols-1" v-if="props.medics.length > 0">
+            <li class="flex flex-row gap-2" :key="index" v-for="(medic, index) in props.medics">
               <div class="flex-1 text-blue-500">
                 <p class="text-sm font-semibold">Medico</p>
                 <p class="text-base font-normal">

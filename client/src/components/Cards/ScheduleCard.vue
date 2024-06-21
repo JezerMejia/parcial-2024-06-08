@@ -3,14 +3,14 @@ import { ref } from "vue";
 import VueFeather from "vue-feather";
 import ExcecutionState from "../ExcecutionState.vue";
 import type Appointment from "@/types/Appointment";
-import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
+import SeeAppointment from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
 import getFormattedDateTime from "@/utils/getFormattedDateTime";
 import FinishAppointment from "../Modal/Appointment/FinishAppointment.vue";
 import StartAppointment from "../Modal/Appointment/StartAppointment.vue";
-const props = defineProps<{ scheduleCardType: Appointment; controls?: boolean }>();
+import { ExecutionState } from "@/types/ExecutionState";
+const props = defineProps<{ appointment: Appointment; controls?: boolean }>();
 
-const modalSee = ref<typeof ModalSee>();
-
+const seeAppointment = ref<InstanceType<typeof SeeAppointment>>();
 const startAppointment = ref<InstanceType<typeof FinishAppointment>>();
 const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
 </script>
@@ -24,13 +24,10 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
         <span class="grid place-items-center rounded-full border border-blue-400 bg-blue-200 p-1">
           <VueFeather class="my-auto size-4" type="user" />
         </span>
-        <p>{{ props.scheduleCardType.patient.username }}</p>
+        <p>{{ props.appointment.patient.username }}</p>
       </div>
     </div>
-    <ExcecutionState
-      class="border-x border-blue-300 text-sm"
-      :state="props.scheduleCardType.status"
-    />
+    <ExcecutionState class="border-x border-blue-300 text-sm" :state="props.appointment.status" />
     <!--Fechas-->
     <div class="flex flex-1 flex-row border-x border-blue-300 p-4">
       <ul class="flex w-full flex-col justify-center gap-2 text-blue-500">
@@ -40,7 +37,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha Inicio</p>
             <p class="text-base">
-              {{ getFormattedDateTime(new Date(props.scheduleCardType.startDate)) }}
+              {{ getFormattedDateTime(new Date(props.appointment.startDate)) }}
             </p>
           </div>
         </li>
@@ -50,7 +47,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de fin</p>
             <p class="text-base">
-              {{ getFormattedDateTime(new Date(props.scheduleCardType.endDate)) }}
+              {{ getFormattedDateTime(new Date(props.appointment.endDate)) }}
             </p>
           </div>
         </li>
@@ -58,6 +55,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
     </div>
     <div class="flex flex-row justify-end gap-2 rounded-b-lg border-x border-b border-blue-300 p-2">
       <button
+        v-if="props.appointment.status == ExecutionState.IN_EXC"
         type="button"
         class="inline-flex items-center rounded-lg bg-red-200 p-2.5 text-center text-sm font-normal text-red-400 transition-all hover:rounded-xl hover:bg-red-300 active:scale-95"
         @click="finishAppointment?.show()"
@@ -65,6 +63,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
         <VueFeather type="user-minus" stroke-width="2.5" size="16"></VueFeather>
       </button>
       <button
+        v-if="props.appointment.status == ExecutionState.PEND_EXC"
         type="button"
         class="inline-flex items-center rounded-lg bg-green-200 p-2.5 text-center text-sm font-normal text-green-400 transition-all hover:rounded-xl hover:bg-green-300 active:scale-95"
         @click="startAppointment?.show()"
@@ -74,13 +73,13 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
       <button
         type="button"
         class="inline-flex items-center rounded-lg bg-blue-200 p-2.5 text-center text-sm font-normal text-blue-400 transition-all hover:rounded-xl hover:bg-blue-300 active:scale-95"
-        @click="modalSee?.show()"
+        @click="seeAppointment?.show()"
       >
         <VueFeather type="eye" stroke-width="2.5" size="16"></VueFeather>
       </button>
     </div>
   </li>
-  <ModalSee ref="modalSee" />
-  <StartAppointment ref="startAppointment" :uuid="props.scheduleCardType.uuid" />
-  <FinishAppointment ref="finishAppointment" :uuid="props.scheduleCardType.uuid" />
+  <SeeAppointment ref="seeAppointment" :medics="props.appointment.medics" />
+  <StartAppointment ref="startAppointment" :uuid="props.appointment.uuid" />
+  <FinishAppointment ref="finishAppointment" :uuid="props.appointment.uuid" />
 </template>

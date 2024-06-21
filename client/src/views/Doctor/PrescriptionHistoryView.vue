@@ -13,10 +13,10 @@ import CurrentPageInfo from "@/components/CurrentPageInfo.vue";
 const route = useRoute();
 const par = route.params.username;
 const prescriptionsList = ref<Prescription[]>([]);
-const isAllowed = hasPermission(RoleType.DOCT)
+const isAllowed = hasPermission(RoleType.DOCT);
 
 onMounted(async () => {
-  if(!isAllowed) return;
+  if (!isAllowed) return;
 
   const { data } = await getPrescriptions(par as string);
   prescriptionsList.value = data.value?.data ?? [];
@@ -54,8 +54,11 @@ function formatDate(value: string) {
         </tr>
       </thead>
       <tbody class="font-medium text-blue-500">
-        <tr :key="index" v-for="item, index in prescriptionsList"
-          class="border-b border-b-blue-200 *:border-r *:border-r-blue-200 *:p-2">
+        <tr
+          :key="index"
+          v-for="(item, index) in prescriptionsList"
+          class="border-b border-b-blue-200 *:border-r *:border-r-blue-200 *:p-2"
+        >
           <td>
             <div class="flex justify-center">
               <span>{{ item.medicine }}</span>

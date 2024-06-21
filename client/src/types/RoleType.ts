@@ -1,6 +1,6 @@
 export enum RoleType {
-    ADMN,
-    PTNT,
-    RECP,
-    DOCT,
+  ADMN,
+  PTNT,
+  RECP,
+  DOCT,
 }
