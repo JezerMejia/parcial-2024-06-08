@@ -5,15 +5,27 @@
       <h2 class="text-2xl font-black">Gestionar Historial</h2>
     </div>
     <div class="grid grid-cols-5 gap-4">
-      <PatientCard />
-      <PatientCard />
-      <PatientCard />
-      <PatientCard />
-      <PatientCard />
+      <div v-for="item in users">
+        <PatientCard :patient="item" />
+      </div>
     </div>
   </main>
 </template>
 <script setup lang="ts">
+import type User from "@/types/User";
 import VueFeather from "vue-feather";
 import PatientCard from "@/components/Cards/PatientCard.vue";
+import { useAuthenticatedFetch } from "@/composables/useBaseFetch";
+import { onMounted, ref } from "vue";
+import type GeneralResponse from "@/types/GeneralResponse";
+
+const users = ref<User[]>([]);
+
+onMounted(async () => {
+  const { data } = await useAuthenticatedFetch("/api/users/getPatients").json<GeneralResponse<User[]>>();
+  const response = data.value;
+  users.value = response?.data ?? []
+
+  console.log(users.value);
+})
 </script>

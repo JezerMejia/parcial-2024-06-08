@@ -83,5 +83,18 @@ public class HistoryRestController {
         return GeneralResponse.ok("History Deleted", null);
     }
 
+    @PostMapping(value = "/getCountEntriesByPatient")
+    @PreAuthorize("hasAuthority('DOCT') or hasAuthority('RECP')")
+    public ResponseEntity<GeneralResponse<Integer>> getCountByPatient(@RequestBody String userIdentifier) {
+        User user = userService.findByEmail(userIdentifier);
+        if (user == null) {
+            user = userService.findByUsername(userIdentifier);
+        }
+        if (user == null) {
+            return GeneralResponse.error404("No user found");
+        }
+
+        return GeneralResponse.ok("Found Histories", historyService.countHistoriesByUser(user));
+    }
 
 }
