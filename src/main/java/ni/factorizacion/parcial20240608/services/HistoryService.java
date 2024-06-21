@@ -25,4 +25,6 @@ public interface HistoryService {
     void removeHistory(String uuid) throws ControlException;
 
     Integer countHistoriesByUser(User user);
+
+    List<History> findHistoriesByUser(User user);
 }

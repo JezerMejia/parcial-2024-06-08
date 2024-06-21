@@ -94,4 +94,9 @@ public class HistoryServiceImpl implements HistoryService {
         return repository.countByPatient(user);
     }
 
+    @Override
+    public List<History> findHistoriesByUser(User user) {
+        return repository.findByPatient(user);
+    }
+
 }
