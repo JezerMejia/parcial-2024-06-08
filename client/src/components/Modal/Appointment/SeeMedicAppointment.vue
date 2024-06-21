@@ -3,24 +3,11 @@ import { ref } from "vue";
 import HeaderModal from "@/components/Modal/HeaderModal.vue";
 import VueFeather from "vue-feather";
 import Modal from "@/components/Modal/ModalComponent.vue";
-import type AssociatedMedics from "@/types/AssociatedMedics";
+import type Medic from "@/types/Medic";
 
 const modal = ref<typeof Modal>();
+const props = defineProps<{medics : Medic[]}>()
 
-const associatedMedics: AssociatedMedics[] = [
-  {
-    medic: "Pablo",
-    specialty: "Medico General",
-  },
-  {
-    medic: "Pablo",
-    specialty: "Medico General",
-  },
-  {
-    medic: "Pablo",
-    specialty: "Medico General",
-  },
-];
 
 defineExpose({
   show: () => modal.value?.show(),
@@ -34,26 +21,27 @@ defineExpose({
       <HeaderModal title="Ver Medicos Asignados" icon="grid" />
       <div class="flex max-h-[80vh] w-full flex-col gap-4 p-4">
         <div>
-          <ul class="grid gap-4 min-[480px]:grid-cols-1">
+          <ul class="grid gap-4 min-[480px]:grid-cols-1" v-if="props.medics.length > 0" >
             <li
               class="flex flex-row gap-2"
               :key="index"
-              v-for="(associatedMedics, index) in associatedMedics"
+              v-for="(medic, index) in props.medics"
             >
               <div class="flex-1 text-blue-500">
                 <p class="text-sm font-semibold">Medico</p>
                 <p class="text-base font-normal">
-                  {{ associatedMedics.medic }}
+                  {{ medic.username }}
                 </p>
               </div>
               <div class="flex-1 text-right text-blue-500">
                 <p class="text-sm font-semibold">Especialidad</p>
                 <p class="text-base font-normal">
-                  {{ associatedMedics.specialty }}
+                  {{ medic.specialty }}
                 </p>
               </div>
             </li>
           </ul>
+          <p v-else>No hay ningún médico asociado</p>
         </div>
       </div>
 
@@ -62,10 +50,9 @@ defineExpose({
         <button
           @click="modal?.close()"
           type="button"
-          class="inline-flex items-center rounded-lg bg-red-100 p-2 text-center text-sm font-normal text-red-400 transition-all hover:rounded-xl hover:bg-red-200 active:scale-95"
+          class="inline-flex items-center rounded-lg bg-red-100 p-2 px-4 text-center text-sm font-normal text-red-400 transition-all hover:rounded-xl hover:bg-red-200 active:scale-95"
         >
-          <VueFeather type="x" stroke-width="2.5" size="16"></VueFeather>
-          <span>Cancelar</span>
+          <span>Cerrar</span>
         </button>
       </div>
     </form>

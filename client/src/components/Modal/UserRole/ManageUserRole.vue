@@ -28,16 +28,7 @@ defineExpose({
   },
 });
 
-const ALL_ROLES = ["PTNT", "DOCT", "RECP", "ADMN"];
-
-function crearToastMierda() {
-  const toast: Toast = {
-    message: "Error inesperado, intente más tarde " + Math.random() * 1000,
-    type: ToastType.INFO,
-  };
-
-  addToast(toast);
-}
+const ALL_ROLES = ["DOCT", "RECP"];
 
 async function handleRoleToggleClick(role: string) {
   const userWithRole: UserWithRole = {
@@ -62,11 +53,14 @@ async function handleRoleToggleClick(role: string) {
 }
 
 const ROLE_NAMES = {
-  PTNT: "Paciente",
-  DOCT: "Doctor",
-  RECP: "Recepcionista",
-  ADMN: "Administrador",
+  DOCT: "Médico",
+  RECP: "Asistente",
 };
+
+const alreadyFetchedRoles = (role: string): boolean => {
+  return currentRoles.value ? currentRoles.value.includes(role) : props.user?.roles.includes(role) || false
+}
+
 </script>
 
 <template>
@@ -74,42 +68,31 @@ const ROLE_NAMES = {
     <HeaderModal icon="grid" title="Asignar Roles" />
     <form novalidate @submit.prevent="">
       <div class="flex flex-col gap-2.5 p-4">
-        <InputForm
-          title="Nombre de Usuario"
-          :disabled="true"
-          name="username"
-          :value="props.user?.username"
-        />
+        <InputForm title="Nombre de Usuario" :disabled="true" name="username" :value="props.user?.username" />
         <InputForm title="Correo" :disabled="true" name="email" :value="props.user?.email" />
         <div class="flex flex-col gap-1">
-          <label>Roles para Alternar</label>
-          <div class="flex flex-wrap gap-2">
-            <button
-              @click="
-                () => {
-                  handleRoleToggleClick(role);
-                }
-              "
-              :class="
-                (currentRoles ? currentRoles.includes(role) : props.user?.roles.includes(role))
+          <label class="font-medium">Roles para Alternar</label>
+          <ul class="mt-2 grid grid-cols-2 gap-4">
+            <li class="flex flex-wrap justify-between gap-2 rounded-lg bg-gray-50 p-2" :key="index"
+              v-for="(role, index) in ALL_ROLES">
+              <p class="text-xl">{{ ROLE_NAMES[role as keyof typeof ROLE_NAMES] }}</p>
+              <button @click="() => {
+                handleRoleToggleClick(role);
+              }
+                " :class="(alreadyFetchedRoles(role))
                   ? 'bg-green-200 text-green-400 hover:bg-green-300'
                   : 'bg-red-200 text-red-400 hover:bg-red-300'
-              "
-              class="rounded-lg p-2 px-4 transition-all hover:rounded-xl active:scale-95"
-              :key="index"
-              v-for="(role, index) in ALL_ROLES"
-            >
-              {{ ROLE_NAMES[role as keyof typeof ROLE_NAMES] }}
-            </button>
-          </div>
+                  " class="grid size-8 place-items-center rounded-lg transition-all hover:rounded-xl active:scale-95">
+                <VueFeather :type="alreadyFetchedRoles(role) ? 'check' : 'x'" />
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="flex justify-end gap-2 p-2">
-        <button
-          type="reset"
+        <button type="reset"
           class="flex items-center gap-1 rounded-lg bg-red-200 px-4 py-2 text-red-400 transition-all hover:rounded-xl hover:bg-red-300 active:scale-95"
-          @click="modal?.close()"
-        >
+          @click="modal?.close()">
           <VueFeather stroke-width="4" size="18" type="x" />
           <span>Cerrar</span>
         </button>

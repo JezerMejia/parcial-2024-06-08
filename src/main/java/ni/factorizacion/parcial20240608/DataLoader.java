@@ -1,6 +1,6 @@
 package ni.factorizacion.parcial20240608;
 
-import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.services.RoleService;
 import ni.factorizacion.parcial20240608.services.UserService;

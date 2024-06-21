@@ -1,7 +1,7 @@
 package ni.factorizacion.parcial20240608.services;
 
-import ni.factorizacion.parcial20240608.domain.dtos.EditUserDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.EditUserDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveUserDto;
 import ni.factorizacion.parcial20240608.domain.entities.Role;
 import ni.factorizacion.parcial20240608.domain.entities.Token;
 import ni.factorizacion.parcial20240608.domain.entities.User;

@@ -11,7 +11,10 @@ import java.util.UUID;
 
 public interface HistoryRepository extends JpaRepository<History, UUID> {
     Optional<History> findByDate(LocalDateTime dateTime);
+
     Optional<History> findByReason(String Reason);
+
     Integer countByPatient(User patient);
+
     List<History> findByPatient(User patient);
 }

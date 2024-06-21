@@ -1,7 +1,7 @@
 package ni.factorizacion.parcial20240608.services.impl;
 
-import ni.factorizacion.parcial20240608.domain.dtos.ApproveAppointmentDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.ApproveAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveAppointmentDto;
 import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentMedicSpecialty;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentState;
@@ -43,6 +43,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> findByStatus(AppointmentState status) {
         return appointmentRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<Appointment> findByPatient(User patient) {
+        return appointmentRepository.findByPatient(patient);
     }
 
     @Override

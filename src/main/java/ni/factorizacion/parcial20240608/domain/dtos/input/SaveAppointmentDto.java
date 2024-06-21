@@ -1,4 +1,4 @@
-package ni.factorizacion.parcial20240608.domain.dtos;
+package ni.factorizacion.parcial20240608.domain.dtos.input;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

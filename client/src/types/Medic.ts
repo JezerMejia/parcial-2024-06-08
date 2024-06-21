@@ -1,4 +1,4 @@
-export default interface Prescription {
+export default interface Medic {
   email: string;
   username: string;
   specialty: string;

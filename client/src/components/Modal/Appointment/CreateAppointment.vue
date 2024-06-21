@@ -8,7 +8,11 @@ import { requestAppointment } from "@/composables/useAppointment";
 import type { ErrorMap } from "@/types/ErrorMap";
 import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 import type SaveAppointment from "@/types/SaveAppointment";
+import type Toast from "@/types/Toast";
+import { ToastType } from "@/types/Toast";
+import { useToast } from "@/stores/toast";
 
+const { addToast } = useToast()
 const modal = ref<InstanceType<typeof Modal>>();
 
 const formData = ref<SaveAppointment>({
@@ -32,6 +36,13 @@ onMounted(() => {
 
 async function request(): Promise<boolean> {
   const { data, statusCode } = await requestAppointment(formData.value);
+
+  const toast : Toast = {
+    message: data?.value?.message || "Error desconocido, intente más tarde",
+    type: data?.value?.ok  || false ? ToastType.SUCCESS : ToastType.ERROR
+  }
+
+  addToast(toast);
 
   if (!data.value) {
     return false;

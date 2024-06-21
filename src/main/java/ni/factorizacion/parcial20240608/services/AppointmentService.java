@@ -1,7 +1,7 @@
 package ni.factorizacion.parcial20240608.services;
 
-import ni.factorizacion.parcial20240608.domain.dtos.ApproveAppointmentDto;
-import ni.factorizacion.parcial20240608.domain.dtos.SaveAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.ApproveAppointmentDto;
+import ni.factorizacion.parcial20240608.domain.dtos.input.SaveAppointmentDto;
 import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentMedicSpecialty;
 import ni.factorizacion.parcial20240608.domain.entities.AppointmentState;
@@ -29,4 +29,6 @@ public interface AppointmentService {
     void finish(Appointment appointment);
 
     void start(Appointment appointment);
+
+    List<Appointment> findByPatient(User patient);
 }

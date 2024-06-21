@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import CurrentPageInfo from "@/components/CurrentPageInfo.vue";
 import { getAllUsers, getUserRoles } from "@/composables/useUser";
 import VueFeather from "vue-feather";
 import type User from "@/types/User";
 import ManageUserRole from "@/components/Modal/UserRole/ManageUserRole.vue";
 import type ModalComponent from "@/components/Modal/ModalComponent.vue";
-import { useToast } from "@/stores/toast";
+import hasPermission from "@/utils/hasPermission";
+import { RoleType } from "@/types/RoleType";
+import ForbiddenAlert from "@/components/ForbiddenAlert.vue"
 
 const usersWithRoles = ref<User[]>([]);
 const selectedUser = ref<User | undefined>();
 const manageModal = ref<InstanceType<typeof ModalComponent>>();
-const { toasts } = useToast();
+const isAllowed = hasPermission(RoleType.ADMN);
 
 onMounted(async () => {
   await fetchUsers();
@@ -47,16 +49,9 @@ function handleModifyClick(user: User) {
   manageModal.value?.show();
 }
 
-watch(
-  toasts,
-  (newToasts, oldToasts) => {
-    console.log("Toasts han cambiado:", { oldToasts, newToasts });
-  },
-  { deep: true }
-);
 </script>
 <template>
-  <section class="rounded-md bg-white p-4">
+  <section v-if="isAllowed" class="rounded-md bg-white p-4">
     <CurrentPageInfo title="Asignar Roles" icon="grid">
       <button
         @click="fetchUsers"
@@ -123,5 +118,6 @@ watch(
       </tbody>
     </table>
   </section>
+  <ForbiddenAlert v-else />
   <ManageUserRole :user="selectedUser" ref="manageModal" />
 </template>
