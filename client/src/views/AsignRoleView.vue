@@ -8,7 +8,7 @@ import ManageUserRole from "@/components/Modal/UserRole/ManageUserRole.vue";
 import type ModalComponent from "@/components/Modal/ModalComponent.vue";
 import hasPermission from "@/utils/hasPermission";
 import { RoleType } from "@/types/RoleType";
-import ForbiddenAlert from "@/components/ForbiddenAlert.vue"
+import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const usersWithRoles = ref<User[]>([]);
 const selectedUser = ref<User | undefined>();
@@ -17,10 +17,6 @@ const isAllowed = hasPermission(RoleType.ADMN);
 
 onMounted(async () => {
   await fetchUsers();
-
-  setInterval(async () => {
-    await fetchUsers();
-  }, 30000);
 });
 
 async function fetchUsers() {
@@ -48,7 +44,6 @@ function handleModifyClick(user: User) {
   selectedUser.value = user;
   manageModal.value?.show();
 }
-
 </script>
 <template>
   <section v-if="isAllowed" class="rounded-md bg-white p-4">

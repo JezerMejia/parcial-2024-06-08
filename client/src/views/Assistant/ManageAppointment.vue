@@ -16,10 +16,6 @@ onMounted(() => {
   if (!isAllowed) return;
 
   fetchAppointments();
-
-  setInterval(async () => {
-    await fetchAppointments();
-  }, 30000);
 });
 
 async function fetchAppointments() {

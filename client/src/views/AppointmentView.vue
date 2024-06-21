@@ -19,10 +19,6 @@ onMounted(async () => {
   if (!hasPermission(RoleType.PTNT)) return;
 
   await fetchUsers();
-
-  setInterval(async () => {
-    await fetchUsers();
-  }, 30000);
 });
 
 async function fetchUsers() {

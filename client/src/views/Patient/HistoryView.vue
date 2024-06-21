@@ -10,10 +10,6 @@ const records = ref<Record[]>([]);
 
 onMounted(async () => {
   await getRecord();
-
-  setInterval(async () => {
-    await getRecord();
-  }, 30000);
 });
 
 async function getRecord() {
