@@ -43,7 +43,7 @@ async function request(): Promise<boolean> {
   }
 
   addToast(toast);
-  
+
   if (!data.value) {
     return false;
   }
