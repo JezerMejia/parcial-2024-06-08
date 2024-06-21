@@ -20,7 +20,7 @@ const url = `/medico/prescripcion/${props.patient.username}`;
 <template>
   <li class="flex flex-col rounded-[4px] border border-blue-300 bg-blue-100">
     <div class="p-2">
-      <h3 class="font-black">Paciente</h3>
+      <h3 class="font-black">Prescipción del Paciente</h3>
       <div class="flex items-center gap-1">
         <div class="flex size-5 items-center justify-center rounded-full border border-blue-400">
           <VueFeather class="size-[10px] text-blue-400" type="user" />

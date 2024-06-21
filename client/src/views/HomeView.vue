@@ -27,7 +27,7 @@ const routes : RouteProps[] = [
     title: "Gestionar historial médico",
     icon: "settings",
     href: "/medico/historial",
-    permissions: [RoleType.DOCT, RoleType.RECP]
+    permissions: [RoleType.DOCT]
   },
   {
     title: "Gestionar historial médico",

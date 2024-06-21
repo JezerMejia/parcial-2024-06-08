@@ -7,7 +7,7 @@
         <span>Nuevo historial</span>
       </button>
     </CurrentPageInfo>
-    <ul class="grid grid-cols-5 gap-4">
+    <ul class="grid gap-4 py-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       <PatientCard v-for="item,index in users" :key="index" :patient="item" :asist="false" />
     </ul>
   </section>
@@ -27,7 +27,7 @@ import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const users = ref<User[]>([]);
 
-const isAllowed = hasPermission(RoleType.DOCT)
+const isAllowed = [RoleType.RECP, RoleType.DOCT].some((p) => hasPermission(p));
 
 onMounted(async () => {
   if(!isAllowed) return;

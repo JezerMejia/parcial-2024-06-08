@@ -12,16 +12,13 @@ import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const appointments = ref<Appointment[]>([]);
 
-const isAllowed = [RoleType.RECP, RoleType.DOCT].some((p) => hasPermission(p));
+const isAllowed = hasPermission(RoleType.DOCT)
 
 onMounted(async () => {
   if(!isAllowed) return;
 
   await fetchUsers();
 
-  setInterval(async () => {
-    await fetchUsers();
-  }, 30000);
 });
 
 async function fetchUsers() {
@@ -30,7 +27,9 @@ async function fetchUsers() {
 
   if (!record || !record.ok) return;
   appointments.value = record.data ?? [];
-  console.log(appointments.value);
+
+  console.log(record.data)
+  console.log(appointments.value)
 }
 
 /*const scheduleRegister: ScheduleType[] = [
