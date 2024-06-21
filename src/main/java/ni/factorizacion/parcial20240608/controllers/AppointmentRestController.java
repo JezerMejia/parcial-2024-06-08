@@ -82,8 +82,12 @@ public class AppointmentRestController {
 
     @PostMapping(value = "/reject")
     @PreAuthorize("hasAuthority('RECP')")
-    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody UUID appointmentId) {
-        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+    public ResponseEntity<GeneralResponse<String>> rejectAppointment(@RequestBody String appointmentId) {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            return GeneralResponse.error400("Incorrect UUID");
+        }
+        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
         if (appointment.isEmpty()) {
             return GeneralResponse.error404("The appointment does not exist");
         }
@@ -121,9 +125,30 @@ public class AppointmentRestController {
         boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
 
         if (appointment.get().getStatus() == AppointmentState.RUNNING && isMedicAssigned) {
-            appointment.get().setStatus(AppointmentState.ENDED);
             appointmentService.finish(appointment.get());
             return GeneralResponse.ok("Appointment finished", "");
+        } else {
+            return GeneralResponse.error409("The appointment is not running");
+        }
+    }
+
+    @PostMapping("/start")
+    @PreAuthorize("hasAuthority('DOCT')")
+    public ResponseEntity<GeneralResponse<String>> startAppointment(@RequestBody String appointmentId) {
+        Optional<UUID> uuid = UUIDUtils.fromString(appointmentId);
+        if (uuid.isEmpty()) {
+            return GeneralResponse.error400("Incorrect UUID");
+        }
+        Optional<Appointment> appointment = appointmentService.findById(uuid.get());
+        if (appointment.isEmpty()) {
+            return GeneralResponse.error404("The appointment does not exist");
+        }
+        User userDoctor = userService.findUserAuthenticated();
+        boolean isMedicAssigned = appointment.get().getAppointmentMedicSpecialty().stream().anyMatch(ams -> ams.getMedic().getUuid().equals(userDoctor.getUuid()));
+
+        if (appointment.get().getStatus() == AppointmentState.RUNNING_PENDING && isMedicAssigned) {
+            appointmentService.start(appointment.get());
+            return GeneralResponse.ok("Appointment started", "");
         } else {
             return GeneralResponse.error409("The appointment is not running");
         }
@@ -142,36 +167,8 @@ public class AppointmentRestController {
             return GeneralResponse.error404("No appointments found");
         }
 
-        List<AppointmentDto> dtos = new ArrayList<>();
-        for (Appointment appointment : appointments) {
-            AppointmentDto dto = new AppointmentDto();
-            dto.setUuid(appointment.getUuid().toString());
-            dto.setReason(appointment.getReason());
-            dto.setStatus(appointment.getStatus().toString());
-            dto.setRequestDate(appointment.getRequestDate().toString());
-            dto.setStartDate(appointment.getStartDate().toString());
-            if (appointment.getApproxEndDate() != null) {
-                dto.setEndDate(appointment.getApproxEndDate().toString());
-            }
-            if (appointment.getEndDate() != null) {
-                dto.setEndDate(appointment.getEndDate().toString());
-            }
-            dto.setPrescriptions(appointment.getPrescriptions().stream().map(AppointmentPrescriptionDto::from).toList());
+        List<AppointmentDto> appointmentDtos = appointments.stream().map(AppointmentDto::from).toList();
 
-            List<SimpleMedicDto> medics = new ArrayList<>();
-            for (AppointmentMedicSpecialty ams : appointment.getAppointmentMedicSpecialty()) {
-                SimpleMedicDto medicDto = new SimpleMedicDto();
-                medicDto.setEmail(ams.getMedic().getEmail());
-                medicDto.setUsername(ams.getMedic().getUsername());
-                medicDto.setSpecialty(ams.getSpecialty().getName());
-                medics.add(medicDto);
-            }
-
-            dto.setMedics(medics);
-
-            dtos.add(dto);
-        }
-
-        return GeneralResponse.ok("Found appointments", dtos);
+        return GeneralResponse.ok("Found appointments", appointmentDtos);
     }
 }
