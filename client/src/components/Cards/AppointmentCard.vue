@@ -4,7 +4,6 @@ import VueFeather from "vue-feather";
 import ExcecutionState from "../ExcecutionState.vue";
 import type AppointmentCardType from "@/types/AppointmentCard";
 import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
-import getFormattedDateTime from "@/utils/getFormattedDateTime";
 const props = defineProps<{ appointmentCardType: AppointmentCardType; controls?: boolean }>();
 const modalSee = ref<typeof ModalSee>();
 </script>
@@ -32,7 +31,7 @@ const modalSee = ref<typeof ModalSee>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de inicio</p>
             <p class="text-base font-semibold">
-              {{ getFormattedDateTime(props.appointmentCardType.startDate) }}
+              {{ props.appointmentCardType.startDate }}
             </p>
           </div>
         </li>
@@ -46,7 +45,7 @@ const modalSee = ref<typeof ModalSee>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de fin</p>
             <p class="text-base font-semibold">
-              {{ getFormattedDateTime(props.appointmentCardType.endDate) }}
+              {{ props.appointmentCardType.endDate }}
             </p>
           </div>
         </li>
@@ -55,11 +54,12 @@ const modalSee = ref<typeof ModalSee>();
     <div class="flex flex-row justify-end gap-2 rounded-b-lg border-x border-b border-blue-300 p-2">
       <button
         type="button"
-        class="inline-flex items-center rounded-lg bg-blue-200 p-2.5 text-center text-sm font-normal text-blue-400 transition-all hover:rounded-xl hover:bg-blue-300 active:scale-95" @click="modalSee?.show()"
+        class="inline-flex items-center rounded-lg bg-blue-200 p-2.5 text-center text-sm font-normal text-blue-400 transition-all hover:rounded-xl hover:bg-blue-300 active:scale-95"
+        @click="modalSee?.show()"
       >
         <VueFeather type="eye" stroke-width="3.5" size="16"></VueFeather>
       </button>
     </div>
   </li>
-  <ModalSee ref="modalSee"/>
+  <ModalSee ref="modalSee" />
 </template>
