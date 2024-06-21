@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import VueFeather from "vue-feather";
 import ExcecutionState from "../ExcecutionState.vue";
-import type HistoryCardType from "@/types/HistoryCard";
+import type ScheduleCardType from "@/types/ScheduleCard";
 import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
 import ModalEnd from "@/components/Modal/Medic/EndedAppointment.vue";
 import getFormattedDateTime from "@/utils/getFormattedDateTime";
-const props = defineProps<{ historyCardType: HistoryCardType; controls?: boolean }>();
+const props = defineProps<{ scheduleCardType: ScheduleCardType; controls?: boolean }>();
 const modalSee = ref<typeof ModalSee>();
 const modalEnd = ref<typeof ModalEnd>();
 </script>
@@ -20,10 +20,10 @@ const modalEnd = ref<typeof ModalEnd>();
                 <span class="grid place-items-center rounded-full border border-blue-400 bg-blue-200 p-1">
                     <VueFeather class="my-auto size-4" type="user" />
                 </span>
-                <p>{{ props.historyCardType.username }}</p>
+                <p>{{ props.scheduleCardType.username }}</p>
             </div>
         </div>
-        <ExcecutionState class="border-x border-blue-300 text-sm" :state="props.historyCardType.status" />
+        <ExcecutionState class="border-x border-blue-300 text-sm" :state="props.scheduleCardType.status" />
         <!--Fechas-->
         <div class="flex flex-1 flex-row border-x border-blue-300 p-4">
             <ul class="flex w-full flex-col justify-center gap-2 text-blue-500">
@@ -33,7 +33,7 @@ const modalEnd = ref<typeof ModalEnd>();
                     <div class="flex flex-col">
                         <p class="text-xs font-semibold">Fecha Inicio</p>
                         <p class="text-base">
-                            {{ getFormattedDateTime(props.historyCardType.startDate) }}
+                            {{ getFormattedDateTime(props.scheduleCardType.startDate) }}
                         </p>
                     </div>
                 </li>
@@ -43,7 +43,7 @@ const modalEnd = ref<typeof ModalEnd>();
                     <div class="flex flex-col">
                         <p class="text-xs font-semibold">Fecha de fin</p>
                         <p class="text-base">
-                            {{ getFormattedDateTime(props.historyCardType.endDate) }}
+                            {{ getFormattedDateTime(props.scheduleCardType.endDate) }}
                         </p>
                     </div>
                 </li>
