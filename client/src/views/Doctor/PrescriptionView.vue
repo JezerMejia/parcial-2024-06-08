@@ -1,29 +1,29 @@
 <template>
-  <main class="flex flex-col gap-6 w-full bg-white p-4 rounded-lg">
-    <div class="w-full flex text-blue-500 justify-between items-center">
-      <div class="flex items-center gap-1">
-        <VueFeather type="grid" />
-        <h2 class="text-2xl font-black">Ver prescripciones</h2>
-      </div>
-    </div>
-    <div class="grid grid-cols-5 gap-4">
-      <div v-for="item in users">
-        <PrescriptionCard :patient="item" :asist="false" />
-      </div>
-    </div>
-  </main>
+  <section v-if="isAllowed" class="flex w-full flex-col gap-6 rounded-lg bg-white p-4">
+    <CurrentPageInfo title="Ver prescripciones" icon="grid" />
+    <ul class="grid grid-cols-5 gap-4">
+        <PrescriptionCard :key="index" v-for="item,index in users" :patient="item" :asist="false" />
+    </ul>
+  </section>
+  <ForbiddenAlert v-else />
 </template>
 <script setup lang="ts">
-import VueFeather from "vue-feather";
 import PrescriptionCard from "@/components/Cards/PrescriptionCard.vue";
 import { onMounted, ref } from "vue";
 import type User from "@/types/User";
 import { useAuthenticatedFetch } from "@/composables/useBaseFetch";
 import type GeneralResponse from "@/types/GeneralResponse";
+import CurrentPageInfo from "@/components/CurrentPageInfo.vue";
+import hasPermission from "@/utils/hasPermission";
+import { RoleType } from "@/types/RoleType";
+import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const users = ref<User[]>([]);
+const isAllowed = hasPermission(RoleType.DOCT)
 
 onMounted(async () => {
+  if(!isAllowed) return;
+
   const { data } =
     await useAuthenticatedFetch("/api/users/getPatients").json<GeneralResponse<User[]>>();
   const response = data.value;

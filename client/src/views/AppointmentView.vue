@@ -4,17 +4,21 @@ import VueFeather from "vue-feather";
 import CurrentPageInfo from "@/components/CurrentPageInfo.vue";
 import AppointmentCard from "@/components/Cards/AppointmentCard.vue";
 import type Appointment from "@/types/Appointment";
-import { ExecutionState as ExcecutionStateType } from "@/types/ExecutionState";
 import ModalAdd from "@/components/Modal/Appointment/CreateAppointment.vue";
 const modalAdd = ref<typeof ModalAdd>();
 import { getOwnAppointments } from "@/composables/useAppointment";
 import { useUser } from "@/stores/user";
+import hasPermission from "@/utils/hasPermission";
+import { RoleType } from "@/types/RoleType";
 
 const appointments = ref<Appointment[]>([]);
 
 const user = useUser();
 
 onMounted(async () => {
+
+  if(!hasPermission(RoleType.PTNT)) return;
+
   await fetchUsers();
 
   setInterval(async () => {
@@ -28,26 +32,10 @@ async function fetchUsers() {
 
   if (!record || !record.ok) return;
   appointments.value = record.data ?? [];
+  
   console.log(appointments.value);
 }
 
-/*const appointmentHistory: Appointment[] = [
-  {
-    status: ExcecutionStateType.CANCELED,
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-01-29"),
-  },
-  {
-    status: ExcecutionStateType.FINISHED,
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-01-29"),
-  },
-  {
-    status: ExcecutionStateType.PEND_APR,
-    startDate: new Date("2024-01-01"),
-    endDate: new Date("2024-01-29"),
-  },
-];*/
 </script>
 
 <template>

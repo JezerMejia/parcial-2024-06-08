@@ -6,10 +6,17 @@ import type Appointment from "@/types/Appointment";
 import ModalAdd from "@/components/Modal/Appointment/CreateAppointment.vue";
 const modalAdd = ref<typeof ModalAdd>();
 import { getAppointmentByMedic } from "@/composables/useAppointment";
+import hasPermission from "@/utils/hasPermission";
+import { RoleType } from "@/types/RoleType";
+import ForbiddenAlert from "@/components/ForbiddenAlert.vue";
 
 const appointments = ref<Appointment[]>([]);
 
+const isAllowed = [RoleType.RECP, RoleType.DOCT].some((p) => hasPermission(p));
+
 onMounted(async () => {
+  if(!isAllowed) return;
+
   await fetchUsers();
 
   setInterval(async () => {
@@ -49,14 +56,12 @@ async function fetchUsers() {
 </script>
 
 <template>
-  <div class="bg-white p-4">
-    <div class="flex flex-row items-center justify-between">
-      <CurrentPageInfo title="Ver Horario Medico" icon="grid" />
-    </div>
-
+  <section v-if="isAllowed" class="bg-white p-4">
+    <CurrentPageInfo title="Ver Horario Medico" icon="grid" />
     <ul class="grid w-full gap-4 py-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <ScheduleCard :scheduleCardType="item" :key="index" v-for="(item, index) in appointments" />
     </ul>
-  </div>
+  </section>
+  <ForbiddenAlert v-else />
   <ModalAdd ref="modalAdd" />
 </template>

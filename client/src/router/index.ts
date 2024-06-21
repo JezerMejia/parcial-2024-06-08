@@ -15,14 +15,14 @@ const router = createRouter({
           component: () => import("../views/HomeView.vue"),
         },
         {
-          path: "login",
-          name: "login",
-          component: () => import("../views/HomeView.vue"),
+          path: "citas",
+          name: "appointment",
+          component: () => import("../views/AppointmentView.vue"),
         },
         {
-          path: "asignar-rol",
-          name: "asign-role",
-          component: () => import("../views/AsignRoleView.vue"),
+          path: "historial",
+          name: "historial-usuario",
+          component: () => import("../views/Patient/HistoryView.vue"),
         },
       ],
     },
@@ -43,34 +43,33 @@ const router = createRouter({
       ],
     },
     {
-      path: "/usuario",
-      component: DefaultLayout,
-      children: [
-        {
-          path: "citas",
-          name: "citas-usuario",
-          component: () => import("../views/AppointmentView.vue"),
-        },
-        {
-          path: "historial",
-          name: "historial-usuario",
-          component: () => import("../views/Patient/HistoryView.vue"),
-        },
-      ],
-    },
-    {
       path: "/medico",
       component: DefaultLayout,
       children: [
         {
-          path: "citas",
-          name: "citas-medico",
-          component: () => import("../views/AppointmentView.vue"),
-        },
-        {
           path: "horario",
           name: "horario",
           component: () => import("../views/Medic/ScheduleView.vue"),
+        },
+        {
+          path: "historial",
+          name: "gestionHistorial",
+          component: () => import("../views/Doctor/ManageHistoryView.vue"),
+        },
+        {
+          path: "historial/:username",
+          name: "gestionHistorialByPatient",
+          component: () => import("../views/Doctor/PatientHistoryView.vue"),
+        },
+        {
+          path: "prescripciones",
+          name: "verPrescripciones",
+          component: () => import("../views/Doctor/PrescriptionView.vue"),
+        },
+        {
+          path: "prescripcion/:username",
+          name: "prescripcionHistorialByPatient",
+          component: () => import("../views/Doctor/PrescriptionHistoryView.vue"),
         },
       ],
     },
@@ -80,28 +79,18 @@ const router = createRouter({
       children: [
         {
           path: "citas",
-          name: "citas-asistente",
-          component: () => import("../views/AppointmentView.vue"),
+          name: "gestionarCitas",
+          component: () => import("../views/Assistant/ManageAppointment.vue"),
         },
         {
           path: "historial",
-          name: "historial-asistente",
-          component: () => import("../views/Assistant/HistoryView.vue"),
-        },
-        {
-          path: "historial/gestionar",
-          name: "historial-gestionar-asistente",
-          component: () => import("../views/Assistant/ManageHistories.vue"),
-        },
-        {
-          path: "gestionHistorial",
           name: "gestionHistorialAsis",
-          component: () => import("../views/Assistant/ManageHistoryView.vue"),
+          component: () => import("../views/Doctor/ManageHistoryView.vue"),
         },
         {
-          path: "gestionHistorial/:username",
+          path: "historial/:username",
           name: "gestionHistorialByPatientAsis",
-          component: () => import("../views/Assistant/PatientHistoryView.vue"),
+          component: () => import("../views/Doctor/PatientHistoryView.vue"),
         },
       ],
     },
@@ -110,35 +99,9 @@ const router = createRouter({
       component: DefaultLayout,
       children: [
         {
-          path: "citas",
-          name: "citas-administrador",
-          component: () => import("../views/AppointmentView.vue"),
-        },
-      ],
-    },
-    {
-      path: "/doctor",
-      component: DefaultLayout,
-      children: [
-        {
-          path: "gestionHistorial",
-          name: "gestionHistorial",
-          component: () => import("../views/Doctor/ManageHistoryView.vue"),
-        },
-        {
-          path: "gestionHistorial/:username",
-          name: "gestionHistorialByPatient",
-          component: () => import("../views/Doctor/PatientHistoryView.vue"),
-        },
-        {
-          path: "verPrescripciones",
-          name: "verPrescripciones",
-          component: () => import("../views/Doctor/PrescriptionView.vue"),
-        },
-        {
-          path: "prescripcionHistorial/:username",
-          name: "prescripcionHistorialByPatient",
-          component: () => import("../views/Doctor/PrescriptionHistoryView.vue"),
+          path: "asignar-roles",
+          name: "asign-role",
+          component: () => import("../views/AsignRoleView.vue"),
         },
       ],
     },
