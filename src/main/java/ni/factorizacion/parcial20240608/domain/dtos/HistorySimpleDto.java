@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 @Data
 @SuperBuilder
 public class HistorySimpleDto {
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String reason;
 
     static public HistorySimpleDto from(History history){
         return HistorySimpleDto.builder()
-                .dateTime(history.getDate())
+                .dateTime(history.getDate().toString())
                 .reason(history.getReason())
                 .build();
     }
