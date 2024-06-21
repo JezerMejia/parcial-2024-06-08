@@ -7,7 +7,7 @@ import ModalSee from "@/components/Modal/Appointment/SeeMedicAppointment.vue";
 import getFormattedDateTime from "@/utils/getFormattedDateTime";
 import FinishAppointment from "../Modal/Appointment/FinishAppointment.vue";
 import StartAppointment from "../Modal/Appointment/StartAppointment.vue";
-const props = defineProps<{ scheduleCardType: Appointment; controls?: boolean }>();
+const props = defineProps<{ schedule: Appointment; controls?: boolean }>();
 
 const modalSee = ref<typeof ModalSee>();
 
@@ -24,13 +24,10 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
         <span class="grid place-items-center rounded-full border border-blue-400 bg-blue-200 p-1">
           <VueFeather class="my-auto size-4" type="user" />
         </span>
-        <p>{{ props.scheduleCardType.patient.username }}</p>
+        <p>{{ props.schedule.patient.username }}</p>
       </div>
     </div>
-    <ExcecutionState
-      class="border-x border-blue-300 text-sm"
-      :state="props.scheduleCardType.status"
-    />
+    <ExcecutionState class="border-x border-blue-300 text-sm" :state="props.schedule.status" />
     <!--Fechas-->
     <div class="flex flex-1 flex-row border-x border-blue-300 p-4">
       <ul class="flex w-full flex-col justify-center gap-2 text-blue-500">
@@ -40,7 +37,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha Inicio</p>
             <p class="text-base">
-              {{ getFormattedDateTime(new Date(props.scheduleCardType.startDate)) }}
+              {{ getFormattedDateTime(new Date(props.schedule.startDate)) }}
             </p>
           </div>
         </li>
@@ -50,7 +47,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
           <div class="flex flex-col">
             <p class="text-xs font-semibold">Fecha de fin</p>
             <p class="text-base">
-              {{ getFormattedDateTime(new Date(props.scheduleCardType.endDate)) }}
+              {{ getFormattedDateTime(new Date(props.schedule.endDate)) }}
             </p>
           </div>
         </li>
@@ -80,7 +77,7 @@ const finishAppointment = ref<InstanceType<typeof FinishAppointment>>();
       </button>
     </div>
   </li>
-  <ModalSee ref="modalSee" />
-  <StartAppointment ref="startAppointment" :uuid="props.scheduleCardType.uuid" />
-  <FinishAppointment ref="finishAppointment" :uuid="props.scheduleCardType.uuid" />
+  <ModalSee :medics="props.schedule.medics" ref="modalSee" />
+  <StartAppointment ref="startAppointment" :uuid="props.schedule.uuid" />
+  <FinishAppointment ref="finishAppointment" :uuid="props.schedule.uuid" />
 </template>
