@@ -120,13 +120,18 @@ async function handleSubmit() {
   if (user.user != null) {
     router.push("/");
   }
+function handleCancel() {
+  router.push("/login");
 }
+
 </script>
 
 <template>
-  <main class="flex size-full flex-col items-center justify-center gap-24">
+  <main class="flex size-[570px] flex-col items-center justify-center gap-10 bg-white">
+    <h1 class="text-4xl font-bold text-blue-400">Registra tu cuenta</h1>
     <form @submit.prevent="handleSubmit" autocomplete="on" class="flex flex-col gap-2" novalidate>
       <FormInput
+        class="text-blue-400"
         ref="usernameInput"
         label="Nombre de usuario:"
         type="text"
@@ -135,6 +140,7 @@ async function handleSubmit() {
       />
 
       <FormInput
+        class="text-blue-400"
         ref="emailInput"
         label="Correo electrónico: "
         type="email"
@@ -143,6 +149,7 @@ async function handleSubmit() {
       />
 
       <FormInput
+        class="text-blue-400"
         ref="passwordInput"
         label="Contraseña: "
         type="password"
@@ -152,6 +159,7 @@ async function handleSubmit() {
       />
 
       <FormInput
+        class="text-blue-400"
         ref="confirmPasswordInput"
         label="Confirmar contraseña: "
         type="password"
@@ -160,8 +168,14 @@ async function handleSubmit() {
       />
 
       <span v-if="message != Message.EMPTY">{{ message }}</span>
-
-      <button type="submit">Registrarse</button>
+      
+      <div class="flex justify-between gap-5">
+        <button  type="button" @click="handleCancel" class="mt-3 flex w-full items-center justify-center gap-1 rounded-lg bg-red-200 p-2 text-center text-sm font-normal text-red-400 transition-all hover:rounded-xl active:scale-95">Cancelar</button>
+        <button type="submit" class="mt-3 flex w-full items-center justify-center rounded-lg bg-blue-200 p-2 text-center text-sm font-normal text-blue-400 transition-all hover:rounded-xl active:scale-95">
+          <VueFeather type="log-out" stroke-width="2.5" size="16"/>
+          <span>Ingresar</span>
+        </button>
+      </div>
     </form>
   </main>
 </template>
