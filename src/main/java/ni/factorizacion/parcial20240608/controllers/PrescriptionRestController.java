@@ -2,11 +2,15 @@ package ni.factorizacion.parcial20240608.controllers;
 
 
 import jakarta.validation.Valid;
+import ni.factorizacion.parcial20240608.domain.dtos.AppointmentPrescriptionDto;
 import ni.factorizacion.parcial20240608.domain.dtos.GeneralResponse;
 import ni.factorizacion.parcial20240608.domain.dtos.PrescriptionSimpleDto;
 import ni.factorizacion.parcial20240608.domain.dtos.SavePrescriptionDto;
+import ni.factorizacion.parcial20240608.domain.entities.Appointment;
 import ni.factorizacion.parcial20240608.domain.entities.Prescription;
+import ni.factorizacion.parcial20240608.domain.entities.User;
 import ni.factorizacion.parcial20240608.services.PrescriptionService;
+import ni.factorizacion.parcial20240608.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +26,24 @@ public class PrescriptionRestController {
 
     @Autowired
     private PrescriptionService service;
+    @Autowired
+    private UserService userService;
 
-    @GetMapping(path = "/{user_id}")
+    @GetMapping(path = "/{identifier}")
     //@PreAuthorize("hasAuthority('DOCT')")
-    public ResponseEntity<GeneralResponse<List<PrescriptionSimpleDto>>> getAllByUserId(@PathVariable UUID user_id) {
-        var prescription = service.getAllByUserId(user_id);
-        if (prescription.isEmpty()) {
-            return GeneralResponse.ok("No prescription found", prescription);
+    public ResponseEntity<GeneralResponse<List<AppointmentPrescriptionDto>>> getAllByUserId(@PathVariable String identifier) {
+        User user = userService.findByEmail(identifier);
+        if (user == null) {
+            user = userService.findByUsername(identifier);
         }
-        return GeneralResponse.ok("Found prescription", prescription);
+        if (user == null) {
+            return GeneralResponse.error404("User not found");
+        }
+
+        List<Prescription> prescriptions = service.getAllByUserId(user);
+        List<AppointmentPrescriptionDto> appointmentDtos = prescriptions.stream().map(AppointmentPrescriptionDto::from).toList();
+
+        return GeneralResponse.ok("Found prescription", appointmentDtos);
     }
 
     @PostMapping(consumes = "application/json")

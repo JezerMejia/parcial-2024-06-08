@@ -46,6 +46,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> findByPatient(User patient) {
+        return appointmentRepository.findByPatient(patient);
+    }
+
+    @Override
     public void save(SaveAppointmentDto dto, User patient) {
         Appointment appointment = new Appointment();
         appointment.setReason(dto.getReason());

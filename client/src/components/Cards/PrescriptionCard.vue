@@ -1,28 +1,24 @@
 <script setup lang="ts">
 import { useAuthenticatedFetch } from "@/composables/useBaseFetch";
+import { getPrescriptions } from "@/composables/usePrescription";
+import type Appointment from "@/types/Appointment";
 import type GeneralResponse from "@/types/GeneralResponse";
+import type Prescription from "@/types/Prescription";
 import type User from "@/types/User";
 import { onMounted, ref } from "vue";
 import VueFeather from "vue-feather";
 const props = defineProps<{
   patient: User;
-  asist: boolean;
 }>();
 
-const nEntries = ref<number>(0);
+const prescriptionsList = ref<Prescription[]>([]);
 
 onMounted(async () => {
-  const { data } = await useAuthenticatedFetch("/user/getCountEntriesByPatient")
-    .json<GeneralResponse<number>>()
-    .post(props.patient.email);
-  const response = data.value;
-  nEntries.value = response?.data ?? 0;
-
-  console.log("entries: " + response?.data);
+  const { data } = await getPrescriptions(props.patient.username as string);
+  prescriptionsList.value = data.value?.data ?? [];
 });
-const url = props.asist
-  ? `/asistente/gestionHistorial/${props.patient.username}`
-  : `/doctor/gestionHistorial/${props.patient.username}`;
+
+const url = `/doctor/prescripcionHistorial/${props.patient.username}`;
 </script>
 <template>
   <div class="flex flex-col bg-blue-100 rounded-[4px] border border-blue-300">
@@ -34,7 +30,7 @@ const url = props.asist
         </div>
         <p class="font-light text-blue-400">{{ props.patient.username }}</p>
       </div>
-      <p class="font-medium">{{ nEntries }} entradas</p>
+      <p class="font-medium">{{ prescriptionsList.length }} prescripciones</p>
     </div>
     <div class="flex justify-end p-2 bg-white w-full rounded-b-[4px]">
       <a :href="url" class="size-[34px] bg-blue-200 flex items-center justify-center rounded-lg active:scale-95">

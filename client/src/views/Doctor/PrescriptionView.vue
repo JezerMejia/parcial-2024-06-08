@@ -3,27 +3,22 @@
     <div class="w-full flex text-blue-500 justify-between items-center">
       <div class="flex items-center gap-1">
         <VueFeather type="grid" />
-        <h2 class="text-2xl font-black">Gestionar Historial</h2>
+        <h2 class="text-2xl font-black">Ver prescripciones</h2>
       </div>
-      <button
-        class="flex items-center bg-blue-200 text-blue-400 py-2 px-3 gap-1 rounded-lg mr-2 active:scale-95 transition-all">
-        <VueFeather type="plus" />
-        <span>Nuevo historial</span>
-      </button>
     </div>
     <div class="grid grid-cols-5 gap-4">
       <div v-for="item in users">
-        <PatientCard :patient="item" :asist="false" />
+        <PrescriptionCard :patient="item" :asist="false" />
       </div>
     </div>
   </main>
 </template>
 <script setup lang="ts">
-import type User from "@/types/User";
 import VueFeather from "vue-feather";
-import PatientCard from "@/components/Cards/PatientCard.vue";
-import { useAuthenticatedFetch } from "@/composables/useBaseFetch";
+import PrescriptionCard from "@/components/Cards/PrescriptionCard.vue";
 import { onMounted, ref } from "vue";
+import type User from "@/types/User";
+import { useAuthenticatedFetch } from "@/composables/useBaseFetch";
 import type GeneralResponse from "@/types/GeneralResponse";
 
 const users = ref<User[]>([]);
