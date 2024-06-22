@@ -10,7 +10,9 @@ import VueFeather from "vue-feather";
 import type { ErrorMap } from "@/types/ErrorMap";
 import { setValidationErrorForm, type FormInputType } from "@/utils/formValidation";
 import FormInput from "@/components/FormInput.vue";
+
 import InputForm from "@/components/Forms/InputForm.vue";
+
 
 enum Message {
   EMPTY = "",
@@ -102,13 +104,14 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <main class="flex flex-col items-center justify-center gap-10 rounded-lg bg-white px-4 py-6">
+  <main class="flex size-[570px] flex-col items-center justify-center gap-10 rounded-lg bg-white">
     <div class="flex flex-col items-center justify-center">
       <img src="/identity/logo.svg" alt="Logo" />
-      <h1 class="text-base font-bold text-blue-400">YA MERITO</h1>
-      <h2 class="text-2xl font-bold text-blue-400">Inicia Sesion</h2>
+      <h1  class="text-base font-bold text-blue-400">YA MERITO</h1>
+      <h2  class="text-2xl font-bold text-blue-400">Inicia Sesion</h2>
     </div>
     <form @submit.prevent="handleSubmit" autocomplete="on" class="flex w-[500px] flex-col">
+        
       <FormInput
         class="text-blue-400"
         ref="identifierInput"
@@ -129,11 +132,8 @@ async function handleSubmit() {
 
       <span v-if="message != Message.EMPTY">{{ message }}</span>
 
-      <button
-        type="submit"
-        class="mt-3 inline-flex items-center justify-center rounded-lg bg-blue-200 p-2.5 text-center text-sm font-medium text-blue-400 transition-all hover:rounded-xl hover:bg-blue-300 active:scale-95"
-      >
-        <VueFeather type="log-out" stroke-width="2.5" size="16" />
+      <button type="submit" class="mt-3 inline-flex items-center justify-center rounded-lg bg-blue-200 p-2 text-center text-sm font-normal text-blue-400 transition-all hover:rounded-xl active:scale-95">
+        <VueFeather type="log-out" stroke-width="2.5" size="16"/>
         <span>Ingresar</span>
       </button>
     </form>
